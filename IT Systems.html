@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Systems Feedback</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f7fc;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .nav-link {
+            color: #555;
+            margin-right: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #007bff;
+        }
+
+        .btn-outline-success {
+            border-radius: 50%;
+            padding: 8px 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-outline-success:hover {
+            background-color: #28a745;
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background-color: #007bff;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        /* System Card Styling */
+        .system-card {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .system-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .system-logo img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .system-info h5 {
+            font-size: 1.3rem;
+            color: #333;
+        }
+
+        .system-info p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .system-rating span {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: gray;
+        }
+
+        .system-rating span:hover,
+        .system-rating span.active {
+            color: gold;
+        }
+
+        /* Feedback Modal */
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="index.html">BrandName</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="IT Systems.html">IT Systems</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Help.html">Help</a>
+                    </li>
+                </ul>
+                <!-- Search Bar in Navbar -->
+                <form class="d-flex">
+                    <input type="text" class="search-bar form-control me-2" placeholder="Search systems">
+                    <button class="btn btn-light" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+                <div class="dropdown">
+                    <button class="btn btn-outline-success dropdown-toggle" type="button" id="userDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        <!-- Fake Feedback 1 -->
+        <div class="system-card">
+            <div class="d-flex align-items-center">
+                <div class="system-logo">
+                    <img src="https://via.placeholder.com/100" alt="Logo">
+                </div>
+                <div class="system-info">
+                    <h5>Acme Corporation</h5>
+                    <p>The system has improved our overall workflow, but we experienced occasional glitches. Support
+                        could be faster.</p>
+                </div>
+            </div>
+            <div class="system-rating">
+                ★★★☆☆
+            </div>
+        </div>
+
+        <!-- Fake Feedback 2 -->
+        <div class="system-card">
+            <div class="d-flex align-items-center">
+                <div class="system-logo">
+                    <img src="https://via.placeholder.com/100" alt="Logo">
+                </div>
+                <div class="system-info">
+                    <h5>Tech Innovators</h5>
+                    <p>The interface is intuitive, but the lack of customization options limits its flexibility for
+                        larger teams.</p>
+                </div>
+            </div>
+            <div class="system-rating">
+                ★★☆☆☆
+            </div>
+        </div>
+
+        <!-- Fake Feedback 3 -->
+        <div class="system-card">
+            <div class="d-flex align-items-center">
+                <div class="system-logo">
+                    <img src="https://via.placeholder.com/100" alt="Logo">
+                </div>
+                <div class="system-info">
+                    <h5>Global Solutions</h5>
+                    <p>Excellent customer service and the system integrates well with our existing tools. We are highly
+                        satisfied.</p>
+                </div>
+            </div>
+            <div class="system-rating">
+                ★★★★★
+            </div>
+        </div>
+
+        <!-- System List -->
+        <div id="systemList">
+            <!-- Feedback submissions will be added here dynamically -->
+        </div>
+
+        <!-- Button to trigger modal -->
+        <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+            Open Feedback Form
+        </button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="feedbackModalLabel">Feedback Form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="feedbackForm">
+                        <div class="mb-3">
+                            <label for="companyName" class="form-label">Company Name</label>
+                            <input type="text" class="form-control" id="companyName" placeholder="Enter company name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="experienceDescription" class="form-label">Description of the experience</label>
+                            <textarea class="form-control" id="experienceDescription" rows="3"
+                                placeholder="Describe your experience"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="logoUpload" class="form-label">Upload Company Logo</label>
+                            <input type="file" class="form-control" id="logoUpload">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Rating</label>
+                            <div id="rating" class="system-rating">
+                                <span data-value="1">☆</span>
+                                <span data-value="2">☆</span>
+                                <span data-value="3">☆</span>
+                                <span data-value="4">☆</span>
+                                <span data-value="5">☆</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="submitFeedback">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle star rating selection
+        let selectedRating = 0;
+        const stars = document.querySelectorAll('.system-rating span');
+
+        stars.forEach(star => {
+            star.addEventListener('click', function () {
+                selectedRating = this.getAttribute('data-value');
+                updateStars(selectedRating);
+            });
+        });
+
+        function updateStars(rating) {
+            stars.forEach(star => {
+                if (star.getAttribute('data-value') <= rating) {
+                    star.textContent = '★';  // Filled star
+                } else {
+                    star.textContent = '☆';  // Empty star
+                }
+            });
+        }
+
+        // Handle form submission
+        document.getElementById('submitFeedback').addEventListener('click', function (e) {
+            e.preventDefault();
+            const companyName = document.getElementById('companyName').value;
+            const experienceDescription = document.getElementById('experienceDescription').value;
+            const logoUpload = document.getElementById('logoUpload').files[0];
+
+            if (!companyName || !experienceDescription || !selectedRating || !logoUpload) {
+                alert('Please complete all fields and select a rating.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const systemList = document.getElementById('systemList');
+                const newSystemCard = `
+                <div class="system-card">
+                    <div class="d-flex align-items-center">
+                        <div class="system-logo">
+                            <img src="${e.target.result}" alt="Logo">
+                        </div>
+                        <div class="system-info">
+                            <h5>${companyName}</h5>
+                            <p>${experienceDescription}</p>
+                        </div>
+                    </div>
+                    <div class="system-rating">
+                        ${'★'.repeat(selectedRating)}${'☆'.repeat(5 - selectedRating)}
+                    </div>
+                </div>
+            `;
+                systemList.insertAdjacentHTML('beforeend', newSystemCard);
+                document.getElementById('feedbackForm').reset();
+                updateStars(0);  // Reset stars after submission
+                selectedRating = 0;
+            };
+            reader.readAsDataURL(logoUpload);
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

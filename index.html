@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for additional icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f0f4f7;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        .nav-link {
+            color: #555;
+            margin-right: 20px;
+        }
+
+        .nav-link:hover {
+            color: #007bff;
+        }
+
+        .btn-outline-success {
+            border-radius: 50%;
+            padding: 8px 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-outline-success:hover {
+            background-color: #28a745;
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background-color: #007bff;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .hero-section p {
+            font-size: 1.25rem;
+            margin-top: 10px;
+        }
+
+        /* Hot Systems Card Layout */
+        .system-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .system-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .system-card h5 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .system-card p {
+            font-size: 1rem;
+            color: #777;
+        }
+
+        /* Question Section Styling */
+        .green-box {
+            background-color: #f8f9fa;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 5px solid #28a745;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .green-box:hover {
+            background-color: #e9ecef;
+        }
+
+        .question-toggle {
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .question-toggle span {
+            transition: transform 0.3s ease;
+        }
+
+        .question-toggle.collapsed span {
+            transform: rotate(180deg);
+        }
+
+        .collapse {
+            padding: 10px 15px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-toggle span {
+            font-size: 1.2rem;
+            color: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1>Welcome to the System Dashboard</h1>
+        <p>Explore systems, ask questions, and find solutions faster.</p>
+    </div>
+
+    <div class="container my-4">
+        <!-- Updated Navbar -->
+        <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="index.html">BrandName</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="IT Systems.html">IT Systems</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Help.html">Help</a>
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-outline-success dropdown-toggle" type="button" id="userDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hot Systems Section -->
+        <h4 class="mt-4">Hot Systems</h4>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="system-card">
+                    <h5>Logo 1</h5>
+                    <p>System Description 1</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="system-card">
+                    <h5>Logo 2</h5>
+                    <p>System Description 2</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="system-card">
+                    <h5>Logo 3</h5>
+                    <p>System Description 3</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Questions Section -->
+        <h4 class="mt-4">People have asked these questions</h4>
+        <div id="questions">
+            <div class="green-box question-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#answer1">
+                <div>Question 1</div>
+                <span>▼</span>
+            </div>
+            <div id="answer1" class="collapse">Answer to question 1.</div>
+
+            <div class="green-box question-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#answer2">
+                <div>Question 2</div>
+                <span>▼</span>
+            </div>
+            <div id="answer2" class="collapse">Answer to question 2.</div>
+
+            <div class="green-box question-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#answer3">
+                <div>Question 3</div>
+                <span>▼</span>
+            </div>
+            <div id="answer3" class="collapse">Answer to question 3.</div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS bundle (includes Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
