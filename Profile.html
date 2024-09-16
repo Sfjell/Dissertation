@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for additional icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f0f4f7;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .profile-header {
+            background-color: #42f8b2;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+        }
+
+        .profile-header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .profile-picture {
+            margin-top: -70px;
+            margin-bottom: 20px;
+        }
+
+        .profile-picture img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+        }
+
+        .profile-info {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .profile-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .profile-info p {
+            font-size: 1.1rem;
+            color: #777;
+        }
+
+        .settings-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .settings-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .settings-card h5 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .settings-card p {
+            font-size: 1rem;
+            color: #777;
+        }
+
+        .btn-primary {
+            background-color: #42f8b2;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #28a745;
+        }
+
+        .back-button {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .back-button a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .back-button .btn-secondary {
+            background-color: #333;
+            border: none;
+        }
+
+        .back-button .btn-secondary:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Profile Header -->
+    <div class="profile-header" id="profileHeader">
+        <div class="profile-picture">
+            <img src="https://via.placeholder.com/150" alt="Profile Picture">
+        </div>
+        <h1>John Doe</h1>
+        <p>Software Developer</p>
+    </div>
+
+    <!-- Profile Info and Settings -->
+    <div class="container">
+        <div class="profile-info">
+            <h3>John Doe</h3>
+            <p>Email: johndoe@example.com</p>
+            <p>Member Since: January 2021</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="settings-card">
+                    <h5>Personal Information</h5>
+                    <p>Edit your name, email, and other personal details.</p>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editPersonalInfoModal">
+                        Edit Information
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="settings-card">
+                    <h5>Account Settings</h5>
+                    <p>Update your password, change background color, and account settings.</p>
+                    <!-- Button trigger modal for account settings -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editSettingsModal">
+                        Change Account Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="back-button">
+            <a href="index.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </div>
+
+    <!-- Modal for editing personal information -->
+    <div class="modal fade" id="editPersonalInfoModal" tabindex="-1" aria-labelledby="editPersonalInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPersonalInfoModalLabel">Edit Personal Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="nameInput" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="nameInput" value="John Doe">
+                        </div>
+                        <div class="mb-3">
+                            <label for="emailInput" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="emailInput" value="johndoe@example.com">
+                        </div>
+                        <div class="mb-3">
+                            <label for="memberSinceInput" class="form-label">Member Since</label>
+                            <input type="text" class="form-control" id="memberSinceInput" value="January 2021" disabled>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for changing account settings -->
+    <div class="modal fade" id="editSettingsModal" tabindex="-1" aria-labelledby="editSettingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editSettingsModalLabel">Account Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="currentPasswordInput" class="form-label">Current Password</label>
+                            <input type="password" class="form-control" id="currentPasswordInput" placeholder="Enter current password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPasswordInput" class="form-label">New Password</label>
+                            <input type="password" class="form-control" id="newPasswordInput" placeholder="Enter new password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPasswordInput" class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-control" id="confirmPasswordInput" placeholder="Confirm new password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="bgColorInput" class="form-label">Background Color</label>
+                            <input type="color" class="form-control" id="bgColorInput" value="#f0f4f7">
+                        </div>
+                        <div class="mb-3">
+                            <label for="textColorInput" class="form-label">Text Color</label>
+                            <input type="color" class="form-control" id="textColorInput" value="#000000">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveSettingsButton">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS bundle (includes Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.getElementById('saveSettingsButton').addEventListener('click', function() {
+            // Update the background color and text color on the profile header
+            var bgColor = document.getElementById('bgColorInput').value;
+            var textColor = document.getElementById('textColorInput').value;
+
+            document.getElementById('profileHeader').style.backgroundColor = bgColor;
+            document.getElementById('profileHeader').style.color = textColor;
+        });
+    </script>
+</body>
+
+</html>

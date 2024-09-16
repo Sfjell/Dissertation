@@ -134,6 +134,21 @@
             font-size: 1.2rem;
             color: #007bff;
         }
+
+          /* Footer Styling */
+          .footer {
+            background-color: #000; /* Black background */
+            color: white; /* White text */
+            text-align: center; /* Center the content */
+            padding: 20px 0; /* Padding for spacing */
+            position: fixed; /* Fixed to the bottom */
+            width: 100%; /* Full width */
+            bottom: 0; /* Stick to the bottom */
+        }
+
+        .footer p {
+            margin: 0; /* Remove margin for paragraphs */
+        }
     </style>
 </head>
 
@@ -149,17 +164,17 @@
         <!-- Updated Navbar -->
         <nav class="navbar navbar-expand-lg" style="border-radius: 20px;">
             <a class="navbar-brand" href="index.html">BrandName</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="test" data-bs-target="#navbarNav"
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="test navbar-test" id="navbarNav">
+            <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="IT Systems.html">IT Systems</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Help.html">Help</a>
+                        <a class="nav-link" href="Help.html">Discussion</a>
                     </li>
                 </ul>
                 <div class="dropdown">
@@ -168,9 +183,8 @@
                         <i class="fas fa-user"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                        <li><a class="dropdown-item" href="Profile.html">Profile</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="logoutUser()">Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -222,8 +236,22 @@
         </div>
     </div>
 
+    <footer class="footer">
+        <p>&copy; 2024 Your Company Name. All rights reserved.</p>
+    </footer>
+
     <!-- Bootstrap JS bundle (includes Popper.js) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Logout functionality script -->
+    <script>
+        function logoutUser() {
+            // Clear localStorage, sessionStorage, or cookies if needed
+            localStorage.clear();  // If you're using localStorage for user session
+            // Redirect to login page or any other page for re-login
+            window.location.href = "login.html"; // Make sure login.html exists
+        }
+    </script>
 </body>
 
 </html>

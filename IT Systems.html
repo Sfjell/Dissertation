@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,13 +15,14 @@
         /* Navbar Styling */
         .navbar {
             background-color: #fff;
+            border-radius: 12px;
             border-bottom: 1px solid #e0e0e0;
-            padding: 1rem;
+            padding: 1.5rem;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-brand {
-            font-size: 1.7rem;
+            font-size: 2rem;
             font-weight: bold;
             color: #333;
         }
@@ -30,6 +30,7 @@
         .nav-link {
             color: #555;
             margin-right: 20px;
+            font-size: 1.1rem;
             transition: color 0.3s ease;
         }
 
@@ -46,24 +47,6 @@
         .btn-outline-success:hover {
             background-color: #28a745;
             color: white;
-        }
-
-        /* Hero Section */
-        .hero-section {
-            background-color: #007bff;
-            color: white;
-            padding: 40px 0;
-            text-align: center;
-        }
-
-        .hero-section h1 {
-            font-size: 2.5rem;
-            font-weight: bold;
-        }
-
-        .hero-section p {
-            font-size: 1.2rem;
-            margin-top: 10px;
         }
 
         /* System Card Styling */
@@ -92,8 +75,9 @@
         }
 
         .system-info h5 {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             color: #333;
+            font-weight: bold;
         }
 
         .system-info p {
@@ -102,7 +86,7 @@
         }
 
         .system-rating span {
-            font-size: 1.5rem;
+            font-size: 2rem;
             cursor: pointer;
             color: gray;
         }
@@ -112,66 +96,66 @@
             color: gold;
         }
 
-        /* Feedback Modal */
-        .modal-header {
-            background-color: #007bff;
-            color: white;
-        }
-
+        /* Feedback Button */
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border-radius: 30px;
         }
 
         .btn-primary:hover {
             background-color: #0056b3;
             border-color: #0056b3;
         }
+
+        /* Modal Form */
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
     </style>
 </head>
 
 <body>
-
     <div class="container mt-5">
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg" style="border-radius: 20px;">
+        <nav class="navbar navbar-expand-lg">
             <a class="navbar-brand" href="index.html">BrandName</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="IT Systems.html">IT Systems</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Help.html">Help</a>
+                        <a class="nav-link" href="Help.html">Discussion</a>
                     </li>
                 </ul>
                 <!-- Search Bar in Navbar -->
                 <form class="d-flex">
-                    <input type="text" class="search-bar form-control me-2" placeholder="Search systems">
+                    <input type="text" class="form-control me-2" placeholder="Search systems">
                     <button class="btn btn-light" type="button">
                         <i class="fas fa-search"></i>
                     </button>
                 </form>
                 <div class="dropdown">
-                    <button class="btn btn-outline-success dropdown-toggle" type="button" id="userDropdown"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-outline-success dropdown-toggle" type="button">
                         <i class="fas fa-user"></i>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="Profile.html">Profile</a></li>
                         <li><a class="dropdown-item" href="#">Logout</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-
-        <!-- Fake Feedback 1 -->
+        <!-- System Cards -->
         <div class="system-card">
             <div class="d-flex align-items-center">
                 <div class="system-logo">
@@ -179,8 +163,7 @@
                 </div>
                 <div class="system-info">
                     <h5>Acme Corporation</h5>
-                    <p>The system has improved our overall workflow, but we experienced occasional glitches. Support
-                        could be faster.</p>
+                    <p>The system has improved our workflow, but we experienced occasional glitches. Support could be faster.</p>
                 </div>
             </div>
             <div class="system-rating">
@@ -188,7 +171,6 @@
             </div>
         </div>
 
-        <!-- Fake Feedback 2 -->
         <div class="system-card">
             <div class="d-flex align-items-center">
                 <div class="system-logo">
@@ -196,8 +178,7 @@
                 </div>
                 <div class="system-info">
                     <h5>Tech Innovators</h5>
-                    <p>The interface is intuitive, but the lack of customization options limits its flexibility for
-                        larger teams.</p>
+                    <p>The interface is intuitive, but lacks customization for larger teams.</p>
                 </div>
             </div>
             <div class="system-rating">
@@ -205,7 +186,6 @@
             </div>
         </div>
 
-        <!-- Fake Feedback 3 -->
         <div class="system-card">
             <div class="d-flex align-items-center">
                 <div class="system-logo">
@@ -213,18 +193,12 @@
                 </div>
                 <div class="system-info">
                     <h5>Global Solutions</h5>
-                    <p>Excellent customer service and the system integrates well with our existing tools. We are highly
-                        satisfied.</p>
+                    <p>Excellent customer service and integrates well with our tools.</p>
                 </div>
             </div>
             <div class="system-rating">
                 ★★★★★
             </div>
-        </div>
-
-        <!-- System List -->
-        <div id="systemList">
-            <!-- Feedback submissions will be added here dynamically -->
         </div>
 
         <!-- Button to trigger modal -->
@@ -234,12 +208,12 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal fade" id="feedbackModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="feedbackModalLabel">Feedback Form</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">Feedback Form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="feedbackForm">
@@ -249,8 +223,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="experienceDescription" class="form-label">Description of the experience</label>
-                            <textarea class="form-control" id="experienceDescription" rows="3"
-                                placeholder="Describe your experience"></textarea>
+                            <textarea class="form-control" id="experienceDescription" rows="3" placeholder="Describe your experience"></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="logoUpload" class="form-label">Upload Company Logo</label>
@@ -290,9 +263,9 @@
         function updateStars(rating) {
             stars.forEach(star => {
                 if (star.getAttribute('data-value') <= rating) {
-                    star.textContent = '★';  // Filled star
+                    star.textContent = '★';
                 } else {
-                    star.textContent = '☆';  // Empty star
+                    star.textContent = '☆';
                 }
             });
         }
@@ -330,7 +303,7 @@
             `;
                 systemList.insertAdjacentHTML('beforeend', newSystemCard);
                 document.getElementById('feedbackForm').reset();
-                updateStars(0);  // Reset stars after submission
+                updateStars(0);
                 selectedRating = 0;
             };
             reader.readAsDataURL(logoUpload);
@@ -339,5 +312,4 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

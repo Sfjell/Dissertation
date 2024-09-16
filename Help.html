@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Help Section with Ask a Question</title>
+    <title>Help Section with Ask a Question and Comments</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -48,22 +48,48 @@
             color: white;
         }
 
-        /* Accordion Styling */
-        .accordion-button {
-            background-color: #e0f2e9;
-            border: none;
-            box-shadow: none;
-            outline: none;
+        /* Green Box Styling to Match Index */
+        .green-box {
+            background-color: #f8f9fa;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 5px solid #28a745;
             transition: background-color 0.3s ease;
+            cursor: pointer;
         }
 
-        .accordion-button:hover {
-            background-color: #d4efdf;
+        .green-box:hover {
+            background-color: #e9ecef;
         }
 
-        .accordion-button:not(.collapsed) {
-            background-color: #c5e6d6;
-            color: #000;
+        .question-toggle {
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .question-toggle span {
+            transition: transform 0.3s ease;
+        }
+
+        .question-toggle.collapsed span {
+            transform: rotate(180deg);
+        }
+
+        .collapse {
+            padding: 10px 15px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-toggle span {
+            font-size: 1.2rem;
+            color: #007bff;
         }
 
         /* Ask Question Button */
@@ -79,6 +105,12 @@
 
         .ask-question-btn:hover {
             background-color: #0056b3;
+        }
+
+        /* Form Validation Message */
+        .validation-error {
+            color: red;
+            font-size: 0.9rem;
         }
 
         /* Reply Section Styling */
@@ -102,12 +134,6 @@
         .reply-btn:hover {
             background-color: #5a6268;
         }
-
-        /* Form Validation Message */
-        .validation-error {
-            color: red;
-            font-size: 0.9rem;
-        }
     </style>
 </head>
 
@@ -127,7 +153,7 @@
                         <a class="nav-link" href="IT Systems.html">IT Systems</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Help.html">Help</a>
+                        <a class="nav-link" href="Help.html">Discussion</a>
                     </li>
                 </ul>
                 <!-- Search Bar in Navbar -->
@@ -143,67 +169,66 @@
                         <i class="fas fa-user"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="Profile.html">Profile</a></li>
                         <li><a class="dropdown-item" href="#">Logout</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <!-- Accordion Section for Questions -->
-        <div class="accordion my-4" id="helpAccordion">
-            <!-- Static Questions with Replies -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                        aria-expanded="true" aria-controls="collapseOne">
-                        How do I reset my password?
-                    </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                    data-bs-parent="#helpAccordion">
-                    <div class="accordion-body">
-                        To reset your password, click on the "Forgot Password" link on the login page and follow the instructions.
-                        <div id="replies1">
-                            <h6>Replies:</h6>
-                            <p>Thanks, that worked!</p>
-                        </div>
-                        <div class="reply-box">
-                            <textarea class="form-control reply-input" rows="2" placeholder="Type your reply"></textarea>
-                            <button class="btn reply-btn" data-question-id="1">Submit Reply</button>
-                        </div>
-                    </div>
+        <!-- Questions Section (Styled like Index with Comments) -->
+        <h4 class="mt-4">People have asked these questions</h4>
+        <div id="questions">
+            <!-- Question 1 -->
+            <div class="green-box question-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#answer1">
+                <div>How do I reset my password?</div>
+                <span>▼</span>
+            </div>
+            <div id="answer1" class="collapse">
+                <p>To reset your password, click on the "Forgot Password" link on the login page and follow the instructions.</p>
+                <div id="replies1">
+                    <h6>Replies:</h6>
+                    <p>Thanks, that worked!</p>
+                </div>
+                <div class="reply-box">
+                    <textarea class="form-control reply-input" rows="2" placeholder="Type your reply"></textarea>
+                    <button class="btn reply-btn" data-question-id="1">Submit Reply</button>
                 </div>
             </div>
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Where can I find the project documentation?
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                    data-bs-parent="#helpAccordion">
-                    <div class="accordion-body">
-                        The project documentation is located in the "Documents" section of the dashboard.
-                        <div id="replies2">
-                            <h6>Replies:</h6>
-                            <p>Found it, thank you!</p>
-                        </div>
-                        <div class="reply-box">
-                            <textarea class="form-control reply-input" rows="2" placeholder="Type your reply"></textarea>
-                            <button class="btn reply-btn" data-question-id="2">Submit Reply</button>
-                        </div>
-                    </div>
+            <!-- Question 2 -->
+            <div class="green-box question-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#answer2">
+                <div>Where can I find the project documentation?</div>
+                <span>▼</span>
+            </div>
+            <div id="answer2" class="collapse">
+                <p>The project documentation is located in the "Documents" section of the dashboard.</p>
+                <div id="replies2">
+                    <h6>Replies:</h6>
+                    <p>Found it, thank you!</p>
+                </div>
+                <div class="reply-box">
+                    <textarea class="form-control reply-input" rows="2" placeholder="Type your reply"></textarea>
+                    <button class="btn reply-btn" data-question-id="2">Submit Reply</button>
                 </div>
             </div>
 
-            <!-- Additional Accordion Items omitted for brevity -->
-
-            <!-- Dynamic Questions will be inserted here -->
-            <div id="questionsList"></div>
+            <!-- Question 3 -->
+            <div class="green-box question-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#answer3">
+                <div>How do I contact support?</div>
+                <span>▼</span>
+            </div>
+            <div id="answer3" class="collapse">
+                <p>You can contact support by clicking on the "Help" tab in the top menu and selecting "Support".</p>
+                <div id="replies3">
+                    <h6>Replies:</h6>
+                    <p>Great, got it!</p>
+                </div>
+                <div class="reply-box">
+                    <textarea class="form-control reply-input" rows="2" placeholder="Type your reply"></textarea>
+                    <button class="btn reply-btn" data-question-id="3">Submit Reply</button>
+                </div>
+            </div>
         </div>
 
         <!-- Ask a Question Form -->
@@ -211,39 +236,13 @@
             <h5>Ask a Question</h5>
             <textarea id="questionInput" class="form-control" rows="3" placeholder="Type your question here"></textarea>
             <div class="validation-error" id="questionError"></div>
-            <button class="ask-question-btn mt-3" id="submitQuestionBtn">
-                Submit Question
-            </button>
+            <button class="ask-question-btn mt-3" id="submitQuestionBtn">Submit Question</button>
         </div>
     </div>
 
-    <!-- Template for Reply Section -->
-    <script id="questionTemplate" type="text/template">
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapse{{questionId}}" aria-expanded="false" aria-controls="collapse{{questionId}}">
-                    {{questionText}}
-                </button>
-            </h2>
-            <div id="collapse{{questionId}}" class="accordion-collapse collapse">
-                <div class="accordion-body">
-                    <div id="replies{{questionId}}">
-                        <h6>Replies:</h6>
-                    </div>
-                    <div class="reply-box">
-                        <textarea class="form-control reply-input" rows="2" placeholder="Type your reply"></textarea>
-                        <button class="btn reply-btn" data-question-id="{{questionId}}">Submit Reply</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </script>
-
+    <!-- Bootstrap JS bundle (includes Popper.js) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let questionCount = 6; // Start count from 6 because we already have 5 static questions
-
         // Function to handle submitting a new question
         document.getElementById('submitQuestionBtn').addEventListener('click', function () {
             const questionText = document.getElementById('questionInput').value;
@@ -251,26 +250,31 @@
 
             if (questionText.trim() === '') {
                 questionError.textContent = 'Please enter a question!';
-                return;
             } else {
-                questionError.textContent = ''; // Clear error if valid
+                questionError.textContent = '';
+                // Add the new question dynamically
+                const questionId = Date.now();
+                document.getElementById('questions').insertAdjacentHTML('beforeend', `
+                    <div class="green-box question-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#answer${questionId}">
+                        <div>${questionText}</div>
+                        <span>▼</span>
+                    </div>
+                    <div id="answer${questionId}" class="collapse">
+                        <p>Your question has been submitted.</p>
+                        <div id="replies${questionId}">
+                            <h6>Replies:</h6>
+                        </div>
+                        <div class="reply-box">
+                            <textarea class="form-control reply-input" rows="2" placeholder="Type your reply"></textarea>
+                            <button class="btn reply-btn" data-question-id="${questionId}">Submit Reply</button>
+                        </div>
+                    </div>
+                `);
+                document.getElementById('questionInput').value = '';
             }
-
-            // Generate new question HTML from template
-            const template = document.getElementById('questionTemplate').innerHTML;
-            const newQuestionHTML = template.replace(/{{questionText}}/g, questionText).replace(/{{questionId}}/g, questionCount);
-
-            // Append new question to the question list
-            document.getElementById('questionsList').insertAdjacentHTML('beforeend', newQuestionHTML);
-
-            // Clear the input box
-            document.getElementById('questionInput').value = '';
-
-            // Increment question count for next question ID
-            questionCount++;
         });
 
-        // Function to handle replies
+        // Function to handle submitting replies
         document.addEventListener('click', function (event) {
             if (event.target && event.target.classList.contains('reply-btn')) {
                 const questionId = event.target.getAttribute('data-question-id');
