@@ -240,6 +240,25 @@
         <p>&copy; 2024 Your Company Name. All rights reserved.</p>
     </footer>
 
+    <form id="feedbackForm">
+        <label for="companyName">Company Name:</label>
+        <input type="text" id="companyName" name="companyName" required>
+        
+        <label for="experienceDescription">Experience Description:</label>
+        <textarea id="experienceDescription" name="experienceDescription" required></textarea>
+        
+        <label for="rating">Rating:</label>
+        <input type="number" id="rating" name="rating" min="1" max="5" required>
+        
+        <label for="logoUpload">Upload Company Logo:</label>
+        <input type="file" id="logoUpload" name="logo" required>
+        
+        <button type="submit">Submit Feedback</button>
+      </form>
+      
+      <div id="successMessage" style="display:none;">Feedback submitted successfully!</div>
+      <div id="errorMessage" style="display:none;">Error submitting feedback. Please try again.</div>
+      
     <!-- Bootstrap JS bundle (includes Popper.js) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -252,6 +271,8 @@
             window.location.href = "login.html"; // Make sure login.html exists
         }
     </script>
+
+    
 </body>
 
 </html>
