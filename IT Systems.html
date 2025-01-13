@@ -125,10 +125,14 @@
 <body>
     <div class="container mt-5">
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand" href="index.html">BrandName</a>
+        <nav class="navbar navbar-expand-lg" style="border-radius: 20px;">
+            <a class="navbar-brand" href="index.html"><img src="2.png" alt="Brand Logo" style="height: 40px; width: auto;"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="IT Systems.html">IT Systems</a>
                     </li>
@@ -136,20 +140,14 @@
                         <a class="nav-link" href="Help.html">Discussion</a>
                     </li>
                 </ul>
-                <!-- Search Bar in Navbar -->
-                <form class="d-flex">
-                    <input type="text" class="form-control me-2" placeholder="Search systems">
-                    <button class="btn btn-light" type="button">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
                 <div class="dropdown">
-                    <button class="btn btn-outline-success dropdown-toggle" type="button">
+                    <button class="btn btn-outline-success dropdown-toggle" type="button" id="userDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-user"></i>
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="Profile.html">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="logoutUser()">Logout</a></li>
                     </ul>
                 </div>
             </div>
