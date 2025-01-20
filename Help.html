@@ -9,43 +9,45 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body { background-color: #f4f7fc; font-family: 'Arial', sans-serif; }
-        .navbar { background-color: #fff; border-bottom: 1px solid #e0e0e0; padding: 1rem; }
-        .navbar-brand { font-size: 1.7rem; font-weight: bold; color: #333; }
-        .nav-link { color: #555; margin-right: 20px; }
+        .navbar { background-color: #fff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .navbar-brand { font-size: 1.8rem; font-weight: bold; color: #333; }
+        .nav-link { color: #555; font-size: 1.1rem; transition: color 0.3s ease; }
         .nav-link:hover { color: #007bff; }
-        .green-box { background-color: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 5px solid #28a745; cursor: pointer; margin-bottom: 10px; }
+        .green-box { background-color: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 5px solid #28a745; cursor: pointer; margin-bottom: 10px; transition: background 0.3s ease; }
         .green-box:hover { background-color: #e9ecef; }
         .question-toggle { font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
         .collapse { padding: 10px 15px; background-color: #f1f1f1; border-radius: 5px; margin-bottom: 10px; }
         .ask-question-btn { background-color: #007bff; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; }
         .ask-question-btn:hover { background-color: #0056b3; }
-        .validation-error { color: red; font-size: 0.9rem; }
-        .reply-box { margin-top: 10px; }
-        .reply-input { margin-bottom: 10px; }
-        .reply-btn { background-color: #6c757d; color: white; border: none; padding: 5px 10px; border-radius: 5px; }
-        .reply-btn:hover { background-color: #5a6268; }
     </style>
 </head>
 
 <body>
-
-    <div class="container my-4">
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand" href="index.html"><img src="2.png" alt="Brand Logo" style="height: 40px;"></a>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="2.png" alt="Brand Logo" style="height: 40px;"> SysReviewSphere
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="IT Systems.html">IT Systems</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="Help.html">Discussion</a></li>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="IT Systems.html">IT Systems</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="Help.html">Discussion</a>
+                    </li>
                 </ul>
             </div>
-        </nav>
+        </div>
+    </nav>
 
-        <!-- Questions Section -->
+    <div class="container mt-5 pt-5">
         <h4 class="mt-4">People have asked these questions</h4>
         <div id="questions"></div>
 
-        <!-- Ask a Question Form -->
         <div class="my-4">
             <h5>Ask a Question</h5>
             <textarea id="questionInput" class="form-control" rows="3" placeholder="Type your question here"></textarea>
@@ -54,43 +56,31 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
-        // 🔹 **Hent spørsmål fra server**
         async function fetchQuestions() {
             try {
                 const response = await fetch("http://localhost:5000/get-questions");
                 const questions = await response.json();
-                const questionsList = document.getElementById("questions");
-                questionsList.innerHTML = "";
-
-                questions.forEach(question => {
-                    const questionId = question._id;
-                    let answersHTML = question.answers.map(answer => `<p>${answer}</p>`).join('');
-
-                    questionsList.innerHTML += `
-                        <div class="green-box question-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#answer${questionId}">
-                            <div>${question.questionText}</div>
-                            <span>▼</span>
+                document.getElementById("questions").innerHTML = questions.map(question => `
+                    <div class="green-box question-toggle" data-bs-toggle="collapse" data-bs-target="#answer${question._id}">
+                        <div>${question.questionText}</div>
+                        <span>▼</span>
+                    </div>
+                    <div id="answer${question._id}" class="collapse px-3">
+                        <h6>Replies:</h6>
+                        <div id="replies${question._id}">${question.answers.map(ans => `<p>${ans}</p>`).join("")}</div>
+                        <div class="reply-box">
+                            <textarea class="form-control reply-input" rows="2" placeholder="Type your reply"></textarea>
+                            <button class="btn reply-btn" data-question-id="${question._id}">Submit Reply</button>
                         </div>
-                        <div id="answer${questionId}" class="collapse">
-                            <h6>Replies:</h6>
-                            <div id="replies${questionId}">${answersHTML}</div>
-                            <div class="reply-box">
-                                <textarea class="form-control reply-input" rows="2" placeholder="Type your reply"></textarea>
-                                <button class="btn reply-btn" data-question-id="${questionId}">Submit Reply</button>
-                            </div>
-                        </div>
-                    `;
-                });
+                    </div>
+                `).join("");
             } catch (error) {
-                console.error("Feil ved henting av spørsmål:", error);
+                console.error("Error fetching questions:", error);
             }
         }
 
-        // 🔹 **Send spørsmål til server**
         document.getElementById("submitQuestionBtn").addEventListener("click", async function () {
             const questionText = document.getElementById("questionInput").value;
             const questionError = document.getElementById("questionError");
@@ -113,46 +103,15 @@
                     document.getElementById("questionInput").value = "";
                     fetchQuestions();
                 } else {
-                    console.error("Kunne ikke lagre spørsmål");
+                    console.error("Failed to save question");
                 }
             } catch (error) {
-                console.error("Feil ved innsending:", error);
+                console.error("Error submitting question:", error);
             }
         });
 
-        // 🔹 **Send svar til server**
-        document.addEventListener('click', async function (event) {
-            if (event.target && event.target.classList.contains('reply-btn')) {
-                const questionId = event.target.getAttribute('data-question-id');
-                const replyInput = event.target.previousElementSibling.value;
-
-                if (replyInput.trim() === '') {
-                    alert('Please enter a reply!');
-                    return;
-                }
-
-                try {
-                    const response = await fetch(`http://localhost:5000/save-answer/${questionId}`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ answerText: replyInput })
-                    });
-
-                    if (response.ok) {
-                        fetchQuestions();
-                    } else {
-                        console.error("Kunne ikke lagre svar");
-                    }
-                } catch (error) {
-                    console.error("Feil ved innsending:", error);
-                }
-            }
-        });
-
-        // 🔹 **Last inn spørsmål når siden åpnes**
         fetchQuestions();
     </script>
-
 </body>
 
 </html>

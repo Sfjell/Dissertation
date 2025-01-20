@@ -1,149 +1,149 @@
-require("dotenv").config();
-const express = require("express");
-const { MongoClient, ObjectId } = require("mongodb");
-const cors = require("cors");
-const multer = require("multer");
-const path = require("path");
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const multer = require('multer');
+const mongoose = require('mongoose');
+const path = require('path');
+const fs = require('fs');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
+// Setup Express App
 const app = express();
-const port = process.env.PORT || 5000;
-const mongoURI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017";
-
-const client = new MongoClient(mongoURI);
-
+app.use(bodyParser.json());
 app.use(cors());
-app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// 📌 **Koble til MongoDB**
-async function connectDB() {
-    try {
-        await client.connect();
-        console.log("✅ MongoDB tilkoblet!");
-    } catch (err) {
-        console.error("❌ Feil ved tilkobling til MongoDB:", err);
-        process.exit(1);
-    }
+// Ensure the 'uploads' directory exists
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
 }
-connectDB();
 
-// 📌 **Definer databasen og samlinger**
-const db = client.db("my_diss");
-const usersCollection = db.collection("users");
-const feedbackCollection = db.collection("feedbacks");
-const questionsCollection = db.collection("questions"); // 📌 **Ny samling for spørsmål**
-
-// 📌 **Konfigurer multer for bildeopplasting**
+// Multer for File Uploads
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, "uploads/"),
-    filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname),
+  destination: uploadDir,
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
 });
 const upload = multer({ storage });
 
-// 📌 **Lagre brukerdata**
-app.post("/save-user", async (req, res) => {
-    try {
-        const userData = req.body;
-        const result = await usersCollection.insertOne(userData);
-        res.status(201).json({ message: "Bruker lagret!", id: result.insertedId });
-    } catch (err) {
-        console.error("❌ Feil ved lagring av bruker:", err);
-        res.status(500).json({ error: "Kunne ikke lagre bruker" });
-    }
+// MongoDB Connection
+mongoose
+  .connect('mongodb://localhost:27017/my_diss', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('✅ Connected to MongoDB'))
+  .catch((err) => console.error('❌ MongoDB connection error:', err));
+
+// User Schema and Model
+const userSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
 });
 
-// 📌 **Hent alle brukere**
-app.get("/get-users", async (req, res) => {
-    try {
-        const users = await usersCollection.find().toArray();
-        res.json(users);
-    } catch (err) {
-        console.error("❌ Feil ved henting av brukere:", err);
-        res.status(500).json({ error: "Kunne ikke hente brukere" });
-    }
+const User = mongoose.model('User', userSchema);
+
+// Feedback Schema and Model
+const feedbackSchema = new mongoose.Schema({
+  companyName: { type: String, required: true },
+  experienceDescription: { type: String, required: true },
+  rating: { type: Number, required: true },
+  logoPath: { type: String },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 });
 
-// 📌 **Lagre tilbakemelding med bilde**
-app.post("/save-feedback", upload.single("logo"), async (req, res) => {
-    try {
-        const { companyName, experienceDescription, rating } = req.body;
-        const logoPath = req.file ? `/uploads/${req.file.filename}` : null;
+const Feedback = mongoose.model('Feedback', feedbackSchema);
 
-        const feedback = {
-            companyName,
-            experienceDescription,
-            rating: parseInt(rating),
-            logoPath,
-            createdAt: new Date(),
-        };
+// Middleware to verify JWT token
+const authenticateToken = (req, res, next) => {
+  const token = req.headers['authorization'];
+  if (!token) return res.status(403).json({ error: 'Access denied. No token provided.' });
 
-        const result = await feedbackCollection.insertOne(feedback);
-        res.status(201).json({ message: "Tilbakemelding lagret!", id: result.insertedId });
-    } catch (err) {
-        console.error("❌ Feil ved lagring av tilbakemelding:", err);
-        res.status(500).json({ error: "Kunne ikke lagre tilbakemelding" });
-    }
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.status(401).json({ error: 'Invalid token' });
+    req.user = user;
+    next();
+  });
+};
+
+// User Registration
+app.post('/register', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ error: 'Email and password are required.' });
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) return res.status(400).json({ error: 'User already exists.' });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ email, password: hashedPassword });
+    await user.save();
+
+    res.status(201).json({ message: 'User registered successfully.' });
+  } catch (err) {
+    console.error('❌ Registration error:', err);
+    res.status(500).json({ error: 'Server error during registration.' });
+  }
 });
 
-// 📌 **Hent alle tilbakemeldinger**
-app.get("/get-feedbacks", async (req, res) => {
-    try {
-        const feedbacks = await feedbackCollection.find().toArray();
-        res.json(feedbacks);
-    } catch (err) {
-        console.error("❌ Feil ved henting av tilbakemeldinger:", err);
-        res.status(500).json({ error: "Kunne ikke hente tilbakemeldinger" });
-    }
+// User Login
+app.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ error: 'Email and password are required.' });
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ error: 'Invalid credentials.' });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ error: 'Invalid credentials.' });
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    res.status(200).json({ message: 'Login successful.', token, userId: user._id });
+  } catch (err) {
+    console.error('❌ Login error:', err);
+    res.status(500).json({ error: 'Server error during login.' });
+  }
 });
 
-// 📌 **Lagre spørsmål**
-app.post("/save-question", async (req, res) => {
-    try {
-        const { questionText } = req.body;
-        const newQuestion = { questionText, answers: [], createdAt: new Date() };
+// API Endpoint to Handle Feedback Submission (Protected Route)
+app.post('/feedback', authenticateToken, upload.single('logo'), async (req, res) => {
+  try {
+    const { companyName, experienceDescription } = req.body;
+    const rating = parseInt(req.body.rating, 10);
+    const logoPath = req.file ? `/uploads/${req.file.filename}` : null;
 
-        const result = await questionsCollection.insertOne(newQuestion);
-        res.status(201).json({ message: "Spørsmål lagret!", id: result.insertedId });
-    } catch (err) {
-        console.error("❌ Feil ved lagring av spørsmål:", err);
-        res.status(500).json({ error: "Kunne ikke lagre spørsmål" });
+    if (!companyName || !experienceDescription || !rating) {
+      return res.status(400).json({ message: 'All fields are required.' });
     }
+
+    const feedback = new Feedback({ companyName, experienceDescription, rating, logoPath, userId: req.user.userId });
+    await feedback.save();
+
+    res.status(201).json({ message: 'Feedback submitted successfully!', feedback });
+  } catch (err) {
+    console.error('❌ Error saving feedback:', err);
+    res.status(500).json({ message: 'Error saving feedback.' });
+  }
 });
 
-// 📌 **Hent alle spørsmål**
-app.get("/get-questions", async (req, res) => {
-    try {
-        const questions = await questionsCollection.find().toArray();
-        res.json(questions);
-    } catch (err) {
-        console.error("❌ Feil ved henting av spørsmål:", err);
-        res.status(500).json({ error: "Kunne ikke hente spørsmål" });
-    }
+// API Endpoint to Retrieve Feedback (Protected Route)
+app.get('/feedback', authenticateToken, async (req, res) => {
+  try {
+    const feedbacks = await Feedback.find({ userId: req.user.userId });
+    res.status(200).json(feedbacks);
+  } catch (err) {
+    console.error('❌ Error retrieving feedback:', err);
+    res.status(500).json({ message: 'Error retrieving feedback.' });
+  }
 });
 
-// 📌 **Lagre svar på spørsmål**
-app.post("/save-answer/:questionId", async (req, res) => {
-    try {
-        const questionId = req.params.questionId;
-        const { answerText } = req.body;
+// Serve uploaded files statically
+app.use('/uploads', express.static(uploadDir));
 
-        const result = await questionsCollection.updateOne(
-            { _id: new ObjectId(questionId) },
-            { $push: { answers: answerText } }
-        );
-
-        if (result.modifiedCount === 1) {
-            res.status(201).json({ message: "Svar lagret!" });
-        } else {
-            res.status(400).json({ error: "Kunne ikke lagre svar" });
-        }
-    } catch (err) {
-        console.error("❌ Feil ved lagring av svar:", err);
-        res.status(500).json({ error: "Kunne ikke lagre svar" });
-    }
-});
-
-// 📌 **Start server**
-app.listen(port, () => {
-    console.log(`🚀 Server kjører på http://localhost:${port}`);
+// Start the Server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

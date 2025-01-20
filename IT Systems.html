@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body { background-color: #f4f7fc; font-family: 'Arial', sans-serif; }
-        .navbar { background-color: #fff; border-radius: 12px; border-bottom: 1px solid #e0e0e0; padding: 1.5rem; }
-        .navbar-brand { font-size: 2rem; font-weight: bold; color: #333; }
-        .nav-link { color: #555; margin-right: 20px; font-size: 1.1rem; }
+        .navbar { background-color: #fff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .navbar-brand { font-size: 1.8rem; font-weight: bold; color: #333; }
+        .nav-link { color: #555; font-size: 1.1rem; transition: color 0.3s ease; }
         .nav-link:hover { color: #007bff; }
         .system-card { background-color: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; }
         .system-logo img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; }
@@ -21,11 +21,28 @@
 </head>
 
 <body>
-    <div class="container mt-5">
-        <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand" href="index.html"><img src="2.png" alt="Brand Logo" style="height: 40px;"></a>
-        </nav>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="2.png" alt="Brand Logo" style="height: 40px;"> SysReviewSphere
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="IT Systems.html">IT Systems</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Help.html">Discussion</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
+    <div class="container mt-5 pt-5">
         <h2 class="text-center my-4">IT Systems Feedback</h2>
 
         <div id="feedbackList"></div>
@@ -75,69 +92,54 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // 🔹 **Hent tilbakemeldinger fra server**
         async function fetchFeedback() {
             try {
-                const response = await fetch("http://localhost:5000/get-feedbacks"); // ✅ Riktig endepunkt
+                const response = await fetch("http://localhost:5000/my_diss");
                 const feedbacks = await response.json();
-                const feedbackList = document.getElementById("feedbackList");
-                feedbackList.innerHTML = "";
-
-                feedbacks.forEach(feedback => {
-                    feedbackList.innerHTML += `
-                        <div class="system-card">
-                            <div class="d-flex align-items-center">
-                                <div class="system-logo">
-                                   <img src="http://localhost:5000${feedback.logoPath}" alt="Logo">
-                                </div>
-                                <div class="system-info">
-                                    <h5>${feedback.companyName}</h5>
-                                    <p>${feedback.experienceDescription}</p>
-                                </div>
+                document.getElementById("feedbackList").innerHTML = feedbacks.map(feedback => `
+                    <div class="system-card">
+                        <div class="d-flex align-items-center">
+                            <div class="system-logo">
+                                <img src="http://localhost:5000${feedback.logoPath}" alt="Logo">
                             </div>
-                            <div class="system-rating">
-                                ${'★'.repeat(feedback.rating)}${'☆'.repeat(5 - feedback.rating)}
+                            <div class="system-info ms-3">
+                                <h5>${feedback.companyName}</h5>
+                                <p>${feedback.experienceDescription}</p>
                             </div>
-                        </div>`;
-                });
+                        </div>
+                        <div class="system-rating">
+                            ${'★'.repeat(feedback.rating)}${'☆'.repeat(5 - feedback.rating)}
+                        </div>
+                    </div>
+                `).join("");
             } catch (error) {
-                console.error("Feil ved henting av tilbakemeldinger:", error);
+                console.error("Error fetching feedback:", error);
             }
         }
 
-        // 🔹 **Send tilbakemelding til server**
         document.getElementById("feedbackForm").addEventListener("submit", async function (event) {
             event.preventDefault();
-
-            const formData = new FormData();
-            formData.append("companyName", document.getElementById("companyName").value);
-            formData.append("experienceDescription", document.getElementById("experienceDescription").value);
-            formData.append("rating", document.getElementById("rating").value);
-            formData.append("logo", document.getElementById("logoUpload").files[0]);
-
+            const formData = new FormData(event.target);
             try {
-                const response = await fetch("http://localhost:5000/save-feedback", { // ✅ Riktig endepunkt
+                const response = await fetch("http://localhost:5000/my_diss", {
                     method: "POST",
                     body: formData
                 });
-
                 if (response.ok) {
                     document.getElementById("successMessage").style.display = "block";
-                    document.getElementById("feedbackForm").reset();
+                    event.target.reset();
                     fetchFeedback();
                 } else {
-                    console.error("Kunne ikke lagre tilbakemelding");
+                    console.error("Failed to save feedback");
                 }
             } catch (error) {
-                console.error("Feil ved innsending:", error);
+                console.error("Error submitting feedback:", error);
             }
         });
 
-        // 🔹 **Last inn tilbakemeldinger når siden åpnes**
         fetchFeedback();
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
