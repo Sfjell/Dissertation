@@ -7,342 +7,137 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            background-color: #f4f7fc;
-            font-family: 'Arial', sans-serif;
-        }
-
-        /* Navbar Styling */
-        .navbar {
-            background-color: #fff;
-            border-radius: 12px;
-            border-bottom: 1px solid #e0e0e0;
-            padding: 1.5rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-brand {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .nav-link {
-            color: #555;
-            margin-right: 20px;
-            font-size: 1.1rem;
-            transition: color 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: #007bff;
-        }
-
-        .btn-outline-success {
-            border-radius: 50%;
-            padding: 8px 10px;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-outline-success:hover {
-            background-color: #28a745;
-            color: white;
-        }
-
-        /* System Card Styling */
-        .system-card {
-            background-color: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-radius: 10px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .system-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .system-logo img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .system-info h5 {
-            font-size: 1.4rem;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .system-info p {
-            font-size: 1rem;
-            color: #555;
-        }
-
-        .system-rating span {
-            font-size: 2rem;
-            cursor: pointer;
-            color: gray;
-        }
-
-        .system-rating span:hover,
-        .system-rating span.active {
-            color: gold;
-        }
-
-        /* Feedback Button */
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            border-radius: 30px;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
-
-        /* Modal Form */
-        .modal-header {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .form-label {
-            font-weight: bold;
-        }
+        body { background-color: #f4f7fc; font-family: 'Arial', sans-serif; }
+        .navbar { background-color: #fff; border-radius: 12px; border-bottom: 1px solid #e0e0e0; padding: 1.5rem; }
+        .navbar-brand { font-size: 2rem; font-weight: bold; color: #333; }
+        .nav-link { color: #555; margin-right: 20px; font-size: 1.1rem; }
+        .nav-link:hover { color: #007bff; }
+        .system-card { background-color: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; }
+        .system-logo img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; }
+        .system-info h5 { font-size: 1.4rem; font-weight: bold; }
+        .btn-primary { background-color: #007bff; border-color: #007bff; padding: 10px 20px; font-size: 1.2rem; }
+        .modal-header { background-color: #007bff; color: white; }
     </style>
 </head>
 
 <body>
     <div class="container mt-5">
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg" style="border-radius: 20px;">
-            <a class="navbar-brand" href="index.html"><img src="2.png" alt="Brand Logo" style="height: 40px; width: auto;"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="IT Systems.html">IT Systems</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Help.html">Discussion</a>
-                    </li>
-                </ul>
-                <div class="dropdown">
-                    <button class="btn btn-outline-success dropdown-toggle" type="button" id="userDropdown"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user"></i>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="Profile.html">Profile</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="logoutUser()">Logout</a></li>
-                    </ul>
-                </div>
-            </div>
+        <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="index.html"><img src="2.png" alt="Brand Logo" style="height: 40px;"></a>
         </nav>
 
-        <!-- System Cards -->
-        <div class="system-card">
-            <div class="d-flex align-items-center">
-                <div class="system-logo">
-                    <img src="https://via.placeholder.com/100" alt="Logo">
-                </div>
-                <div class="system-info">
-                    <h5>Acme Corporation</h5>
-                    <p>The system has improved our workflow, but we experienced occasional glitches. Support could be faster.</p>
-                </div>
-            </div>
-            <div class="system-rating">
-                ★★★☆☆
-            </div>
-        </div>
+        <h2 class="text-center my-4">IT Systems Feedback</h2>
 
-        <div class="system-card">
-            <div class="d-flex align-items-center">
-                <div class="system-logo">
-                    <img src="https://via.placeholder.com/100" alt="Logo">
-                </div>
-                <div class="system-info">
-                    <h5>Tech Innovators</h5>
-                    <p>The interface is intuitive, but lacks customization for larger teams.</p>
-                </div>
-            </div>
-            <div class="system-rating">
-                ★★☆☆☆
-            </div>
-        </div>
+        <div id="feedbackList"></div>
 
-        <div class="system-card">
-            <div class="d-flex align-items-center">
-                <div class="system-logo">
-                    <img src="https://via.placeholder.com/100" alt="Logo">
-                </div>
-                <div class="system-info">
-                    <h5>Global Solutions</h5>
-                    <p>Excellent customer service and integrates well with our tools.</p>
-                </div>
-            </div>
-            <div class="system-rating">
-                ★★★★★
-            </div>
-        </div>
-
-        <!-- Button to trigger modal -->
         <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#feedbackModal">
-            Open Feedback Form
+            Submit Feedback
         </button>
     </div>
 
-    <!-- Modal -->
+    <!-- Feedback Modal -->
     <div class="modal fade" id="feedbackModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Feedback Form</h5>
+                    <h5 class="modal-title">Submit Feedback</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="feedbackForm">
                         <div class="mb-3">
                             <label for="companyName" class="form-label">Company Name</label>
-                            <input type="text" class="form-control" id="companyName" placeholder="Enter company name">
+                            <input type="text" class="form-control" id="companyName" required>
                         </div>
                         <div class="mb-3">
-                            <label for="experienceDescription" class="form-label">Description of the experience</label>
-                            <textarea class="form-control" id="experienceDescription" rows="3" placeholder="Describe your experience"></textarea>
+                            <label for="experienceDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="experienceDescription" rows="3" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="logoUpload" class="form-label">Upload Company Logo</label>
+                            <label for="logoUpload" class="form-label">Upload Logo</label>
                             <input type="file" class="form-control" id="logoUpload">
                         </div>
                         <div class="mb-3">
                             <label for="rating" class="form-label">Rating</label>
-                            <div id="rating" class="system-rating">
-                                <span data-value="1">☆</span>
-                                <span data-value="2">☆</span>
-                                <span data-value="3">☆</span>
-                                <span data-value="4">☆</span>
-                                <span data-value="5">☆</span>
-                            </div>
+                            <select class="form-select" id="rating" required>
+                                <option value="1">★☆☆☆☆</option>
+                                <option value="2">★★☆☆☆</option>
+                                <option value="3">★★★☆☆</option>
+                                <option value="4">★★★★☆</option>
+                                <option value="5">★★★★★</option>
+                            </select>
                         </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="submitFeedback">Submit</button>
+                    <div id="successMessage" class="alert alert-success mt-3" style="display: none;">Feedback submitted!</div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <footer class="footer">
-        <p>&copy; 2025 SysReviewSphere. All rights reserved.</p>
-    </footer>
 
     <script>
-        // Handle star rating selection
-        let selectedRating = 0;
-        const stars = document.querySelectorAll('.system-rating span');
+        // 🔹 **Hent tilbakemeldinger fra server**
+        async function fetchFeedback() {
+            try {
+                const response = await fetch("http://localhost:5000/get-feedbacks"); // ✅ Riktig endepunkt
+                const feedbacks = await response.json();
+                const feedbackList = document.getElementById("feedbackList");
+                feedbackList.innerHTML = "";
 
-        stars.forEach(star => {
-            star.addEventListener('click', function () {
-                selectedRating = this.getAttribute('data-value');
-                updateStars(selectedRating);
-            });
-        });
-
-        function updateStars(rating) {
-            stars.forEach(star => {
-                if (star.getAttribute('data-value') <= rating) {
-                    star.textContent = '★';
-                } else {
-                    star.textContent = '☆';
-                }
-            });
+                feedbacks.forEach(feedback => {
+                    feedbackList.innerHTML += `
+                        <div class="system-card">
+                            <div class="d-flex align-items-center">
+                                <div class="system-logo">
+                                   <img src="http://localhost:5000${feedback.logoPath}" alt="Logo">
+                                </div>
+                                <div class="system-info">
+                                    <h5>${feedback.companyName}</h5>
+                                    <p>${feedback.experienceDescription}</p>
+                                </div>
+                            </div>
+                            <div class="system-rating">
+                                ${'★'.repeat(feedback.rating)}${'☆'.repeat(5 - feedback.rating)}
+                            </div>
+                        </div>`;
+                });
+            } catch (error) {
+                console.error("Feil ved henting av tilbakemeldinger:", error);
+            }
         }
 
-        // Handle form submission
-        document.getElementById('submitFeedback').addEventListener('click', function (e) {
-            e.preventDefault();
-            const companyName = document.getElementById('companyName').value;
-            const experienceDescription = document.getElementById('experienceDescription').value;
-            const logoUpload = document.getElementById('logoUpload').files[0];
+        // 🔹 **Send tilbakemelding til server**
+        document.getElementById("feedbackForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
 
-            if (!companyName || !experienceDescription || !selectedRating || !logoUpload) {
-                alert('Please complete all fields and select a rating.');
-                return;
+            const formData = new FormData();
+            formData.append("companyName", document.getElementById("companyName").value);
+            formData.append("experienceDescription", document.getElementById("experienceDescription").value);
+            formData.append("rating", document.getElementById("rating").value);
+            formData.append("logo", document.getElementById("logoUpload").files[0]);
+
+            try {
+                const response = await fetch("http://localhost:5000/save-feedback", { // ✅ Riktig endepunkt
+                    method: "POST",
+                    body: formData
+                });
+
+                if (response.ok) {
+                    document.getElementById("successMessage").style.display = "block";
+                    document.getElementById("feedbackForm").reset();
+                    fetchFeedback();
+                } else {
+                    console.error("Kunne ikke lagre tilbakemelding");
+                }
+            } catch (error) {
+                console.error("Feil ved innsending:", error);
             }
-
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const systemList = document.getElementById('systemList');
-                const newSystemCard = `
-                <div class="system-card">
-                    <div class="d-flex align-items-center">
-                        <div class="system-logo">
-                            <img src="${e.target.result}" alt="Logo">
-                        </div>
-                        <div class="system-info">
-                            <h5>${companyName}</h5>
-                            <p>${experienceDescription}</p>
-                        </div>
-                    </div>
-                    <div class="system-rating">
-                        ${'★'.repeat(selectedRating)}${'☆'.repeat(5 - selectedRating)}
-                    </div>
-                </div>
-            `;
-                systemList.insertAdjacentHTML('beforeend', newSystemCard);
-                document.getElementById('feedbackForm').reset();
-                updateStars(0);
-                selectedRating = 0;
-            };
-            reader.readAsDataURL(logoUpload);
         });
-  const form = document.getElementById('feedbackForm');
 
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    const formData = new FormData(form);
-
-    try {
-      const response = await fetch('http://localhost:5000/feedback', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (response.ok) {
-        document.getElementById('successMessage').style.display = 'block';
-        form.reset();
-      } else {
-        document.getElementById('errorMessage').style.display = 'block';
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      document.getElementById('errorMessage').style.display = 'block';
-    }
-  });
-
-
+        // 🔹 **Last inn tilbakemeldinger når siden åpnes**
+        fetchFeedback();
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    
-      
-
-      
 </body>
 </html>
