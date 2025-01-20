@@ -1,64 +1,50 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const multer = require('multer');
-const mongoose = require('mongoose');
+require("dotenv").config();
+const express = require("express");
+const { MongoClient } = require("mongodb");
+const cors = require("cors");
 
-// Setup Express App
 const app = express();
-app.use(bodyParser.json());
+const port = process.env.PORT || 5000;
+const mongoURI = "mongodb://127.0.0.1:27017";
+const client = new MongoClient(mongoURI);
+
 app.use(cors());
+app.use(express.json());
 
-// Multer for File Uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Ensure this directory exists
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  },
-});
-const upload = multer({ storage });
+async function connectDB() {
+    try {
+        await client.connect();
+        console.log("✅ MongoDB tilkoblet!");
+    } catch (err) {
+        console.error("Feil ved tilkobling til MongoDB:", err);
+    }
+}
+connectDB();
 
-// MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/feedback_system', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const db = client.db("my_diss");
+const usersCollection = db.collection("users");
 
-// MongoDB Schema and Model
-const feedbackSchema = new mongoose.Schema({
-  companyName: String,
-  experienceDescription: String,
-  rating: Number,
-  logoPath: String,
-});
-
-const Feedback = mongoose.model('Feedback', feedbackSchema);
-
-// API Endpoint to Handle Feedback Submission
-app.post('/feedback', upload.single('logo'), async (req, res) => {
-  try {
-    const { companyName, experienceDescription, rating } = req.body;
-    const logoPath = req.file ? req.file.path : null;
-
-    const feedback = new Feedback({
-      companyName,
-      experienceDescription,
-      rating,
-      logoPath,
-    });
-
-    await feedback.save();
-    res.status(201).json({ message: 'Feedback submitted successfully!' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Error saving feedback.' });
-  }
+// 📌 **Lagre brukerdata**
+app.post("/save-user", async (req, res) => {
+    try {
+        const userData = req.body;
+        const result = await usersCollection.insertOne(userData);
+        res.status(201).json({ message: "Bruker lagret!", id: result.insertedId });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
-// Start the Server
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+// 📌 **Hent alle brukere**
+app.get("/get-users", async (req, res) => {
+    try {
+        const users = await usersCollection.find().toArray();
+        res.json(users);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.listen(port, () => {
+    console.log(`🚀 Server kjører på http://localhost:${port}`);
 });
