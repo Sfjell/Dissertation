@@ -94,52 +94,49 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        async function fetchFeedback() {
-            try {
-                const response = await fetch("http://localhost:5000/my_diss");
-                const feedbacks = await response.json();
-                document.getElementById("feedbackList").innerHTML = feedbacks.map(feedback => `
-                    <div class="system-card">
-                        <div class="d-flex align-items-center">
-                            <div class="system-logo">
-                                <img src="http://localhost:5000${feedback.logoPath}" alt="Logo">
-                            </div>
-                            <div class="system-info ms-3">
-                                <h5>${feedback.companyName}</h5>
-                                <p>${feedback.experienceDescription}</p>
-                            </div>
-                        </div>
-                        <div class="system-rating">
-                            ${'★'.repeat(feedback.rating)}${'☆'.repeat(5 - feedback.rating)}
-                        </div>
-                    </div>
-                `).join("");
-            } catch (error) {
-                console.error("Error fetching feedback:", error);
-            }
+async function fetchFeedback() {
+    try {
+        const response = await fetch("http://localhost:5000/my_diss");
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        document.getElementById("feedbackForm").addEventListener("submit", async function (event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            try {
-                const response = await fetch("http://localhost:5000/my_diss", {
-                    method: "POST",
-                    body: formData
-                });
-                if (response.ok) {
-                    document.getElementById("successMessage").style.display = "block";
-                    event.target.reset();
-                    fetchFeedback();
-                } else {
-                    console.error("Failed to save feedback");
-                }
-            } catch (error) {
-                console.error("Error submitting feedback:", error);
-            }
-        });
+        const feedbacks = await response.json();
+        console.log("🔍 Number of feedbacks received:", feedbacks.length);  // Debugging log
 
-        fetchFeedback();
-    </script>
+        if (feedbacks.length === 0) {
+            document.getElementById("feedbackList").innerHTML = "<p class='text-center'>No feedback available.</p>";
+            return;
+        }
+
+        document.getElementById("feedbackList").innerHTML = feedbacks.map(feedback => `
+            <div class="system-card">
+                <div class="d-flex align-items-center">
+                    <div class="system-logo">
+                        <img src="${feedback.logoPath ? `http://localhost:5000${feedback.logoPath}` : 'https://via.placeholder.com/100'}" alt="Logo">
+                    </div>
+                    <div class="system-info ms-3">
+                        <h5>${feedback.companyName}</h5>
+                        <p>${feedback.experienceDescription}</p>
+                    </div>
+                </div>
+                <div class="system-rating">
+                    ${'★'.repeat(feedback.rating)}${'☆'.repeat(5 - feedback.rating)}
+                </div>
+            </div>
+        `).join("");
+
+    } catch (error) {
+        console.error("❌ Error fetching feedback:", error);
+    }
+}
+
+
+// 🚀 Kjør funksjonen når siden lastes
+fetchFeedback();
+
+
+
+</script>
 </body>
 </html>

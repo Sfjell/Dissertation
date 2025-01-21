@@ -59,58 +59,67 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         async function fetchQuestions() {
-            try {
-                const response = await fetch("http://localhost:5000/get-questions");
-                const questions = await response.json();
-                document.getElementById("questions").innerHTML = questions.map(question => `
-                    <div class="green-box question-toggle" data-bs-toggle="collapse" data-bs-target="#answer${question._id}">
-                        <div>${question.questionText}</div>
-                        <span>▼</span>
-                    </div>
-                    <div id="answer${question._id}" class="collapse px-3">
-                        <h6>Replies:</h6>
-                        <div id="replies${question._id}">${question.answers.map(ans => `<p>${ans}</p>`).join("")}</div>
-                        <div class="reply-box">
-                            <textarea class="form-control reply-input" rows="2" placeholder="Type your reply"></textarea>
-                            <button class="btn reply-btn" data-question-id="${question._id}">Submit Reply</button>
-                        </div>
-                    </div>
-                `).join("");
-            } catch (error) {
-                console.error("Error fetching questions:", error);
-            }
-        }
+    try {
+        const response = await fetch("http://localhost:5000/my_diss/questions");
+        if (!response.ok) throw new Error(`Failed to fetch questions. Status: ${response.status}`);
 
-        document.getElementById("submitQuestionBtn").addEventListener("click", async function () {
-            const questionText = document.getElementById("questionInput").value;
-            const questionError = document.getElementById("questionError");
+        const questions = await response.json();
 
-            if (questionText.trim() === '') {
-                questionError.textContent = 'Please enter a question!';
-                return;
-            }
+        document.getElementById("questions").innerHTML = questions.map(question => `
+            <div class="green-box question-toggle" data-bs-toggle="collapse" data-bs-target="#answer${question._id}">
+                <div>${question.questionText} (Asked by: ${question.userEmail})</div>
+                <span>▼</span>
+            </div>
+            <div id="answer${question._id}" class="collapse px-3">
+                <h6>Replies:</h6>
+                <div id="replies${question._id}">${(question.answers || []).map(ans => `<p>${ans.text}</p>`).join("")}</div>
+                <div class="reply-box">
+                    <textarea class="form-control reply-input" rows="2" placeholder="Type your reply"></textarea>
+                    <button class="btn reply-btn" data-question-id="${question._id}">Submit Reply</button>
+                </div>
+            </div>
+        `).join("");
+    } catch (error) {
+        console.error("❌ Error fetching questions:", error);
+    }
+}
 
-            questionError.textContent = '';
+document.getElementById("submitQuestionBtn").addEventListener("click", async function () {
+    const questionText = document.getElementById("questionInput").value;
+    const questionError = document.getElementById("questionError");
 
-            try {
-                const response = await fetch("http://localhost:5000/save-question", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ questionText })
-                });
+    if (questionText.trim() === '') {
+        questionError.textContent = 'Please enter a question!';
+        return;
+    }
 
-                if (response.ok) {
-                    document.getElementById("questionInput").value = "";
-                    fetchQuestions();
-                } else {
-                    console.error("Failed to save question");
-                }
-            } catch (error) {
-                console.error("Error submitting question:", error);
-            }
+    questionError.textContent = '';
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch("http://localhost:5000/my_diss/questions", {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ questionText })
         });
 
-        fetchQuestions();
+        if (response.ok) {
+            document.getElementById("questionInput").value = "";
+            fetchQuestions();
+        } else {
+            console.error("❌ Failed to save question");
+        }
+    } catch (error) {
+        console.error("❌ Error submitting question:", error);
+    }
+});
+
+// 🚀 Last inn spørsmålene ved oppstart
+fetchQuestions();
+
     </script>
 </body>
 

@@ -14,7 +14,7 @@
         .btn-auth { background-color: #007bff; border-color: #007bff; width: 100%; padding: 10px; border-radius: 8px; font-size: 1.2rem; }
         .btn-auth:hover { background-color: #0056b3; }
         .auth-footer { text-align: center; margin-top: 15px; }
-        .hidden { display: none; }
+        .error-message { color: red; margin-top: 10px; text-align: center; }
     </style>
 </head>
 <body>
@@ -32,28 +32,10 @@
                     <input type="password" class="form-control" id="loginPassword" required>
                 </div>
                 <button type="submit" class="btn btn-auth">Login</button>
+                <p class="error-message" id="loginError"></p>
             </form>
             <div class="auth-footer">
-                <p>Don't have an account? <a href="Register.html" id="showRegister">Sign up</a></p>
-            </div>
-        </div>
-
-        <!-- Registration Form -->
-        <div class="auth-container hidden" id="registerContainer">
-            <h2 class="auth-title">Register</h2>
-            <form id="registerForm">
-                <div class="mb-3">
-                    <label for="registerEmail" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="registerEmail" required>
-                </div>
-                <div class="mb-3">
-                    <label for="registerPassword" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="registerPassword" required>
-                </div>
-                <button type="submit" class="btn btn-auth">Sign Up</button>
-            </form>
-            <div class="auth-footer">
-                <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
+                <p>Don't have an account? <a href="register.html">Sign up</a></p>
             </div>
         </div>
     </div>
@@ -63,36 +45,38 @@
             event.preventDefault();
             const email = document.getElementById("loginEmail").value;
             const password = document.getElementById("loginPassword").value;
-    
+            const errorMessage = document.getElementById("loginError");
+
             try {
-                const response = await fetch("http://localhost:5000/login", {  // ✅ Corrected API endpoint
+                const response = await fetch("http://localhost:5000/my_diss/login", { 
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email, password }),
                 });
-    
+
                 const data = await response.json();
+
                 if (response.ok) {
                     localStorage.setItem("token", data.token);
                     localStorage.setItem("userId", data.userId);
                     localStorage.setItem("userEmail", email);
-    
+
                     alert("✅ Login successful!");
-                    window.location.href = "index.html"; // ✅ Redirect to home page
+                    window.location.href = "index.html"; 
                 } else {
-                    alert(data.error);
+                    errorMessage.textContent = data.error || "Invalid login credentials.";
+                    localStorage.removeItem("token"); // Sletter token hvis det er ugyldig
                 }
             } catch (error) {
                 console.error("❌ Error during login:", error);
-                alert("Login failed. Please try again later.");
+                errorMessage.textContent = "An error occurred. Please try again later.";
             }
         });
-    
+
         // ✅ If user is already logged in, redirect to homepage
         if (localStorage.getItem("token")) {
             window.location.href = "index.html";
         }
     </script>
-    
 </body>
 </html>

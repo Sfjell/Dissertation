@@ -35,13 +35,6 @@
             padding: 20px;
             margin-top: 20px;
         }
-        .btn-danger {
-            background-color: #dc3545;
-            border: none;
-        }
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
     </style>
 </head>
 
@@ -66,14 +59,21 @@
     </div>
 
     <script>
-        // 📌 **Sjekk om bruker er logget inn**
-        const loggedInUser = localStorage.getItem("loggedInUser");
+        document.addEventListener("DOMContentLoaded", function () {
+            const loggedInUser = localStorage.getItem("loggedInUser");
 
-        if (!loggedInUser) {
-            window.location.href = "login.html"; // Omdiriger til innlogging
-        } else {
-            fetch(`http://localhost:5000/get-user/${loggedInUser}`)
-                .then(response => response.json())
+            if (!loggedInUser) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            fetch(`http://localhost:5000/my_diss/get-user/${loggedInUser}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("User not found");
+                    }
+                    return response.json();
+                })
                 .then(user => {
                     document.getElementById("profileName").innerText = user.name;
                     document.getElementById("profileEmail").innerText = user.email;
@@ -81,29 +81,27 @@
                     document.getElementById("profileSince").innerText = user.memberSince || "Unknown";
                 })
                 .catch(error => {
-                    console.error("Feil ved henting av brukerdata:", error);
-                    window.location.href = "login.html"; // Omdiriger hvis bruker ikke finnes
+                    console.error("Error fetching user data:", error);
+                    window.location.href = "login.html";
                 });
-        }
 
-        // 📌 **Logg ut bruker**
-        document.getElementById("logoutBtn").addEventListener("click", function () {
-            localStorage.removeItem("loggedInUser");
-            window.location.href = "login.html";
-        });
+            document.getElementById("logoutBtn").addEventListener("click", function () {
+                localStorage.removeItem("loggedInUser");
+                window.location.href = "login.html";
+            });
 
-        // 📌 **Slett konto**
-        document.getElementById("deleteAccountBtn").addEventListener("click", function () {
-            if (confirm("Er du sikker på at du vil slette kontoen din?")) {
-                fetch(`http://localhost:5000/delete-user/${loggedInUser}`, { method: "DELETE" })
-                    .then(response => response.json())
-                    .then(data => {
-                        alert(data.message);
-                        localStorage.removeItem("loggedInUser");
-                        window.location.href = "login.html";
-                    })
-                    .catch(error => console.error("Feil ved sletting av bruker:", error));
-            }
+            document.getElementById("deleteAccountBtn").addEventListener("click", function () {
+                if (confirm("Are you sure you want to delete your account?")) {
+                    fetch(`http://localhost:5000/my_diss/delete-user/${loggedInUser}`, { method: "DELETE" })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.message);
+                            localStorage.removeItem("loggedInUser");
+                            window.location.href = "login.html";
+                        })
+                        .catch(error => console.error("Error deleting user:", error));
+                }
+            });
         });
     </script>
 
