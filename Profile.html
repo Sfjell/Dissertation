@@ -1,39 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 
     <style>
         body {
-            background-color: #f0f4f7;
-            font-family: 'Arial', sans-serif;
+            background-color: #eef2f7;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s ease;
+            margin: 0;
         }
         .profile-header {
-            background-color: #42f8b2;
+            width: 100%;
+            background-color: #e16539;
             color: white;
-            padding: 30px 0;
             text-align: center;
+            padding: 50px 20px;
             border-bottom-left-radius: 50px;
             border-bottom-right-radius: 50px;
         }
-        .profile-picture img {
-            width: 150px;
-            height: 150px;
+        .profile-icon {
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            border: 5px solid white;
+            font-size: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: auto;
+            background-color: #555;
+            color: white;
         }
         .settings-card {
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             padding: 20px;
+            max-width: 500px;
+            margin: 20px auto;
+            text-align: center;
+            display: none; /* Skjult som standard */
+        }
+        .form-control {
+            border-radius: 5px;
+            max-width: 400px;
+            margin: auto;
+        }
+        .btn-group-custom {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
             margin-top: 20px;
+        }
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        .btn-black {
+            background-color: black;
+            color: white;
+        }
+        .btn-black:hover {
+            background-color: #333;
+        }
+        .post-list {
+            max-width: 500px;
+            margin: auto;
+        }
+        .post-item {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+        /* Modal styling */
+        .modal-confirm {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 320px;
+            z-index: 1000;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .active-btn {
+            opacity: 0.7;
         }
     </style>
 </head>
@@ -41,67 +113,89 @@
 <body>
 
     <div class="profile-header">
-        <div class="profile-picture">
-            <img src="https://via.placeholder.com/150" alt="Profile Picture" id="profilePic">
-        </div>
-        <h1 id="profileName">Loading...</h1>
-        <p id="profileRole">Loading...</p>
+        <div class="profile-icon" id="profileIcon">AB</div>
+        <h2 id="profileName" class="mt-2">Guest</h2>
+        <p id="profileEmail">Not logged in</p>
     </div>
 
     <div class="container">
-        <div class="settings-card">
-            <h5>Account Settings</h5>
-            <p>Email: <span id="profileEmail">Loading...</span></p>
-            <p>Member Since: <span id="profileSince">Loading...</span></p>
-            <button class="btn btn-secondary" id="logoutBtn">Log Out</button>
-            <button class="btn btn-danger" id="deleteAccountBtn">Delete Account</button>
+        <div class="btn-group-custom">
+            <button class="btn btn-black btn-small" id="toggleSettingsBtn">⚙️ Settings</button>
+            <button class="btn btn-danger btn-small" id="deleteAccountBtn">🗑 Delete Account</button>
         </div>
+
+        <div class="settings-card" id="settingsCard">
+            <h5>Account Settings</h5>
+            <p><strong>Member Since:</strong> <span id="profileSince">N/A</span></p>
+
+            <h6>Change Details</h6>
+            <input type="text" id="editName" placeholder="New Name" class="form-control mb-2">
+            <input type="email" id="editEmail" placeholder="New Email" class="form-control mb-2">
+            <input type="password" id="editPassword" placeholder="New Password" class="form-control mb-2">
+            <button class="btn btn-primary mt-2 btn-small" id="updateProfileBtn">Update</button>
+        </div>
+
+        <div class="post-list">
+            <h5>Your Posts</h5>
+            <div id="userPosts"></div>
+        </div>
+    </div>
+
+    <!-- Modal for Delete Confirmation -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-confirm" id="modalConfirm">
+        <h5>Are you sure?</h5>
+        <p>This action cannot be undone.</p>
+        <button class="btn btn-danger btn-small" id="confirmDelete">Yes, Delete</button>
+        <button class="btn btn-secondary btn-small" id="cancelDelete">No</button>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const loggedInUser = localStorage.getItem("loggedInUser");
+            console.log("Page loaded");
 
-            if (!loggedInUser) {
-                window.location.href = "login.html";
-                return;
+            let user = JSON.parse(localStorage.getItem("loggedInUser"));
+            let settingsCard = document.getElementById("settingsCard");
+            let settingsBtn = document.getElementById("toggleSettingsBtn");
+            let deleteBtn = document.getElementById("deleteAccountBtn");
+
+            if (user) {
+                console.log("User found:", user);
+                document.getElementById("profileName").innerText = user.name;
+                document.getElementById("profileEmail").innerText = user.email;
+                document.getElementById("profileSince").innerText = user.memberSince || "Unknown";
+
+                const initials = user.name ? user.name.charAt(0).toUpperCase() + user.name.charAt(user.name.length - 1).toUpperCase() : "G";
+                document.getElementById("profileIcon").innerText = initials;
             }
 
-            fetch(`http://localhost:5000/my_diss/get-user/${loggedInUser}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("User not found");
-                    }
-                    return response.json();
-                })
-                .then(user => {
-                    document.getElementById("profileName").innerText = user.name;
-                    document.getElementById("profileEmail").innerText = user.email;
-                    document.getElementById("profileRole").innerText = user.role || "User";
-                    document.getElementById("profileSince").innerText = user.memberSince || "Unknown";
-                })
-                .catch(error => {
-                    console.error("Error fetching user data:", error);
-                    window.location.href = "login.html";
-                });
+            // Toggle settings
+            settingsBtn.addEventListener("click", function () {
+                settingsCard.style.display = settingsCard.style.display === "none" ? "block" : "none";
+                settingsBtn.classList.add("active-btn");
+                setTimeout(() => settingsBtn.classList.remove("active-btn"), 200);
+            });
 
-            document.getElementById("logoutBtn").addEventListener("click", function () {
+            // Delete account modal
+            deleteBtn.addEventListener("click", function () {
+                document.getElementById("modalConfirm").style.display = "block";
+                document.getElementById("modalOverlay").style.display = "block";
+                deleteBtn.classList.add("active-btn");
+                setTimeout(() => deleteBtn.classList.remove("active-btn"), 200);
+            });
+
+            document.getElementById("cancelDelete").addEventListener("click", function () {
+                document.getElementById("modalConfirm").style.display = "none";
+                document.getElementById("modalOverlay").style.display = "none";
+            });
+
+            document.getElementById("confirmDelete").addEventListener("click", function () {
+                console.log("Deleting account...");
                 localStorage.removeItem("loggedInUser");
+                localStorage.removeItem("userPosts");
                 window.location.href = "login.html";
             });
 
-            document.getElementById("deleteAccountBtn").addEventListener("click", function () {
-                if (confirm("Are you sure you want to delete your account?")) {
-                    fetch(`http://localhost:5000/my_diss/delete-user/${loggedInUser}`, { method: "DELETE" })
-                        .then(response => response.json())
-                        .then(data => {
-                            alert(data.message);
-                            localStorage.removeItem("loggedInUser");
-                            window.location.href = "login.html";
-                        })
-                        .catch(error => console.error("Error deleting user:", error));
-                }
-            });
         });
     </script>
 

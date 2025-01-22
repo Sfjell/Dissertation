@@ -9,25 +9,69 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            background-color: #eef1f6;
+            background-color: #eef1f6 !important;
             font-family: 'Poppins', sans-serif;
         }
 
-        /* Navbar Styling */
         .navbar {
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff !important;
+            box-shadow: none !important;
+            /* Fjernet skyggen for å unngå grå linje */
+            border-bottom: none !important;
+            /* Fjerner eventuell grå linje */
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
         }
 
-        .navbar-brand {
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: #333;
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            width: 100%;
+            background: transparent !important;
+            border: none !important;
+            /* Hindrer eventuelle rammer */
+        }
+
+        .navbar-collapse {
+            background: transparent !important;
+            border: none !important;
+        }
+
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: transparent !important;
+            border: none !important;
+        }
+
+        /* Ekstra sikring for å fjerne en mulig linje som kan genereres av Bootstrap */
+        .navbar::after,
+        .navbar::before {
+            display: none !important;
+            content: "" !important;
+        }
+
+        /* Justerer brukerikon-knappen */
+        .btn-outline-primary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
         }
 
         .nav-link {
-            color: #555;
             font-size: 1.1rem;
+            color: #555;
             transition: color 0.3s ease;
         }
 
@@ -35,8 +79,28 @@
             color: #007bff;
         }
 
+        .btn-outline-primary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        /* Fjerner eventuell hvit bakgrunn bak navbar */
+        .navbar.fixed-top {
+            background: #fff !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+
+        .container {
+            background: none !important;
+        }
+
+
         .hero-section {
-            background: linear-gradient(135deg, #007bff, #00c6ff);
+            background: #e16539;
             color: white;
             padding: 60px 20px;
             text-align: center;
@@ -180,96 +244,95 @@
         }
 
         /* Features Section Styling */
-.features-section {
-    background-color: #f4f7fc;
-    padding: 60px 20px;
-    text-align: center;
-    border-radius: 10px;
-    margin-top: 40px;
-}
+        .features-section {
+            background-color: #f4f7fc;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
 
-.features-section h2 {
-    color: #333;
-    font-size: 2.2rem;
-    font-weight: 600;
-}
+        .features-section h2 {
+            color: #333;
+            font-size: 2.2rem;
+            font-weight: 600;
+        }
 
-.features-content {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-top: 40px;
-}
+        .features-content {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
 
-.feature-card {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 300px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+        .feature-card {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-.feature-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-}
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+        }
 
-.feature-card i {
-    font-size: 3rem;
-    color: #007bff;
-    margin-bottom: 20px;
-}
+        .feature-card i {
+            font-size: 3rem;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
 
-.feature-card h5 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 15px;
-    color: #333;
-}
+        .feature-card h5 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
 
-.feature-card p {
-    font-size: 1rem;
-    color: #555;
-    line-height: 1.5;
-}
+        .feature-card p {
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.5;
+        }
 
-/* Call to Action Section Styling */
-.cta-section {
-    background-color: #f4f7fc;
-    padding: 60px 20px;
-    text-align: center;
-    border-radius: 10px;
-    margin-top: 40px;
-}
+        /* Call to Action Section Styling */
+        .cta-section {
+            background-color: #f4f7fc;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
 
-.cta-content h2 {
-    font-size: 2.5rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
+        .cta-content h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
 
-.cta-content p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-    color: #000000;
-}
+        .cta-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #000000;
+        }
 
-.cta-content .btn {
-    background-color: #007bff;
-    font-size: 1.1rem;
-    padding: 12px 30px;
-    border-radius: 5px;
-    color: rgb(0, 0, 0);
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-}
+        .cta-content .btn {
+            background-color: #007bff;
+            font-size: 1.1rem;
+            padding: 12px 30px;
+            border-radius: 5px;
+            color: rgb(0, 0, 0);
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
 
-.cta-content .btn:hover {
-    background-color: #007bff;
-}
-
+        .cta-content .btn:hover {
+            background-color: #007bff;
+        }
     </style>
 </head>
 
@@ -277,7 +340,7 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <img src="2.png" alt="Brand Logo" style="height: 40px;"> SysReviewSphere
+                <img src="2.png" alt="Brand Logo" style="height: 60px;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -327,20 +390,23 @@
         <h2>About SysReviewSphere</h2>
         <div class="about-content">
             <div class="about-image">
-                <img src="https://via.placeholder.com/400x250" alt="About SysReviewSphere Image">
+                <img src="Sebastian.jpg" alt="About SysReviewSphere Image">
             </div>
             <div class="about-text">
                 <p>
-                    SysReviewSphere is a community-driven platform that helps users discover the best IT systems,
-                    provide feedback, and share experiences. We believe in making the decision-making process for
-                    IT systems easier by offering unbiased reviews and user-generated content.
+                    Hello, my name is Sebastian J. Fjell, and I am the founder of SysReviewSphere. SysReviewSphere is a
+                    community-driven platform designed to help users discover and evaluate the best IT systems through
+                    feedback and shared experiences. Developed as part of my dissertation, this system aims to explore
+                    the critical success factors that contribute to successful IT project implementations. By providing
+                    unbiased reviews and user-generated content, SysReviewSphere simplifies the decision-making process
+                    for selecting IT systems, empowering users to make informed choices based on real-world insights.
                 </p>
-                <h4>Our Vision</h4>
+                <h4>My Vision</h4>
                 <p>
-                    Our vision is to provide a comprehensive space for IT professionals and enthusiasts to
+                    SysReviewSphere vision is to provide a comprehensive space for IT professionals and enthusiasts to
                     collaborate, review, and find the most effective IT systems for their needs.
                 </p>
-                <h4>Why Choose Us?</h4>
+                <h4>Why use SysReviewSphere?</h4>
                 <p>
                     - Comprehensive Reviews<br>
                     - Community Engagement<br>

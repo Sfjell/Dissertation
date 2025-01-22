@@ -196,6 +196,39 @@ app.post('/my_diss/feedback', authenticateToken, upload.single('logo'), async (r
   }
 });
 
+// ✅ Hent brukerdata
+app.get('/my_diss/get-user/:email', async (req, res) => {
+  try {
+      console.log("Fetching user data for:", req.params.email);
+      const user = await User.findOne({ email: req.params.email });
+      if (!user) {
+          console.warn("User not found:", req.params.email);
+          return res.status(404).json({ error: "User not found" });
+      }
+      res.status(200).json(user);
+  } catch (err) {
+      console.error("Error fetching user data:", err);
+      res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ✅ Slett bruker
+app.delete('/my_diss/delete-user/:email', async (req, res) => {
+  try {
+      console.log("Deleting user:", req.params.email);
+      const user = await User.findOneAndDelete({ email: req.params.email });
+      if (!user) {
+          console.warn("User not found for deletion:", req.params.email);
+          return res.status(404).json({ error: "User not found" });
+      }
+      res.status(200).json({ message: "User deleted successfully" });
+  } catch (err) {
+      console.error("Error deleting user:", err);
+      res.status(500).json({ error: "Server error" });
+  }
+});
+
+
 // ✅ Submit Question
 app.post('/my_diss/questions', authenticateToken, async (req, res) => {
   try {
