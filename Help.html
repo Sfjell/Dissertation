@@ -6,19 +6,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Help Section</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
     <style>
-        body { background-color: #f4f7fc; font-family: 'Arial', sans-serif; }
-        .navbar { background-color: #fff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
-        .navbar-brand { font-size: 1.8rem; font-weight: bold; color: #333; }
-        .nav-link { color: #555; font-size: 1.1rem; transition: color 0.3s ease; }
-        .nav-link:hover { color: #007bff; }
-        .green-box { background-color: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 5px solid #28a745; cursor: pointer; margin-bottom: 10px; transition: background 0.3s ease; }
-        .green-box:hover { background-color: #e9ecef; }
-        .question-toggle { font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
-        .collapse { padding: 10px 15px; background-color: #f1f1f1; border-radius: 5px; margin-bottom: 10px; }
-        .ask-question-btn { background-color: #007bff; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; }
-        .ask-question-btn:hover { background-color: #0056b3; }
+       /* Global Styles */
+body {
+    background-color: #eef1f6;
+    font-family: 'Poppins', sans-serif;
+    padding-top: 70px;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #fff !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1050;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.navbar-brand {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.nav-link {
+    color: #555 !important;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #007bff !important;
+}
+
+/* Question Container */
+.green-box {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 5px solid #007bff;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+}
+
+.green-box:hover {
+    background-color: #f1f1f1;
+}
+
+/* Flex layout for question text and delete button */
+.question-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.question-content .question-text {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+
+/* Section for the asker's name */
+.question-meta {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 5px;
+}
+
+/* Collapse Section for Answers */
+.collapse {
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+/* Answer Section */
+.answer-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.answer-container b {
+    font-weight: 600;
+}
+
+.answer-container p {
+    margin-top: 5px;
+}
+
+/* Answer Button Styling */
+.answer-button-container {
+    margin-top: 10px;
+}
+
+.ask-question-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.ask-question-btn:hover {
+    background-color: #0056b3;
+}
+
+.footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            margin-top: auto;
+            width: 100%;
+        }
     </style>
 </head>
 
@@ -33,94 +141,397 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="IT Systems.html">IT Systems</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="Help.html">Discussion</a>
+                    <li class="nav-item"><a class="nav-link" href="IT Systems.html">IT Systems</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Help.html">Discussion</a></li>
+                    <li class="nav-item" id="loginNav"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item dropdown d-none" id="userDropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="Profile.html">Profile</a></li>
+                            <li><a class="dropdown-item text-danger" href="#" id="logoutBtn">Logout</a></li>
+                        </ul>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-5 pt-5">
+    <div class="container mt-5">
         <h4 class="mt-4">People have asked these questions</h4>
-        <div id="questions"></div>
-
+        <div id="questions" class="mb-4"></div>
         <div class="my-4">
             <h5>Ask a Question</h5>
             <textarea id="questionInput" class="form-control" rows="3" placeholder="Type your question here"></textarea>
-            <div class="validation-error" id="questionError"></div>
-            <button class="ask-question-btn mt-3" id="submitQuestionBtn">Submit Question</button>
+            <div class="validation-error text-danger mt-2" id="questionError"></div>
+            <button class="btn btn-primary mt-3" id="submitQuestionBtn" onclick="submitQuestion()">Submit Question</button>
         </div>
     </div>
 
+    <footer class="footer">
+        <p>&copy; 2025 SysReviewSphere. All rights reserved.</p>
+    </footer>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        async function fetchQuestions() {
+       
+       async function checkLoginStatus() {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        console.warn("⚠ No token found. Redirecting to login page.");
+        updateNavbar(false);
+        if (!window.location.href.includes("login.html")) {
+            window.location.href = "login.html";
+        }
+        return;
+    }
+
     try {
-        const response = await fetch("http://localhost:5000/my_diss/questions");
-        if (!response.ok) throw new Error(`Failed to fetch questions. Status: ${response.status}`);
+        const response = await fetch("http://localhost:5000/my_diss/check-token", {
+            method: "GET",
+            headers: { "Authorization": `Bearer ${token}` }
+        });
 
-        const questions = await response.json();
+        if (!response.ok) {
+            console.warn("⚠ Invalid or expired token. Logging out...");
+            logoutUser();
+        } else {
+            console.log("✅ User is logged in.");
+            updateNavbar(true);
+        }
+    } catch (error) {
+        console.error("❌ Error checking token:", error);
+        logoutUser();
+    }
+}
 
-        document.getElementById("questions").innerHTML = questions.map(question => `
+// ✅ Oppdater navbar basert på brukerstatus
+function updateNavbar(isLoggedIn) {
+    const loginNav = document.getElementById("loginNav");
+    const userDropdown = document.getElementById("userDropdown");
+
+    if (isLoggedIn) {
+        loginNav.classList.add("d-none");
+        userDropdown.classList.remove("d-none");
+    } else {
+        loginNav.classList.remove("d-none");
+        userDropdown.classList.add("d-none");
+    }
+}
+
+// ✅ Logg ut bruker
+function logoutUser() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userEmail");
+    updateNavbar(false);
+    alert("You have been logged out.");
+    window.location.href = "login.html";
+}
+
+// ✅ Kjør login-sjekk når siden lastes
+document.addEventListener("DOMContentLoaded", checkLoginStatus);
+
+// ✅ Logg inn bruker
+async function loginUser(email, password) {
+    try {
+        const response = await fetch("http://localhost:5000/my_diss/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // ✅ Lagre brukerdata
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("userId", data.userId);
+            localStorage.setItem("userEmail", email);
+
+            alert("✅ Login successful!");
+            updateNavbar(true);
+
+            // ✅ Omdiriger til startsiden eller ønsket side
+            window.location.href = "index.html";
+        } else {
+            alert(`Error: ${data.error || "Invalid login credentials"}`);
+            localStorage.removeItem("token");
+        }
+    } catch (error) {
+        console.error("❌ Error logging in:", error);
+        alert("An error occurred. Please try again later.");
+    }
+}
+
+       // Funksjon for å hente spørsmål
+    async function fetchQuestions() {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("You must be logged in to view the questions.");
+            window.location.href = "login.html";
+            return;
+        }
+
+        try {
+            const response = await fetch("http://localhost:5000/my_diss/questions", {
+                method: "GET",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            if (!response.ok) throw new Error(`Error fetching questions. Status: ${response.status}`);
+
+            const questions = await response.json();
+            console.log("Questions fetched:", questions);
+            displayQuestions(questions);
+        } catch (error) {
+            console.error("Error fetching questions:", error);
+            document.getElementById("questions").innerHTML = "<p class='text-danger'>Error loading questions. Please try again later.</p>";
+        }
+    }
+
+    // Funksjon for å vise spørsmålene
+    function displayQuestions(questions) {
+        const questionsContainer = document.getElementById("questions");
+
+        if (!Array.isArray(questions)) {
+            console.error("Invalid questions data:", questions);
+            questionsContainer.innerHTML = "<p class='text-danger'>⚠ Error loading questions.</p>";
+            return;
+        }
+
+        questionsContainer.innerHTML = questions.map(question => `
             <div class="green-box question-toggle" data-bs-toggle="collapse" data-bs-target="#answer${question._id}">
-                <div>${question.questionText} (Asked by: ${question.userEmail})</div>
+                <div>
+                    <button class="btn btn-danger btn-sm float-end" onclick="deleteQuestion('${question._id}', event)">Delete Question</button>
+                    ${question.questionText} (Asked by: ${question.userId?.email || "Anonymous"})
+                </div>
                 <span>▼</span>
             </div>
             <div id="answer${question._id}" class="collapse px-3">
                 <h6>Replies:</h6>
-                <div id="replies${question._id}">${(question.answers || []).map(ans => `<p>${ans.text}</p>`).join("")}</div>
-                <div class="reply-box">
-                    <textarea class="form-control reply-input" rows="2" placeholder="Type your reply"></textarea>
-                    <button class="btn reply-btn" data-question-id="${question._id}">Submit Reply</button>
+                <div id="replies${question._id}">
+                    ${(question.answers && question.answers.length > 0) ? 
+                        question.answers.map(ans => `
+                            <div class="border p-2 mt-2">
+                                <div class="answer-container">
+                                    <b>${ans.userId?.email || "Anonymous"}</b>
+                                    <p>${ans.answerText}</p>
+                                </div>
+                                <button class="btn btn-outline-success btn-sm" onclick="likeAnswer('${ans._id}', event)">
+                                    ${ans.likes && ans.likes.length > 0 ? ans.likes.length : 0} Like${(ans.likes && ans.likes.length > 1) ? 's' : ''}
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="deleteAnswer('${question._id}', '${ans._id}', event)">Delete</button>
+                            </div>
+                        `).join("") : `<p>No answers yet</p>` 
+                    }
                 </div>
+                <textarea class="form-control mt-2" id="answerInput${question._id}" rows="2" placeholder="Type your answer"></textarea>
+                <button class="btn btn-primary mt-2" onclick="submitAnswer('${question._id}', event)">Submit Answer</button>
             </div>
         `).join("");
-    } catch (error) {
-        console.error("❌ Error fetching questions:", error);
     }
-}
 
-document.getElementById("submitQuestionBtn").addEventListener("click", async function () {
-    const questionText = document.getElementById("questionInput").value;
-    const questionError = document.getElementById("questionError");
+    async function deleteQuestion(questionId, event) {
+    event.preventDefault(); // Prevent default form submission
 
-    if (questionText.trim() === '') {
-        questionError.textContent = 'Please enter a question!';
+    const token = localStorage.getItem("token");
+    if (!token) {
+        alert("You must be logged in to delete a question.");
+        window.location.href = "login.html";
         return;
     }
 
-    questionError.textContent = '';
+    try {
+        const response = await fetch(`http://localhost:5000/my_diss/questions/${questionId}`, {
+            method: "DELETE",
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if (!response.ok) {
+            const data = await response.json();
+            alert(`Error: ${data.error}`);
+            return;
+        }
+
+        // Refresh the question list after deletion
+        fetchQuestions();
+    } catch (error) {
+        console.error("Error deleting question:", error);
+        alert("There was an issue deleting the question. Please try again later.");
+    }
+}
+
+    
+    // Funksjon for å sende et svar
+    async function submitAnswer(questionId, event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const answerText = document.getElementById(`answerInput${questionId}`).value.trim();
+
+    if (!answerText) {
+        alert("⚠ Please enter an answer!");
+        return;
+    }
+
     const token = localStorage.getItem("token");
 
     try {
-        const response = await fetch("http://localhost:5000/my_diss/questions", {
+        const response = await fetch(`http://localhost:5000/my_diss/questions/reply/${questionId}`, {
             method: "POST",
-            headers: { 
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({ questionText })
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+            body: JSON.stringify({ replyText: answerText })
         });
 
-        if (response.ok) {
-            document.getElementById("questionInput").value = "";
-            fetchQuestions();
-        } else {
-            console.error("❌ Failed to save question");
+        if (!response.ok) {
+            console.error("Error submitting answer:", response);
+            alert("There was an issue submitting the answer. Please try again later.");
+            return;
         }
+
+        // Clear the input field after submission
+        document.getElementById(`answerInput${questionId}`).value = "";
+
+        // Get the newly submitted answer data
+        const answerData = await response.json();
+
+        const answersContainer = document.getElementById(`replies${questionId}`);
+
+        // Safely handle the likes property
+        const likesCount = Array.isArray(answerData.likes) ? answerData.likes.length : 0;
+
+        // Create a new answer element
+        const newAnswerHTML = `
+            <div class="border p-2 mt-2">
+                <div class="answer-container">
+                    <b>${answerData.userId?.email || "Anonymous"}</b>
+                    <p>${answerData.answerText}</p>
+                </div>
+                <button class="btn btn-outline-success btn-sm" onclick="likeAnswer('${answerData._id}')">
+                    ${likesCount} Like${likesCount > 1 ? 's' : ''}
+                </button>
+                <button class="btn btn-outline-danger btn-sm" onclick="deleteAnswer('${questionId}', '${answerData._id}')">Delete</button>
+            </div>
+        `;
+
+        // Add the new answer HTML to the container
+        answersContainer.innerHTML = newAnswerHTML + answersContainer.innerHTML;
+
     } catch (error) {
-        console.error("❌ Error submitting question:", error);
+        console.error("Error submitting answer:", error);
+        alert("There was an issue submitting the answer. Please try again later.");
     }
-});
+}
 
-// 🚀 Last inn spørsmålene ved oppstart
-fetchQuestions();
 
+
+    // Funksjon for å slette et svar
+    async function deleteAnswer(questionId, answerId, event) {
+        event.preventDefault();
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("You must be logged in to delete an answer.");
+            window.location.href = "login.html";
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:5000/my_diss/questions/delete/${answerId}`, {
+                method: "DELETE",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                alert(`Error: ${data.error}`);
+                return;
+            }
+
+            fetchQuestions();
+        } catch (error) {
+            console.error("Error deleting answer:", error);
+            alert("There was an issue deleting the answer. Please try again later.");
+        }
+    }
+
+    // Funksjon for å like et svar
+    async function likeAnswer(answerId) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        alert("You must be logged in to like an answer.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    if (!answerId) {
+        alert("Answer ID is missing.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:5000/my_diss/questions/like/${answerId}`, {
+            method: "POST",
+            headers: { 
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            alert(`Error liking answer: ${error.message}`);
+            return;
+        }
+
+        // Refresh the question list after liking
+        fetchQuestions();
+    } catch (error) {
+        console.error("Error liking answer:", error);
+        alert("There was an issue liking the answer. Please try again later.");
+    }
+}
+
+
+
+    // Funksjon for å sende spørsmål
+    async function submitQuestion() {
+        const questionText = document.getElementById('questionInput').value.trim();
+
+        if (!questionText) {
+            alert('⚠ Please enter a question!');
+            return;
+        }
+
+        const token = localStorage.getItem("token");
+        try {
+            const response = await fetch("http://localhost:5000/my_diss/questions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify({ questionText })
+            });
+
+            if (!response.ok) throw new Error("Failed to submit question.");
+
+            document.getElementById('questionInput').value = "";
+            fetchQuestions();
+        } catch (error) {
+            console.error("❌ Error submitting question:", error);
+            alert("There was an issue submitting the question. Please try again later.");
+        }
+    }
+
+    // Initialiser
+    document.addEventListener("DOMContentLoaded", () => {
+        fetchQuestions();
+    });
     </script>
+
 </body>
 
 </html>
