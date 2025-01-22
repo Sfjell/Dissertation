@@ -98,13 +98,14 @@ body {
 
 /* Question Container */
 .green-box {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    border-left: 5px solid #007bff;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: background 0.3s ease;
+    background-color: #f8f9fa;
+            border-left: 5px solid #e16539;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
 }
 
 .green-box:hover {
@@ -114,15 +115,18 @@ body {
 /* Flex layout for question text and delete button */
 .question-content {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 5px; /* Adds space between question and buttons */
 }
 
 .question-content .question-text {
     font-weight: 600;
     font-size: 1.1rem;
     color: #333;
-    margin-bottom: 10px;
+    word-wrap: break-word; /* Ensures text wraps on smaller screens */
 }
 
 
@@ -130,7 +134,36 @@ body {
 .question-meta {
     font-size: 0.9rem;
     color: #555;
-    margin-top: 5px;
+    word-wrap: break-word;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end; /* Aligns content to the right */
+    align-items: center;
+    gap: 10px;
+    width: 100%; /* Ensures it spans the full width */
+    text-align: center; /* Ensures the arrow and button are centered */
+
+}
+
+
+/* Style the dropdown arrow */
+.action-buttons span {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Make sure buttons don't overflow on small screens */
+@media (max-width: 768px) {
+    .action-buttons {
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+    .question-meta {
+        word-wrap: break-word;
+    }
 }
 
 /* Collapse Section for Answers */
@@ -162,7 +195,7 @@ body {
 }
 
 .ask-question-btn {
-    background-color: #007bff;
+    background-color: #e16539;
     color: white;
     border: none;
     padding: 10px;
@@ -171,7 +204,7 @@ body {
 }
 
 .ask-question-btn:hover {
-    background-color: #0056b3;
+    background-color:  #e16539;
 }
 
 .footer {
@@ -220,7 +253,7 @@ body {
             <h5>Ask a Question</h5>
             <textarea id="questionInput" class="form-control" rows="3" placeholder="Type your question here"></textarea>
             <div class="validation-error text-danger mt-2" id="questionError"></div>
-            <button class="btn btn-primary mt-3" id="submitQuestionBtn" onclick="submitQuestion()">Submit Question</button>
+            <button class="btn btn-primary mt-3" style=" background-color: #e16539; border-color:#e16539;" id="submitQuestionBtn" onclick="submitQuestion()">Submit Question</button>
         </div>
     </div>
 
@@ -360,11 +393,22 @@ async function loginUser(email, password) {
 
         questionsContainer.innerHTML = questions.map(question => `
             <div class="green-box question-toggle" data-bs-toggle="collapse" data-bs-target="#answer${question._id}">
-                <div>
-                    <button class="btn btn-danger btn-sm float-end" onclick="deleteQuestion('${question._id}', event)">Delete Question</button>
-                    ${question.questionText} (Asked by: ${question.userId?.email || "Anonymous"})
+                <div class="question-content">
+                    <!-- Question text and Asked by text -->
+                    <div class="question-text">
+                        ${question.questionText}
+                    </div>
+                    <div class="question-meta">
+                        Asked by: ${question.userId?.email || "Anonymous"}
+                    </div>
                 </div>
-                <span>▼</span>
+                <!-- Button and arrow section aligned properly -->
+                <div class="action-buttons">
+                    <!-- Delete button -->
+                    <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${question._id}', event)">Delete Question</button>
+                    <!-- Arrow for dropdown -->
+                    <span>▼</span>
+                </div>
             </div>
             <div id="answer${question._id}" class="collapse px-3">
                 <h6>Replies:</h6>
@@ -385,7 +429,7 @@ async function loginUser(email, password) {
                     }
                 </div>
                 <textarea class="form-control mt-2" id="answerInput${question._id}" rows="2" placeholder="Type your answer"></textarea>
-                <button class="btn btn-primary mt-2" onclick="submitAnswer('${question._id}', event)">Submit Answer</button>
+                <button class="btn btn-primary mt-2"onclick="submitAnswer('${question._id}', event)" style=" background-color: #e16539; border-color:#e16539;">Submit Answer</button>
             </div>
         `).join("");
     }

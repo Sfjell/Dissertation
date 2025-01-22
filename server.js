@@ -49,9 +49,17 @@ const feedbackSchema = new mongoose.Schema({
   experienceDescription: { type: String, required: true },
   rating: { type: Number, required: true },
   logoPath: { type: String },
-  successFactor: { type: String, required: true }, // Kritisk suksessfaktor
+  successFactor: { type: String, required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  comments: [  // ✅ Legg til dette for å støtte kommentarer
+    {
+      text: { type: String, required: true },
+      rating: { type: Number, required: true },
+      createdAt: { type: Date, default: Date.now }
+    }
+  ]
 });
+
 const Feedback = mongoose.model('Feedback', feedbackSchema);
 
 // 🔹 Middleware to verify JWT token
@@ -212,18 +220,35 @@ app.get('/my_diss/get-user/:email', async (req, res) => {
   }
 });
 
-// ✅ Slett bruker
-app.delete('/my_diss/delete-user/:email', async (req, res) => {
+app.post("/my_diss/feedback/:feedbackId/comment", async (req, res) => {
   try {
-      console.log("Deleting user:", req.params.email);
-      const user = await User.findOneAndDelete({ email: req.params.email });
-      if (!user) {
-          console.warn("User not found for deletion:", req.params.email);
-          return res.status(404).json({ error: "User not found" });
+      const { feedbackId } = req.params;
+      const { text, rating } = req.body;
+
+      if (!text || !rating) {
+          return res.status(400).json({ error: "Missing text or rating" });
       }
-      res.status(200).json({ message: "User deleted successfully" });
-  } catch (err) {
-      console.error("Error deleting user:", err);
+
+      // Finn tilbakemelding i databasen
+      const feedback = await Feedback.findById(feedbackId);
+      if (!feedback) {
+          return res.status(404).json({ error: "Feedback not found" });
+      }
+
+      // Sørg for at feedback har et comments-array
+      if (!feedback.comments) {
+          feedback.comments = [];
+      }
+
+      // Legg til kommentar
+      feedback.comments.push({ text, rating });
+      
+      // Lagre oppdatert tilbakemelding
+      await feedback.save();
+
+      res.status(200).json({ message: "Comment added successfully!", feedback });
+  } catch (error) {
+      console.error("❌ Error adding comment:", error);
       res.status(500).json({ error: "Server error" });
   }
 });
