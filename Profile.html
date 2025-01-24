@@ -269,7 +269,7 @@
 
     <div class="profile-header">
         <div class="profile-icon" id="profileIcon">AB</div>
-        <h2 id="profileEmail" class="mt-2">Guest</h2>
+        <h2 id="profileName" class="mt-2">Guest</h2>
     </div>
 
     <div class="container">
@@ -511,16 +511,15 @@
 
                 // 🔹 Oppdaterer UI med brukerens data
                 function updateProfileUI(user) {
-                    profileEmail.innerText = user.email || "Not logged in";
+                    profileName.innerText = user.name || "Not logged in";
 
-                    if (user.email) {
-                        const initials = user.email.charAt(0).toUpperCase() + user.email.charAt(user.email.length - 1).toUpperCase();
+                    if (user.name) {
+                        const initials = user.name.charAt(0).toUpperCase() + user.name.charAt(user.name.length - 1).toUpperCase();
                         profileIcon.innerText = initials;
                     }
 
                     fetchUserPosts(user._id);
                 }
-
 
                 // 🔹 Henter brukerens bidrag (poster, kommentarer, spørsmål, svar)
                 function fetchUserPosts(userId) {
