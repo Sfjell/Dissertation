@@ -283,25 +283,25 @@
                 <h3 class="text-center">Account Settings</h3>
                 <h6 class="text-center">Change Details</h6>
 
-                <form>
+                <form id="updateProfileForm">
                     <div class="mb-3 row">
                         <label for="name" class="col-sm-2 col-form-label text-end">Name</label>
                         <div class="col-sm-10">
-                            <input type="text" id="name" class="form-control">
+                            <input type="text" id="name" class="form-control" required>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="age" class="col-sm-2 col-form-label text-end">Age</label>
                         <div class="col-sm-10">
-                            <input type="number" id="age" class="form-control">
+                            <input type="number" id="age" class="form-control" min="1" required>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="gender" class="col-sm-2 col-form-label text-end">Gender</label>
                         <div class="col-sm-10">
-                            <select id="gender" class="form-control">
+                            <select id="gender" class="form-control" required>
                                 <option value="">Select Gender</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
@@ -314,7 +314,7 @@
                     <div class="mb-3 row">
                         <label for="occupation" class="col-sm-2 col-form-label text-end">Occupation</label>
                         <div class="col-sm-10">
-                            <select id="occupation" class="form-control">
+                            <select id="occupation" class="form-control" required>
                                 <option value="">Select Occupation</option>
                                 <option value="software_engineer">Software Engineer</option>
                                 <option value="data_scientist">Data Scientist</option>
@@ -346,19 +346,20 @@
                     <div class="mb-3 row">
                         <label for="email" class="col-sm-2 col-form-label text-end">Email</label>
                         <div class="col-sm-10">
-                            <input type="email" id="email" class="form-control">
+                            <input type="email" id="email" class="form-control" required>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="password" class="col-sm-2 col-form-label text-end">Password</label>
                         <div class="col-sm-10">
-                            <input type="password" id="password" class="form-control">
+                            <input type="password" id="password" class="form-control"
+                                placeholder="Enter new password (optional)">
                         </div>
                     </div>
 
                     <div class="text-center">
-                        <button class="btn btn-primary mt-2 btn-small">Update</button>
+                        <button type="submit" class="btn btn-primary mt-2 btn-small">Update</button>
                     </div>
                 </form>
             </div>
@@ -768,71 +769,129 @@
             }
 
 
-
-
             document.addEventListener("DOMContentLoaded", function () {
-                const nameInput = document.getElementById("name");
-                const ageInput = document.getElementById("age");
-                const genderInput = document.getElementById("gender");
-                const occupationInput = document.getElementById("occupation");
-                const updateButton = document.querySelector(".btn-primary");
+    console.log("🔹 Profile settings script loaded!");
 
-                const token = localStorage.getItem("token");
+    const nameInput = document.getElementById("name");
+    const ageInput = document.getElementById("age");
+    const genderInput = document.getElementById("gender");
+    const occupationInput = document.getElementById("occupation");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const updateButton = document.querySelector(".btn-primary");
 
-                if (!token) {
-                    alert("You need to log in first.");
-                    window.location.href = "login.html";
+    let token = localStorage.getItem("token");
+
+    if (!token) {
+        console.warn("❌ No token found, redirecting to login.");
+        alert("You need to log in first.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    console.log("✅ Token found:", token);
+
+    // 🔹 Henter brukerprofil
+    function fetchUserProfile() {
+        fetch("http://localhost:5000/my_diss/user-profile", {
+            method: "GET",
+            headers: { "Authorization": `Bearer ${token}` }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to fetch user profile.");
+                return response.json();
+            })
+            .then(user => {
+                console.log("🔹 Fetched user data:", user);
+
+                if (user.error) {
+                    console.error("❌ Error fetching user:", user.error);
+                    alert("Session expired. Please log in again.");
+                    logoutUser();
                     return;
                 }
 
-                // Hent brukerprofil
-                fetch("http://localhost:5000/my_diss/user-profile", {
-                    method: "GET",
-                    headers: { "Authorization": `Bearer ${token}` }
-                })
-                    .then(response => response.json())
-                    .then(user => {
-                        if (user.error) {
-                            console.error("Error fetching user:", user.error);
-                            return;
-                        }
-                        nameInput.value = user.name || "";
-                        ageInput.value = user.age || "";
-                        genderInput.value = user.gender || "";
-                        occupationInput.value = user.occupation || "";
-                    })
-                    .catch(error => console.error("Error fetching profile:", error));
+                nameInput.value = user.name || "";
+                ageInput.value = user.age || "";
+                genderInput.value = user.gender || "";
+                occupationInput.value = user.occupation || "";
+                emailInput.value = user.email || "";
+                passwordInput.value = ""; // Ikke vis passord
 
-                // Oppdater brukerprofil
-                updateButton.addEventListener("click", function (event) {
-                    event.preventDefault();
-
-                    const updatedProfile = {
-                        name: nameInput.value,
-                        age: ageInput.value,
-                        gender: genderInput.value,
-                        occupation: occupationInput.value
-                    };
-
-                    fetch("http://localhost:5000/my_diss/update-profile", {
-                        method: "PUT",
-                        headers: {
-                            "Authorization": `Bearer ${token}`,
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(updatedProfile)
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.error) {
-                                alert("Error updating profile: " + data.error);
-                            } else {
-                                alert("Profile updated successfully!");
-                            }
-                        })
-                        .catch(error => console.error("Error updating profile:", error));
-                });
+                // 🔹 Lagre e-posten i localStorage for å huske oppdatert email
+                localStorage.setItem("userEmail", user.email);
+            })
+            .catch(error => {
+                console.error("❌ Error fetching profile:", error);
+                alert("Error loading profile. Please try again.");
             });
+    }
+
+    fetchUserProfile(); // 🚀 Hent data ved sideinnlasting
+
+    // 🔹 Oppdater brukerprofil
+    updateButton.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        const updatedProfile = {
+            name: nameInput.value,
+            age: ageInput.value,
+            gender: genderInput.value,
+            occupation: occupationInput.value,
+            email: emailInput.value,
+            password: passwordInput.value ? passwordInput.value : null // Oppdater passord hvis det er angitt
+        };
+
+        console.log("🚀 Sending updated profile:", updatedProfile);
+
+        fetch("http://localhost:5000/my_diss/update-profile", {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updatedProfile)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error("❌ Error updating profile:", data.error);
+                    alert("Error updating profile: " + data.error);
+                } else {
+                    alert("✅ Profile updated successfully!");
+
+                    // 🔹 Oppdater token i localStorage etter passord/e-post endring
+                    if (data.token) {
+                        console.log("🔑 Storing new token in localStorage.");
+                        localStorage.setItem("token", data.token);
+                    }
+
+                    // 🔹 Oppdater e-posten i localStorage hvis den er endret
+                    if (data.email) {
+                        localStorage.setItem("userEmail", data.email);
+                    }
+
+                    fetchUserProfile(); // 🚀 Hent data på nytt etter oppdatering
+                }
+            })
+            .catch(error => {
+                console.error("❌ Error updating profile:", error);
+                alert("An error occurred while updating the profile. Please try again.");
+            });
+    });
+
+    // 🔹 Logg ut bruker (Hvis token er ugyldig)
+    function logoutUser() {
+        console.warn("🔹 Logging out user...");
+        localStorage.removeItem("token");
+        localStorage.removeItem("userEmail");
+        alert("Session expired. Please log in again.");
+        window.location.href = "login.html";
+    }
+});
+
+
+          
 
             document.addEventListener("DOMContentLoaded", function () {
                 const emailInput = document.getElementById("email");
@@ -851,6 +910,62 @@
                 }
 
                 fetchUserData();
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    const emailInput = document.getElementById("email");
+                    const passwordInput = document.getElementById("password");
+                    const updateCredentialsForm = document.getElementById("updateCredentialsForm");
+
+                    const token = localStorage.getItem("token");
+                    if (!token) {
+                        alert("You need to log in first.");
+                        window.location.href = "login.html";
+                        return;
+                    }
+
+                    // Fetch current user details and pre-fill email field
+                    fetch("http://localhost:5000/my_diss/get-user-profile", {
+                        method: "GET",
+                        headers: { "Authorization": `Bearer ${token}` }
+                    })
+                        .then(response => response.json())
+                        .then(user => {
+                            if (user.error) {
+                                console.error("Error fetching user:", user.error);
+                                return;
+                            }
+                            emailInput.value = user.email || "";
+                        })
+                        .catch(error => console.error("Error fetching profile:", error));
+
+                    // Handle form submission
+                    updateCredentialsForm.addEventListener("submit", function (event) {
+                        event.preventDefault();
+
+                        const updatedEmail = emailInput.value;
+                        const updatedPassword = passwordInput.value;
+
+                        fetch("http://localhost:5000/my_diss/update-credentials", {
+                            method: "PUT",
+                            headers: {
+                                "Authorization": `Bearer ${token}`,
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ email: updatedEmail, password: updatedPassword })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.error) {
+                                    alert("Error updating credentials: " + data.error);
+                                } else {
+                                    alert("Email and password updated successfully! Please log in again.");
+                                    localStorage.removeItem("token"); // Log out the user
+                                    window.location.href = "login.html"; // Redirect to login
+                                }
+                            })
+                            .catch(error => console.error("Error updating credentials:", error));
+                    });
+                });
 
                 // Håndtering av oppdatering
                 form.addEventListener("submit", function (event) {

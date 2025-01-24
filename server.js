@@ -339,28 +339,77 @@ const questionSchema = new mongoose.Schema({
 
 const Question = mongoose.model('Question', questionSchema);
 
-// ✅ User Login
+// ✅ User Login (Improved)
 app.post('/my_diss/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ error: 'Email and password are required.' });
+      const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ error: 'Invalid credentials.' });
+      console.log("🔍 Login Attempt for:", email);
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ error: 'Invalid credentials.' });
+      if (!email || !password) {
+          return res.status(400).json({ error: 'Email and password are required.' });
+      }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET || "fallbackSecretKey", { expiresIn: '24h' });
+      // 🔹 Finn bruker i databasen
+      const user = await User.findOne({ email });
+      if (!user) {
+          console.warn("❌ User not found:", email);
+          return res.status(400).json({ error: 'Invalid credentials.' });
+      }
 
-    res.status(200).json({ message: 'Login successful.', token, userId: user._id });
+      console.log("✅ Found User:", user.email);
+      console.log("🔑 Stored Hashed Password:", user.password);
+
+      // 🔹 Sjekk passord mot hash
+      const isMatch = await bcrypt.compare(password, user.password);
+
+      if (!isMatch) {
+          console.warn("❌ Password does not match!");
+          return res.status(400).json({ error: 'Invalid credentials.' });
+      }
+
+      console.log("✅ Password Matched!");
+
+      // 🔹 Generer et nytt token etter vellykket innlogging
+      const token = jwt.sign(
+          { userId: user._id },
+          process.env.JWT_SECRET || "fallbackSecretKey",
+          { expiresIn: '24h' } // 24 timer
+      );
+
+      console.log("🔑 New Token Generated:", token);
+
+      res.status(200).json({
+          message: '✅ Login successful.',
+          token,
+          userId: user._id,
+          email: user.email
+      });
+
   } catch (err) {
-    res.status(500).json({ error: 'Server error during login.' });
+      console.error("❌ Server error during login:", err);
+      res.status(500).json({ error: 'Server error during login.' });
   }
-});// ✅ Route to check if token is valid
-app.get('/my_diss/check-token', authenticateToken, (req, res) => {
-  res.status(200).json({ message: "Token is valid", userId: req.user.userId });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.post('/my_diss/questions/like/:answerId', authenticateToken, async (req, res) => {
   try {
@@ -1018,27 +1067,144 @@ app.delete('/my_diss/answers/:answerId', authenticateToken, async (req, res) => 
 });
 
 
-app.put('/my_diss/update-profile', authenticateToken, async (req, res) => {
+app.put("/my_diss/update-profile", authenticateToken, async (req, res) => {
   try {
-    const { name, age, gender, occupation } = req.body;
+      const { name, age, gender, occupation, email, password } = req.body;
+      const userId = req.user.userId;
 
-    // Oppdater brukeren i databasen
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user.userId,
-      { name, age, gender, occupation },
-      { new: true, runValidators: true }
-    );
+      console.log("🔍 Update Request for user:", userId);
 
-    if (!updatedUser) {
-      return res.status(404).json({ error: "User not found" });
-    }
+      // Finn brukeren basert på ID
+      const user = await User.findById(userId);
+      if (!user) {
+          console.log("❌ User not found");
+          return res.status(404).json({ error: "User not found" });
+      }
 
-    res.status(200).json({ message: "Profile updated successfully", user: updatedUser });
+      // Oppdater feltene hvis de er sendt i forespørselen
+      if (name) user.name = name;
+      if (age) user.age = age;
+      if (gender) user.gender = gender;
+      if (occupation) user.occupation = occupation;
+      if (email) user.email = email;
+
+      if (password) {
+          const hashedPassword = await bcrypt.hash(password, 10);
+          console.log("🔐 New Hashed Password:", hashedPassword);
+          user.password = hashedPassword;
+      }
+
+      await user.save();
+      console.log("✅ Profile updated successfully");
+
+      // 🔹 Generer et nytt token etter oppdatering
+      const newToken = jwt.sign(
+          { userId: user._id },
+          process.env.JWT_SECRET || "fallbackSecretKey",
+          { expiresIn: '24h' }
+      );
+
+      res.status(200).json({
+          message: "Profile updated successfully",
+          token: newToken,
+          userId: user._id
+      });
+
   } catch (err) {
-    console.error("❌ Error updating profile:", err);
-    res.status(500).json({ error: "Server error updating profile" });
+      console.error("❌ Error updating profile:", err);
+      res.status(500).json({ error: "Error updating profile" });
   }
 });
+
+
+// ✅ Route to check if token is valid
+app.get('/my_diss/check-token', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select("email"); // Henter kun epost
+    if (!user) {
+      console.warn("❌ User not found, logging out...");
+      return res.status(401).json({ error: "User not found, please log in again." });
+    }
+
+    console.log("✅ Token is valid for:", user.email);
+    res.status(200).json({
+      message: "Token is valid",
+      userId: req.user.userId,
+      email: user.email
+    });
+
+  } catch (err) {
+    console.error("❌ Error validating token:", err);
+    res.status(500).json({ error: "Server error while validating token." });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.put('/my_diss/update-credentials', authenticateToken, async (req, res) => {
+  try {
+      const { email, password } = req.body;
+      const userId = req.user.userId;
+
+      // Validate input
+      if (!email || !password) {
+          return res.status(400).json({ error: "Email and password are required." });
+      }
+
+      // Find the user by ID
+      const user = await User.findById(userId);
+      if (!user) {
+          return res.status(404).json({ error: "User not found." });
+      }
+
+      // Check if the new email is already taken
+      const existingUser = await User.findOne({ email });
+      if (existingUser && existingUser._id.toString() !== userId) {
+          return res.status(400).json({ error: "This email is already in use." });
+      }
+
+      // Hash new password before saving
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Update user details
+      user.email = email;
+      user.password = hashedPassword;
+      await user.save();
+
+      res.status(200).json({ message: "Email and password updated successfully." });
+  } catch (err) {
+      console.error("❌ Error updating user credentials:", err);
+      res.status(500).json({ error: "Server error updating credentials." });
+  }
+});
+
 
 app.get('/my_diss/user-profile', authenticateToken, async (req, res) => {
   try {
