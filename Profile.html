@@ -11,226 +11,254 @@
 
     <style>
         /* Global Styles */
-body {
-    background-color: #eef2f7;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
+        body {
+            background-color: #eef2f7;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-/* Profile Header */
-.profile-header {
-    width: 100%;
+        /* Profile Header */
+        .profile-header {
+            width: 100%;
+            background-color: #e16539;
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+        }
+
+        /* Profile Icon */
+        .profile-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            font-size: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: auto;
+            background-color: #555;
+            color: white;
+        }
+
+        /* Contributions Main Header */
+        .contributions-header {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #e16539;
+            display: block;
+            /* Ensures it's on its own line */
+        }
+
+        /* Section Titles (Subheadings) */
+        .section-title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #444;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #e16539;
+            display: inline-block;
+            /* Prevents full-width styling */
+            width: auto;
+            /* Prevents it from stretching */
+        }
+
+
+        /* Centering Headers */
+        .container h5,
+        .container h4 {
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Container Styling */
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        /* Post Styling */
+        .post-list {
+            max-width: 700px;
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        .post-item {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            text-align: left;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .post-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Post Content */
+        .post-item h6 {
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .post-item p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        /* Rating Styling */
+        .rating {
+            color: gold;
+            font-weight: bold;
+        }
+
+        /* Buttons */
+        .btn-group-custom {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+
+        /* Black Button */
+        .btn-black {
+            background-color: black;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .btn-black:hover {
+            background-color: #333;
+        }
+
+        /* Red Delete Button */
+        .btn-danger {
+            border-radius: 5px;
+        }
+
+        /* Settings Card */
+        .settings-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 500px;
+            margin: 20px auto;
+            text-align: center;
+            display: none;
+            /* Hidden by default */
+        }
+
+        /* Form Styling */
+        .form-control {
+            border-radius: 5px;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        /* Modal Styling */
+        .modal-confirm {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 320px;
+            z-index: 1000;
+        }
+
+        /* Endrer outline (blå ramme) til oransje */
+        .form-control:focus {
+            border-color: #e16539;
+            /* Oransje kant */
+            box-shadow: 0 0 5px #e16539;
+            /* Oransje glød */
+            outline: none;
+            /* Fjerner standard blå kant */
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .active-btn {
+            opacity: 0.7;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #e16539;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .home-button i {
+            font-size: 18px;
+        }
+
+        .home-button:hover {
+            background-color: #c84f2f;
+        }
+
+        /* Endrer knappens farge ved hover */
+.btn-primary {
     background-color: #e16539;
-    color: white;
-    text-align: center;
-    padding: 50px 20px;
-    border-bottom-left-radius: 50px;
-    border-bottom-right-radius: 50px;
+    border-color: #e16539;
 }
 
-/* Profile Icon */
-.profile-icon {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    font-size: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    margin: auto;
-    background-color: #555;
-    color: white;
+/* Endrer farge når knappen er klikket/fokusert */
+.btn-primary:focus, 
+.btn-primary:active {
+    background-color: darkorange !important;
+    border-color: darkorange !important;
+    box-shadow: 0 0 5px #e16539;
+    outline: none;
 }
-
-/* Contributions Main Header */
-.contributions-header {
-    text-align: center;
-    font-size: 28px;
-    font-weight: bold;
-    color: #333;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 3px solid #e16539;
-    display: block; /* Ensures it's on its own line */
-}
-
-/* Section Titles (Subheadings) */
-.section-title {
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    color: #444;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 2px solid #e16539;
-    display: inline-block; /* Prevents full-width styling */
-    width: auto; /* Prevents it from stretching */
-}
-
-
-/* Centering Headers */
-.container h5,
-.container h4 {
-    text-align: center;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Container Styling */
-.container {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-}
-
-/* Post Styling */
-.post-list {
-    max-width: 700px;
-    margin: auto;
-    margin-top: 20px;
-}
-
-.post-item {
-    background-color: #ffffff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 15px;
-    text-align: left;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-.post-item:hover {
-    transform: scale(1.02);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Post Content */
-.post-item h6 {
-    margin: 0;
-    font-weight: bold;
-}
-
-.post-item p {
-    margin: 5px 0;
-    color: #555;
-}
-
-/* Rating Styling */
-.rating {
-    color: gold;
-    font-weight: bold;
-}
-
-/* Buttons */
-.btn-group-custom {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.btn-small {
-    padding: 8px 16px;
-    font-size: 14px;
-    border-radius: 5px;
-}
-
-/* Black Button */
-.btn-black {
-    background-color: black;
-    color: white;
-    border-radius: 5px;
-}
-
-.btn-black:hover {
-    background-color: #333;
-}
-
-/* Red Delete Button */
-.btn-danger {
-    border-radius: 5px;
-}
-
-/* Settings Card */
-.settings-card {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    max-width: 500px;
-    margin: 20px auto;
-    text-align: center;
-    display: none; /* Hidden by default */
-}
-
-/* Form Styling */
-.form-control {
-    border-radius: 5px;
-    max-width: 400px;
-    margin: auto;
-}
-
-/* Modal Styling */
-.modal-confirm {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    width: 320px;
-    z-index: 1000;
-}
-
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-}
-
-.active-btn {
-    opacity: 0.7;
-}
-
-.home-button {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background-color: #e16539;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: 0.3s ease-in-out;
-}
-
-.home-button i {
-    font-size: 18px;
-}
-
-.home-button:hover {
-    background-color: #c84f2f;
-}
-
 
     </style>
 </head>
@@ -239,11 +267,10 @@ body {
     <a href="index.html" class="home-button">
         <i class="fas fa-arrow-left"></i> Main page
     </a>
-    
+
     <div class="profile-header">
         <div class="profile-icon" id="profileIcon">AB</div>
-        <h2 id="profileName" class="mt-2">Guest</h2>
-        <p id="profileEmail">Not logged in</p>
+        <h2 id="profileEmail" class="mt-2">Guest</h2>
     </div>
 
     <div class="container">
@@ -252,382 +279,453 @@ body {
             <button class="btn btn-danger btn-small" id="deleteAccountBtn">🗑 Delete Account</button>
         </div>
 
-        <div class="settings-card" id="settingsCard">
-            <h5>Account Settings</h5>
-            <p><strong>Member Since:</strong> <span id="profileSince">N/A</span></p>
+        <div class="container p-4">
+            <div class="card shadow p-4">
+                <h3 class="text-center">Account Settings</h3>
+                <h6 class="text-center">Change Details</h6>
 
-            <h6>Change Details</h6>
-            <input type="text" id="editName" placeholder="New Name" class="form-control mb-2">
-            <input type="email" id="editEmail" placeholder="New Email" class="form-control mb-2">
-            <input type="password" id="editPassword" placeholder="New Password" class="form-control mb-2">
-            <button class="btn btn-primary mt-2 btn-small" id="updateProfileBtn">Update</button>
+                <form>
+                    <div class="mb-3 row">
+                        <label for="name" class="col-sm-2 col-form-label text-end">Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="name" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="age" class="col-sm-2 col-form-label text-end">Age</label>
+                        <div class="col-sm-10">
+                            <input type="number" id="age" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="gender" class="col-sm-2 col-form-label text-end">Gender</label>
+                        <div class="col-sm-10">
+                            <select id="gender" class="form-control">
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                                <option value="prefer_not_to_say">Prefer not to say</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="occupation" class="col-sm-2 col-form-label text-end">Occupation</label>
+                        <div class="col-sm-10">
+                            <select id="occupation" class="form-control">
+                                <option value="">Select Occupation</option>
+                                <option value="software_engineer">Software Engineer</option>
+                                <option value="data_scientist">Data Scientist</option>
+                                <option value="teacher">Teacher</option>
+                                <option value="doctor">Doctor</option>
+                                <option value="nurse">Nurse</option>
+                                <option value="engineer">Engineer</option>
+                                <option value="accountant">Accountant</option>
+                                <option value="lawyer">Lawyer</option>
+                                <option value="marketing_specialist">Marketing Specialist</option>
+                                <option value="graphic_designer">Graphic Designer</option>
+                                <option value="business_analyst">Business Analyst</option>
+                                <option value="sales_representative">Sales Representative</option>
+                                <option value="customer_service_rep">Customer Service Representative</option>
+                                <option value="project_manager">Project Manager</option>
+                                <option value="electrician">Electrician</option>
+                                <option value="mechanic">Mechanic</option>
+                                <option value="chef">Chef</option>
+                                <option value="pilot">Pilot</option>
+                                <option value="police_officer">Police Officer</option>
+                                <option value="firefighter">Firefighter</option>
+                                <option value="student">Student</option>
+                                <option value="unemployed">Unemployed</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="email" class="col-sm-2 col-form-label text-end">Email</label>
+                        <div class="col-sm-10">
+                            <input type="email" id="email" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="password" class="col-sm-2 col-form-label text-end">Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" id="password" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button class="btn btn-primary mt-2 btn-small">Update</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-
-    <div class="container">
-        <h2 class="contributions-header">Your Contributions</h2>
-    
-        <h4 class="section-title">Your IT System Reviews</h4>
-        <div class="post-list" id="userPosts"></div>
-    
-        <h4 class="section-title">Your Comments on IT Systems</h4>
-        <div class="post-list" id="itSystemComments"></div>
-    
-        <h4 class="section-title">Your Questions</h4>
-        <div class="post-list" id="yourQuestions"></div>
-    
-        <h4 class="section-title">Your Answers</h4>
-        <div class="post-list" id="yourAnswers"></div>
-    </div>
-    
 
 
-    <!-- Modal for Delete Confirmation -->
-    <div class="modal-overlay" id="modalOverlay"></div>
-    <div class="modal-confirm" id="modalConfirm">
-        <h5>Are you sure?</h5>
-        <p>This action cannot be undone.</p>
-        <button class="btn btn-danger btn-small" id="confirmDelete">Yes, Delete</button>
-        <button class="btn btn-secondary btn-small" id="cancelDelete">No</button>
-    </div>
+        <div class="container">
+            <h2 class="contributions-header">Your Contributions</h2>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            console.log("🔄 Page loaded");
+            <h4 class="section-title">Your IT System Reviews</h4>
+            <div class="post-list" id="userPosts"></div>
 
-            const profileName = document.getElementById("profileName");
-            const profileEmail = document.getElementById("profileEmail");
-            const profileIcon = document.getElementById("profileIcon");
-            const profileSince = document.getElementById("profileSince");
-            const settingsCard = document.getElementById("settingsCard");
-            const settingsBtn = document.getElementById("toggleSettingsBtn");
-            const deleteBtn = document.getElementById("deleteAccountBtn");
-            const modalConfirm = document.getElementById("modalConfirm");
-            const modalOverlay = document.getElementById("modalOverlay");
-            const cancelDelete = document.getElementById("cancelDelete");
-            const confirmDelete = document.getElementById("confirmDelete");
+            <h4 class="section-title">Your Comments on IT Systems</h4>
+            <div class="post-list" id="itSystemComments"></div>
 
-            let token = localStorage.getItem("token");  // Bruk riktig nøkkel!
+            <h4 class="section-title">Your Questions</h4>
+            <div class="post-list" id="yourQuestions"></div>
 
-            if (!token || token === "null" || token === "undefined") {
-                console.log("❌ No valid token found, redirecting to login...");
-                logoutUser();
-            } else {
-                console.log("✅ Token found:", token);
-                fetchUserData(token);
-            }
+            <h4 class="section-title">Your Answers</h4>
+            <div class="post-list" id="yourAnswers"></div>
+        </div>
 
 
-            // 🔹 Henter brukerdata basert på token
-            function fetchUserData(token) {
-                fetch("http://localhost:5000/my_diss/check-token", {
-                    method: "GET",
-                    headers: { "Authorization": `Bearer ${token}` }
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log("🔍 check-token response:", data);
 
-                        if (data.message === "Token is valid" && data.userId) {
-                            console.log("✅ Token is valid, userId:", data.userId);
+        <!-- Modal for Delete Confirmation -->
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-confirm" id="modalConfirm">
+            <h5>Are you sure?</h5>
+            <p>This action cannot be undone.</p>
+            <button class="btn btn-danger btn-small" id="confirmDelete">Yes, Delete</button>
+            <button class="btn btn-secondary btn-small" id="cancelDelete">No</button>
+        </div>
 
-                            // 🚀 Sørg for at `userEmail` er lagret i localStorage
-                            if (!localStorage.getItem("userEmail")) {
-                                console.warn("⚠ `userEmail` not found in localStorage. Fetching from backend...");
-                                fetchUserEmailFromBackend(data.userId, token);
-                            } else {
-                                fetchUserProfile(token);
-                            }
-                        } else {
-                            console.warn("⚠ Invalid token or missing userId. Redirecting to login...");
-                            logoutUser();
-                        }
-                    })
-                    .catch(err => {
-                        console.error("❌ Error validating token:", err);
-                        logoutUser();
-                    });
-            }
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                console.log("🔄 Page loaded");
 
+                const profileEmail = document.getElementById("profileEmail");
+                const profileIcon = document.getElementById("profileIcon");
+                const settingsCard = document.getElementById("settingsCard");
+                const settingsBtn = document.getElementById("toggleSettingsBtn");
+                const deleteBtn = document.getElementById("deleteAccountBtn");
+                const modalConfirm = document.getElementById("modalConfirm");
+                const modalOverlay = document.getElementById("modalOverlay");
+                const cancelDelete = document.getElementById("cancelDelete");
+                const confirmDelete = document.getElementById("confirmDelete");
 
-            // 🔹 Henter brukerprofil
-            function fetchUserProfile(userId, token) {
-                if (!userId || typeof userId !== "string") {
-                    console.error("❌ userId is invalid! Cannot fetch user profile.");
+                let token = localStorage.getItem("token");  // Bruk riktig nøkkel!
+
+                if (!token || token === "null" || token === "undefined") {
+                    console.log("❌ No valid token found, redirecting to login...");
                     logoutUser();
-                    return;
+                } else {
+                    console.log("✅ Token found:", token);
+                    fetchUserData(token);
                 }
 
-                let email = localStorage.getItem("userEmail"); // Henter email fra localStorage
 
-                if (!email || email === "null" || email === "undefined") {
-                    console.warn("⚠ `userEmail` not found in localStorage. Trying to fetch from backend...");
-                    fetchUserEmailFromBackend(userId, token);
-                    return;
-                }
-
-                console.log("✅ Fetching user profile for:", email);
-
-                fetch(`http://localhost:5000/my_diss/get-user/${email}`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                })
-                    .then(res => res.json())
-                    .then(user => {
-                        console.log("🔍 User profile response:", user);
-
-                        if (user.error) {
-                            console.error("❌ User not found:", user.error);
-                            logoutUser();
-                        } else {
-                            updateProfileUI(user);
-                        }
+                // 🔹 Henter brukerdata basert på token
+                function fetchUserData(token) {
+                    fetch("http://localhost:5000/my_diss/check-token", {
+                        method: "GET",
+                        headers: { "Authorization": `Bearer ${token}` }
                     })
-                    .catch(err => {
-                        console.error("❌ Error fetching user data:", err);
-                        logoutUser();
-                    });
-            }
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("🔍 check-token response:", data);
 
-            function fetchUserEmailFromBackend(userId, token) {
-                fetch(`http://localhost:5000/my_diss/get-user-id/${userId}`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.email) {
-                            console.log("✅ Fetched email from backend:", data.email);
-                            localStorage.setItem("userEmail", data.email);
-                            fetchUserProfile(userId, token); // Kall funksjonen igjen med ny email
-                        } else {
-                            console.error("❌ Could not fetch email. Logging out...");
+                            if (data.message === "Token is valid" && data.userId) {
+                                console.log("✅ Token is valid, userId:", data.userId);
+
+                                // 🚀 Sørg for at `userEmail` er lagret i localStorage
+                                if (!localStorage.getItem("userEmail")) {
+                                    console.warn("⚠ `userEmail` not found in localStorage. Fetching from backend...");
+                                    fetchUserEmailFromBackend(data.userId, token);
+                                } else {
+                                    fetchUserProfile(token);
+                                }
+                            } else {
+                                console.warn("⚠ Invalid token or missing userId. Redirecting to login...");
+                                logoutUser();
+                            }
+                        })
+                        .catch(err => {
+                            console.error("❌ Error validating token:", err);
                             logoutUser();
-                        }
-                    })
-                    .catch(err => {
-                        console.error("❌ Error fetching email from backend:", err);
+                        });
+                }
+
+
+                // 🔹 Henter brukerprofil
+                function fetchUserProfile(userId, token) {
+                    if (!userId || typeof userId !== "string") {
+                        console.error("❌ userId is invalid! Cannot fetch user profile.");
                         logoutUser();
-                    });
-            }
+                        return;
+                    }
 
-            // 🔹 Oppdaterer UI med brukerens data
-            function updateProfileUI(user) {
-                profileName.innerText = user.name || "Guest";
-                profileEmail.innerText = user.email || "Not logged in";
-                profileSince.innerText = user.memberSince || "Unknown";
+                    let email = localStorage.getItem("userEmail"); // Henter email fra localStorage
 
-                if (user.name) {
-                    const initials = user.name.charAt(0).toUpperCase() + user.name.charAt(user.name.length - 1).toUpperCase();
-                    profileIcon.innerText = initials;
+                    if (!email || email === "null" || email === "undefined") {
+                        console.warn("⚠ `userEmail` not found in localStorage. Trying to fetch from backend...");
+                        fetchUserEmailFromBackend(userId, token);
+                        return;
+                    }
+
+                    console.log("✅ Fetching user profile for:", email);
+
+                    fetch(`http://localhost:5000/my_diss/get-user/${email}`, {
+                        headers: { "Authorization": `Bearer ${token}` }
+                    })
+                        .then(res => res.json())
+                        .then(user => {
+                            console.log("🔍 User profile response:", user);
+
+                            if (user.error) {
+                                console.error("❌ User not found:", user.error);
+                                logoutUser();
+                            } else {
+                                updateProfileUI(user);
+                            }
+                        })
+                        .catch(err => {
+                            console.error("❌ Error fetching user data:", err);
+                            logoutUser();
+                        });
                 }
 
-                fetchUserPosts(user._id);
-            }
-
-
-            // 🔹 Henter brukerens bidrag (poster, kommentarer, spørsmål, svar)
-            function fetchUserPosts(userId) {
-                if (!userId) {
-                    console.error("❌ No userId provided for fetching data.");
-                    return;
+                function fetchUserEmailFromBackend(userId, token) {
+                    fetch(`http://localhost:5000/my_diss/get-user-id/${userId}`, {
+                        headers: { "Authorization": `Bearer ${token}` }
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.email) {
+                                console.log("✅ Fetched email from backend:", data.email);
+                                localStorage.setItem("userEmail", data.email);
+                                fetchUserProfile(userId, token); // Kall funksjonen igjen med ny email
+                            } else {
+                                console.error("❌ Could not fetch email. Logging out...");
+                                logoutUser();
+                            }
+                        })
+                        .catch(err => {
+                            console.error("❌ Error fetching email from backend:", err);
+                            logoutUser();
+                        });
                 }
 
-                const token = localStorage.getItem("token");
-                if (!token) {
-                    console.error("❌ No token found in localStorage.");
-                    return;
+                // 🔹 Oppdaterer UI med brukerens data
+                function updateProfileUI(user) {
+                    profileEmail.innerText = user.email || "Not logged in";
+
+                    if (user.email) {
+                        const initials = user.email.charAt(0).toUpperCase() + user.email.charAt(user.email.length - 1).toUpperCase();
+                        profileIcon.innerText = initials;
+                    }
+
+                    fetchUserPosts(user._id);
                 }
 
-                console.log("🔹 Fetching all user contributions for userId:", userId);
 
-                // ✅ Henter brukerens IT-system anmeldelser
-                fetch(`http://localhost:5000/my_diss/user-posts/${userId}`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                })
-                    .then(res => res.json())
-                    .then(posts => {
-                        const postsContainer = document.getElementById("userPosts");
-                        postsContainer.innerHTML = "";
+                // 🔹 Henter brukerens bidrag (poster, kommentarer, spørsmål, svar)
+                function fetchUserPosts(userId) {
+                    if (!userId) {
+                        console.error("❌ No userId provided for fetching data.");
+                        return;
+                    }
 
-                        if (!posts || posts.length === 0) {
-                            postsContainer.innerHTML = "<p>No IT system reviews found.</p>";
-                            return;
-                        }
+                    const token = localStorage.getItem("token");
+                    if (!token) {
+                        console.error("❌ No token found in localStorage.");
+                        return;
+                    }
 
-                        posts.forEach(post => {
-                            const postItem = document.createElement("div");
-                            postItem.classList.add("post-item");
-                            postItem.innerHTML = `
+                    console.log("🔹 Fetching all user contributions for userId:", userId);
+
+                    // ✅ Henter brukerens IT-system anmeldelser
+                    fetch(`http://localhost:5000/my_diss/user-posts/${userId}`, {
+                        headers: { "Authorization": `Bearer ${token}` }
+                    })
+                        .then(res => res.json())
+                        .then(posts => {
+                            const postsContainer = document.getElementById("userPosts");
+                            postsContainer.innerHTML = "";
+
+                            if (!posts || posts.length === 0) {
+                                postsContainer.innerHTML = "<p>No IT system reviews found.</p>";
+                                return;
+                            }
+
+                            posts.forEach(post => {
+                                const postItem = document.createElement("div");
+                                postItem.classList.add("post-item");
+                                postItem.innerHTML = `
                     <h6>${post.companyName}</h6>
                     <p>${post.experienceDescription}</p>
                     <p>⭐ Rating: ${post.rating}</p>
                 `;
-                            postsContainer.appendChild(postItem);
-                        });
+                                postsContainer.appendChild(postItem);
+                            });
 
-                        console.log("✅ Successfully loaded user posts:", posts);
+                            console.log("✅ Successfully loaded user posts:", posts);
+                        })
+                        .catch(err => console.error("❌ Error fetching user posts:", err));
+
+                    // ✅ Henter brukerens kommentarer på IT-systemer
+                    fetch(`http://localhost:5000/my_diss/user-comments/${userId}`, {
+                        headers: { "Authorization": `Bearer ${token}` }
                     })
-                    .catch(err => console.error("❌ Error fetching user posts:", err));
+                        .then(res => res.json())
+                        .then(comments => {
+                            const commentsContainer = document.getElementById("itSystemComments");
+                            commentsContainer.innerHTML = "";
 
-                // ✅ Henter brukerens kommentarer på IT-systemer
-                fetch(`http://localhost:5000/my_diss/user-comments/${userId}`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                })
-                    .then(res => res.json())
-                    .then(comments => {
-                        const commentsContainer = document.getElementById("itSystemComments");
-                        commentsContainer.innerHTML = "";
+                            if (!comments || comments.length === 0) {
+                                commentsContainer.innerHTML = "<p>No comments found.</p>";
+                                return;
+                            }
 
-                        if (!comments || comments.length === 0) {
-                            commentsContainer.innerHTML = "<p>No comments found.</p>";
-                            return;
-                        }
-
-                        comments.forEach(comment => {
-                            const commentItem = document.createElement("div");
-                            commentItem.classList.add("post-item");
-                            commentItem.innerHTML = `
+                            comments.forEach(comment => {
+                                const commentItem = document.createElement("div");
+                                commentItem.classList.add("post-item");
+                                commentItem.innerHTML = `
                     <h6>${comment.companyName}</h6>
                     <p>${comment.commentText}</p>
                     <p>⭐ Rating: ${comment.rating}</p>
                 `;
-                            commentsContainer.appendChild(commentItem);
-                        });
+                                commentsContainer.appendChild(commentItem);
+                            });
 
-                        console.log("✅ Successfully loaded user comments:", comments);
+                            console.log("✅ Successfully loaded user comments:", comments);
+                        })
+                        .catch(err => console.error("❌ Error fetching user comments:", err));
+
+                    // ✅ Henter brukerens spørsmål
+                    fetch(`http://localhost:5000/my_diss/user-questions/${userId}`, {
+                        headers: { "Authorization": `Bearer ${token}` }
                     })
-                    .catch(err => console.error("❌ Error fetching user comments:", err));
+                        .then(res => res.json())
+                        .then(questions => {
+                            const questionsContainer = document.getElementById("yourQuestions");
+                            questionsContainer.innerHTML = "";
 
-                // ✅ Henter brukerens spørsmål
-                fetch(`http://localhost:5000/my_diss/user-questions/${userId}`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                })
-                    .then(res => res.json())
-                    .then(questions => {
-                        const questionsContainer = document.getElementById("yourQuestions");
-                        questionsContainer.innerHTML = "";
+                            if (!questions || questions.length === 0) {
+                                questionsContainer.innerHTML = "<p>No questions found.</p>";
+                                return;
+                            }
 
-                        if (!questions || questions.length === 0) {
-                            questionsContainer.innerHTML = "<p>No questions found.</p>";
-                            return;
-                        }
+                            questions.forEach(question => {
+                                const questionItem = document.createElement("div");
+                                questionItem.classList.add("post-item");
+                                questionItem.innerHTML = `<h6>${question.questionText}</h6>`;
+                                questionsContainer.appendChild(questionItem);
+                            });
 
-                        questions.forEach(question => {
-                            const questionItem = document.createElement("div");
-                            questionItem.classList.add("post-item");
-                            questionItem.innerHTML = `<h6>${question.questionText}</h6>`;
-                            questionsContainer.appendChild(questionItem);
-                        });
+                            console.log("✅ Successfully loaded user questions:", questions);
+                        })
+                        .catch(err => console.error("❌ Error fetching user questions:", err));
 
-                        console.log("✅ Successfully loaded user questions:", questions);
+                    // ✅ Henter brukerens svar
+                    fetch(`http://localhost:5000/my_diss/user-answers/${userId}`, {
+                        headers: { "Authorization": `Bearer ${token}` }
                     })
-                    .catch(err => console.error("❌ Error fetching user questions:", err));
+                        .then(res => res.json())
+                        .then(answers => {
+                            const answersContainer = document.getElementById("yourAnswers");
+                            answersContainer.innerHTML = "";
 
-                // ✅ Henter brukerens svar
-                fetch(`http://localhost:5000/my_diss/user-answers/${userId}`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                })
-                    .then(res => res.json())
-                    .then(answers => {
-                        const answersContainer = document.getElementById("yourAnswers");
-                        answersContainer.innerHTML = "";
+                            if (!answers || answers.length === 0) {
+                                answersContainer.innerHTML = "<p>No answers found.</p>";
+                                return;
+                            }
 
-                        if (!answers || answers.length === 0) {
-                            answersContainer.innerHTML = "<p>No answers found.</p>";
-                            return;
-                        }
+                            answers.forEach(answer => {
+                                const answerItem = document.createElement("div");
+                                answerItem.classList.add("post-item");
+                                answerItem.innerHTML = `<h6>${answer.answerText}</h6>`;
+                                answersContainer.appendChild(answerItem);
+                            });
 
-                        answers.forEach(answer => {
-                            const answerItem = document.createElement("div");
-                            answerItem.classList.add("post-item");
-                            answerItem.innerHTML = `<h6>${answer.answerText}</h6>`;
-                            answersContainer.appendChild(answerItem);
-                        });
-
-                        console.log("✅ Successfully loaded user answers:", answers);
-                    })
-                    .catch(err => console.error("❌ Error fetching user answers:", err));
-            }
-
-            // 🔹 Toggle settings visning
-            settingsBtn.addEventListener("click", function () {
-                settingsCard.style.display = settingsCard.style.display === "none" ? "block" : "none";
-                settingsBtn.classList.add("active-btn");
-                setTimeout(() => settingsBtn.classList.remove("active-btn"), 200);
-            });
-
-            // 🔹 Åpne modal for sletting av konto
-            // Åpne modal for sletting av konto
-            deleteBtn.addEventListener("click", function () {
-                modalConfirm.style.display = "block";
-                modalOverlay.style.display = "block";
-            });
-
-            // Avbryt sletting
-            cancelDelete.addEventListener("click", function () {
-                modalConfirm.style.display = "none";
-                modalOverlay.style.display = "none";
-            });
-
-            // Bekreft sletting av konto
-            confirmDelete.addEventListener("click", async function () {
-                console.log("🗑 Deleting account...");
-                let email = localStorage.getItem("userEmail");
-
-                if (!email) {
-                    console.error("❌ No email found in localStorage. Cannot delete user.");
-                    alert("Error: User email not found.");
-                    return;
+                            console.log("✅ Successfully loaded user answers:", answers);
+                        })
+                        .catch(err => console.error("❌ Error fetching user answers:", err));
                 }
 
-                try {
-                    const response = await fetch(`http://localhost:5000/my_diss/delete-account/${email}`, {
-                        method: "DELETE",
-                        headers: { "Authorization": `Bearer ${token}` },
-                    });
+                // 🔹 Toggle settings visning
+                settingsBtn.addEventListener("click", function () {
+                    settingsCard.style.display = settingsCard.style.display === "none" ? "block" : "none";
+                    settingsBtn.classList.add("active-btn");
+                    setTimeout(() => settingsBtn.classList.remove("active-btn"), 200);
+                });
 
-                    if (!response.ok) {
-                        throw new Error(`Server returned error: ${response.status}`);
+                // 🔹 Åpne modal for sletting av konto
+                // Åpne modal for sletting av konto
+                deleteBtn.addEventListener("click", function () {
+                    modalConfirm.style.display = "block";
+                    modalOverlay.style.display = "block";
+                });
+
+                // Avbryt sletting
+                cancelDelete.addEventListener("click", function () {
+                    modalConfirm.style.display = "none";
+                    modalOverlay.style.display = "none";
+                });
+
+                // Bekreft sletting av konto
+                confirmDelete.addEventListener("click", async function () {
+                    console.log("🗑 Deleting account...");
+                    let email = localStorage.getItem("userEmail");
+
+                    if (!email) {
+                        console.error("❌ No email found in localStorage. Cannot delete user.");
+                        alert("Error: User email not found.");
+                        return;
                     }
 
-                    const data = await response.json();
-                    console.log("✅ Account deleted:", data);
+                    try {
+                        const response = await fetch(`http://localhost:5000/my_diss/delete-account/${email}`, {
+                            method: "DELETE",
+                            headers: { "Authorization": `Bearer ${token}` },
+                        });
 
-                    alert("Your account has been successfully deleted.");
-                    logoutUser();
-                } catch (err) {
-                    console.error("❌ Error deleting account:", err);
-                    alert("An error occurred while deleting your account.");
+                        if (!response.ok) {
+                            throw new Error(`Server returned error: ${response.status}`);
+                        }
+
+                        const data = await response.json();
+                        console.log("✅ Account deleted:", data);
+
+                        alert("Your account has been successfully deleted.");
+                        logoutUser();
+                    } catch (err) {
+                        console.error("❌ Error deleting account:", err);
+                        alert("An error occurred while deleting your account.");
+                    }
+                });
+
+                // 🔹 Logout-funksjon
+                function logoutUser() {
+                    console.warn("🔹 Logging out user...");
+                    console.log("🔹 LocalStorage before logout:", localStorage);
+
+                    localStorage.removeItem("authToken");
+                    localStorage.removeItem("userId");
+                    localStorage.removeItem("userEmail");
+
+                    console.log("🔹 LocalStorage after logout:", localStorage);
+
+                    if (!window.location.href.includes("login.html")) {
+                        alert("You have been logged out.");
+                        window.location.href = "login.html";
+                    }
                 }
             });
 
-            // 🔹 Logout-funksjon
-            function logoutUser() {
-                console.warn("🔹 Logging out user...");
-                console.log("🔹 LocalStorage before logout:", localStorage);
+            async function fetchTopSystems() {
+                try {
+                    const response = await fetch("http://localhost:5000/my_diss");
+                    if (!response.ok) throw new Error("Feil ved henting av systemer");
 
-                localStorage.removeItem("authToken");
-                localStorage.removeItem("userId");
-                localStorage.removeItem("userEmail");
+                    const feedbacks = await response.json();
+                    feedbacks.sort((a, b) => b.rating - a.rating);
+                    const top3 = feedbacks.slice(0, 3);
 
-                console.log("🔹 LocalStorage after logout:", localStorage);
-
-                if (!window.location.href.includes("login.html")) {
-                    alert("You have been logged out.");
-                    window.location.href = "login.html";
-                }
-            }
-        });
-
-        async function fetchTopSystems() {
-            try {
-                const response = await fetch("http://localhost:5000/my_diss");
-                if (!response.ok) throw new Error("Feil ved henting av systemer");
-
-                const feedbacks = await response.json();
-                feedbacks.sort((a, b) => b.rating - a.rating);
-                const top3 = feedbacks.slice(0, 3);
-
-                document.getElementById("topSystems").innerHTML = top3.map(system => `
+                    document.getElementById("topSystems").innerHTML = top3.map(system => `
             <div class="col-md-4 mb-3">
                 <div class="system-card">
                     <img src="http://localhost:5000${system.logoPath}" alt="Logo" class="img-fluid" style="max-width: 80px;">
@@ -637,25 +735,25 @@ body {
                 </div>
             </div>
         `).join("");
-            } catch (error) {
-                console.error("❌ Feil under henting av IT-systemer:", error);
-                document.getElementById("topSystems").innerHTML = "<p>Kunne ikke laste systemene.</p>";
-            }
-        }
-
-        // ✅ Hent spørsmål med feilhåndtering
-        async function fetchQuestions() {
-            try {
-                const response = await fetch("http://localhost:5000/my_diss/questions");
-                if (!response.ok) throw new Error("Feil ved henting av spørsmål");
-
-                const questions = await response.json();
-                if (!Array.isArray(questions) || questions.length === 0) {
-                    document.getElementById("questions").innerHTML = "<p>Ingen spørsmål funnet.</p>";
-                    return;
+                } catch (error) {
+                    console.error("❌ Feil under henting av IT-systemer:", error);
+                    document.getElementById("topSystems").innerHTML = "<p>Kunne ikke laste systemene.</p>";
                 }
+            }
 
-                document.getElementById("questions").innerHTML = questions.map(q => `
+            // ✅ Hent spørsmål med feilhåndtering
+            async function fetchQuestions() {
+                try {
+                    const response = await fetch("http://localhost:5000/my_diss/questions");
+                    if (!response.ok) throw new Error("Feil ved henting av spørsmål");
+
+                    const questions = await response.json();
+                    if (!Array.isArray(questions) || questions.length === 0) {
+                        document.getElementById("questions").innerHTML = "<p>Ingen spørsmål funnet.</p>";
+                        return;
+                    }
+
+                    document.getElementById("questions").innerHTML = questions.map(q => `
             <div class="green-box" data-bs-toggle="collapse" data-bs-target="#answer${q._id}">
                 <div>${q.questionText || "Ukjent spørsmål"}</div>
                 <span>▼</span>
@@ -664,13 +762,53 @@ body {
                 ${q.answers && q.answers.length ? q.answers.map(ans => `<p>${ans}</p>`).join(" ") : "<p>Ingen svar tilgjengelig.</p>"}
             </div>
         `).join("");
-            } catch (error) {
-                console.error("❌ Feil under henting av spørsmål:", error);
-                document.getElementById("questions").innerHTML = "<p>Kunne ikke laste spørsmål.</p>";
+                } catch (error) {
+                    console.error("❌ Feil under henting av spørsmål:", error);
+                    document.getElementById("questions").innerHTML = "<p>Kunne ikke laste spørsmål.</p>";
+                }
             }
-        }
 
-    </script>
+
+
+
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const emailInput = document.getElementById("email");
+                const passwordInput = document.getElementById("password");
+                const form = document.getElementById("accountSettingsForm");
+
+                // Simulert API-kall for å hente lagret brukerinfo
+                function fetchUserData() {
+                    fetch("http://localhost:5000/get-user-data", { method: "GET" })
+                        .then(response => response.json())
+                        .then(data => {
+                            emailInput.value = data.email;
+                            passwordInput.value = ""; // Tomt for sikkerhet
+                        })
+                        .catch(error => console.error("Error fetching user data:", error));
+                }
+
+                fetchUserData();
+
+                // Håndtering av oppdatering
+                form.addEventListener("submit", function (event) {
+                    event.preventDefault();
+
+                    const updatedEmail = emailInput.value;
+                    const updatedPassword = passwordInput.value;
+
+                    fetch("http://localhost:5000/update-user-data", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email: updatedEmail, password: updatedPassword })
+                    })
+                        .then(response => response.json())
+                        .then(data => alert("Profile updated successfully!"))
+                        .catch(error => console.error("Error updating profile:", error));
+                });
+            });
+
+        </script>
 
 </body>
 

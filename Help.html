@@ -212,12 +212,25 @@
             background-color: #e16539;
         }
 
+        .content-wrapper {
+            flex: 1;
+            padding-bottom: 20px;
+            /* Ensures spacing above footer */
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
         .footer {
             background-color: #222;
             color: white;
             text-align: center;
             padding: 15px 0;
-            margin-top: auto;
             width: 100%;
         }
     </style>
@@ -251,15 +264,18 @@
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <h4 class="mt-4">People have asked these questions</h4>
-        <div id="questions" class="mb-4"></div>
-        <div class="my-4">
-            <h5>Ask a Question</h5>
-            <textarea id="questionInput" class="form-control" rows="3" placeholder="Type your question here"></textarea>
-            <div class="validation-error text-danger mt-2" id="questionError"></div>
-            <button class="btn btn-primary mt-3" style=" background-color: #e16539; border-color:#e16539;"
-                id="submitQuestionBtn" onclick="submitQuestion()">Submit Question</button>
+    <div class="content-wrapper">
+        <div class="container mt-5">
+            <h4 class="mt-4">People have asked these questions</h4>
+            <div id="questions" class="mb-4"></div>
+            <div class="my-4">
+                <h5>Ask a Question</h5>
+                <textarea id="questionInput" class="form-control" rows="3"
+                    placeholder="Type your question here"></textarea>
+                <div class="validation-error text-danger mt-2" id="questionError"></div>
+                <button class="btn btn-primary mt-3" style=" background-color: #e16539; border-color:#e16539;"
+                    id="submitQuestionBtn" onclick="submitQuestion()">Submit Question</button>
+            </div>
         </div>
     </div>
 
@@ -337,24 +353,24 @@
                 });
         }
 
-async function fetchQuestions() {
-    const token = localStorage.getItem("token");
-    const currentUserId = localStorage.getItem("userId"); // Hent bruker-ID for sjekk
-    const isLoggedIn = !!token; // Sjekker om bruker er logget inn
+        async function fetchQuestions() {
+            const token = localStorage.getItem("token");
+            const currentUserId = localStorage.getItem("userId"); // Hent bruker-ID for sjekk
+            const isLoggedIn = !!token; // Sjekker om bruker er logget inn
 
-    try {
-        const response = await fetch("http://localhost:5000/my_diss/questions");
-        if (!response.ok) throw new Error("Error fetching questions");
+            try {
+                const response = await fetch("http://localhost:5000/my_diss/questions");
+                if (!response.ok) throw new Error("Error fetching questions");
 
-        let questions = await response.json();  // ❗ Endret fra const til let
+                let questions = await response.json();  // ❗ Endret fra const til let
 
-        // 🔹 Filtrer bort spørsmål hvor bruker-ID er null eller "Anonymous"
-        questions = questions.filter(q => q.userId && q.userId.email !== "Anonymous");
+                // 🔹 Filtrer bort spørsmål hvor bruker-ID er null eller "Anonymous"
+                questions = questions.filter(q => q.userId && q.userId.email !== "Anonymous");
 
-        const questionsContainer = document.getElementById("questions");
+                const questionsContainer = document.getElementById("questions");
 
-        questionsContainer.innerHTML = questions.length > 0
-            ? questions.map(question => `
+                questionsContainer.innerHTML = questions.length > 0
+                    ? questions.map(question => `
                 <div class="green-box" data-bs-toggle="collapse" data-bs-target="#answer${question._id}">
                     <div class="question-content">
                         <div class="question-text">${question.questionText}</div>
@@ -403,13 +419,13 @@ async function fetchQuestions() {
                     </button>
                 </div>
             `).join("")
-            : "<p class='text-danger'>No questions available.</p>";
+                    : "<p class='text-danger'>No questions available.</p>";
 
-    } catch (error) {
-        console.error("Error fetching questions:", error);
-        document.getElementById("questions").innerHTML = "<p class='text-danger'>Error loading questions. Please try again later.</p>";
-    }
-}
+            } catch (error) {
+                console.error("Error fetching questions:", error);
+                document.getElementById("questions").innerHTML = "<p class='text-danger'>Error loading questions. Please try again later.</p>";
+            }
+        }
 
 
         async function deleteAnswer(questionId, answerId, event) {
