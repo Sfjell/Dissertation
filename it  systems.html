@@ -302,9 +302,7 @@
         <p>&copy; 2025 SysReviewSphere. All rights reserved.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    
+       
     <script>
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -381,9 +379,15 @@ async function fetchFeedback() {
     }
 }
 
-// ✅ Vis tilbakemeldinger i HTML
+// ✅ Vis tilbakemeldinger i HTML (with permission checks)
 function displayFeedbacks(feedbacks) {
     const feedbackList = document.getElementById("feedbackList");
+    const currentUserId = localStorage.getItem("userId"); // 🔹 Get logged-in user ID
+
+    
+     // Filtrer bort innlegg hvor bruker er slettet (Anonymous)
+     const validFeedbacks = feedbacks.filter(fb => fb.userId && fb.userId.email !== "Anonymous");
+
     feedbackList.innerHTML = feedbacks.length > 0
         ? feedbacks.map(feedback => `
             <div class="system-card">
@@ -401,20 +405,28 @@ function displayFeedbacks(feedbacks) {
 
                 <div class="mt-3">
                     <button class="btn btn-info btn-sm" onclick="openCommentModal('${feedback._id}')">Comment & Rate</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteFeedback('${feedback._id}')">Delete</button>
+
+                    <!-- ✅ Only show Delete button if the logged-in user is the owner -->
+                    ${feedback.userId?._id === currentUserId ? `
+                        <button class="btn btn-danger btn-sm" onclick="deleteFeedback('${feedback._id}')">Delete</button>
+                    ` : ''}
                 </div>
 
-                <!-- Kommentarseksjon plassert UNDER -->
+                <!-- Comments Section -->
                 <div class="mt-3 p-3 bg-light rounded">
                     <h6>Comments:</h6>
                     <div id="comments-${feedback._id}">
                         ${feedback.comments && feedback.comments.length > 0
                             ? feedback.comments.map(comment => `
                                 <div class="p-2 border rounded mb-2">
-                                    <p><strong>Comment by:</strong> ${comment.userName}</p>
+                                    <p><strong>Comment by:</strong>  ${comment.userId?.email || 'Anonymous'}</p>
                                     <p><strong>Rating:</strong> ${'★'.repeat(comment.rating)}${'☆'.repeat(5 - comment.rating)}</p>
                                     <p>${comment.text}</p>
-                                    <button class="btn btn-danger btn-sm" onclick="deleteComment('${feedback._id}', '${comment._id}')">Delete Comment</button>
+
+                                    <!-- ✅ Only show Delete button if the logged-in user wrote the comment -->
+                                    ${comment.userId?._id === currentUserId ? `
+                                        <button class="btn btn-danger btn-sm" onclick="deleteComment('${feedback._id}', '${comment._id}')">Delete Comment</button>
+                                    ` : ''}
                                 </div>
                             `).join("")
                             : "<p class='text-muted'>No comments yet.</p>"
@@ -425,6 +437,7 @@ function displayFeedbacks(feedbacks) {
         `).join("")
         : "<p class='text-center'>No feedback available.</p>";
 }
+
 
 // ✅ Slette kommentar
 async function deleteComment(feedbackId, commentId) {
@@ -447,7 +460,7 @@ async function deleteComment(feedbackId, commentId) {
 
         if (response.ok) {
             alert('Comment deleted successfully.');
-            fetchFeedback(); // Reload feedback to reflect the change
+            fetchFeedback(); // Oppdater listen etter sletting
         } else {
             const errorData = await response.json();
             alert(`Error: ${errorData.error}`);
@@ -457,18 +470,25 @@ async function deleteComment(feedbackId, commentId) {
     }
 }
 
+
 // ✅ Legg til kommentar
 document.getElementById("commentForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const feedbackId = document.getElementById("feedbackId").value;
-    const commentText = document.getElementById("commentText").value;
+    const commentText = document.getElementById("commentText").value.trim();
     const commentRating = document.getElementById("commentRating").value;
-
     const token = localStorage.getItem("token");
+
+    console.log("Submitting comment with data:", { text: commentText, rating: Number(commentRating) }); // 👈 Debug
 
     if (!token) {
         alert("You must log in to comment.");
+        return;
+    }
+
+    if (!commentText || !commentRating) {
+        alert("Please enter both a comment and a rating.");
         return;
     }
 
@@ -479,7 +499,7 @@ document.getElementById("commentForm").addEventListener("submit", async function
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             },
-            body: JSON.stringify({ text: commentText, rating: Number(commentRating) })
+            body: JSON.stringify({ text: commentText, rating: Number(commentRating) }) // 👈 Sørg for at successFactor IKKE sendes
         });
 
         if (!response.ok) {
@@ -488,9 +508,8 @@ document.getElementById("commentForm").addEventListener("submit", async function
         }
 
         alert("Comment & rating submitted successfully!");
-
-        // ✅ Oppdater kommentarene direkte på siden
         await updateComments(feedbackId);
+
     } catch (error) {
         console.error("Error submitting comment:", error);
         alert("Error submitting comment. Check console for details.");
@@ -499,25 +518,36 @@ document.getElementById("commentForm").addEventListener("submit", async function
 
 // ✅ Oppdater kommentarer etter å ha lagt til en ny kommentar
 async function updateComments(feedbackId) {
+    console.log("🔹 Fetching updated comments for Feedback ID:", feedbackId); // Debugging
+
     try {
         const response = await fetch(`http://localhost:5000/my_diss/feedback/${feedbackId}`);
-        if (!response.ok) throw new Error(`Failed to fetch updated feedback. Status: ${response.status}`);
+        
+        if (!response.ok) {
+            console.error("❌ Error fetching updated comments:", response.status, response.statusText);
+            throw new Error(`Failed to fetch updated feedback. Status: ${response.status}`);
+        }
 
         const feedback = await response.json();
+        console.log("✅ Updated feedback data:", feedback); // Debugging
 
+        // ✅ Update only the comments section without refreshing the entire page
         const commentsDiv = document.getElementById(`comments-${feedbackId}`);
-        commentsDiv.innerHTML = feedback.comments && feedback.comments.length > 0
+        commentsDiv.innerHTML = feedback.comments.length > 0
             ? feedback.comments.map(comment => `
                 <div class="p-2 border rounded mb-2">
+                    <p><strong>Comment by:</strong> ${comment.userId?.email || 'Anonymous'}</p>
                     <p><strong>Rating:</strong> ${'★'.repeat(comment.rating)}${'☆'.repeat(5 - comment.rating)}</p>
                     <p>${comment.text}</p>
                 </div>
             `).join("")
             : "<p class='text-muted'>No comments yet.</p>";
+
     } catch (error) {
         console.error("❌ Error fetching updated comments:", error);
     }
 }
+
 
 // ✅ Filtrer tilbakemeldinger
 function filterFeedback() {
@@ -622,6 +652,46 @@ function openCommentModal(feedbackId) {
     var commentModal = new bootstrap.Modal(document.getElementById('commentModal'));
     commentModal.show();
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", function () {
+            console.log("🔹 Logout button clicked!");
+
+            localStorage.removeItem("token"); // Fjern token
+            localStorage.removeItem("userId"); // Fjern bruker ID
+            localStorage.removeItem("userEmail"); // Fjern e-post
+
+            console.log("🔹 Local storage cleared!");
+
+            // Oppdater navbar
+            document.getElementById("loginNav").classList.remove("d-none");
+            document.getElementById("userDropdown").classList.add("d-none");
+
+            alert("Logged out successfully!");
+            window.location.href = "index.html";
+        });
+    } else {
+        console.error("❌ Logout button not found in DOM!");
+    }
+});
+
+function checkLoginStatus() {
+    const token = localStorage.getItem("token");
+    if (token) {
+        console.log("✅ User is logged in.");
+        document.getElementById("loginNav").classList.add("d-none");
+        document.getElementById("userDropdown").classList.remove("d-none");
+    } else {
+        console.log("⚠ No token found. User is logged out.");
+        document.getElementById("loginNav").classList.remove("d-none");
+        document.getElementById("userDropdown").classList.add("d-none");
+    }
+}
+
+// Kjør sjekk ved lasting av siden
+document.addEventListener("DOMContentLoaded", checkLoginStatus);
 
 
 

@@ -473,7 +473,7 @@
             localStorage.removeItem("userId");
             localStorage.removeItem("userEmail");
             alert("Logged out successfully!");
-            window.location.href = "login.html";
+            window.location.href = "index.html";
         });
 
 
@@ -504,19 +504,29 @@
                     throw new Error("Feil ved henting av spørsmål");
                 }
 
-                const questions = await response.json();
+                let questions = await response.json();
+
                 if (!Array.isArray(questions) || questions.length === 0) {
                     document.getElementById("questions").innerHTML = "<p>Ingen spørsmål funnet.</p>";
                     return;
                 }
 
-                document.getElementById("questions").innerHTML = questions.map(q => `
+                // Sorter etter `createdAt` synkende (nyeste først)
+                questions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                // Begrens til de 3 nyeste spørsmålene
+                const latestQuestions = questions.slice(0, 3);
+
+                // Generer HTML for spørsmålene
+                document.getElementById("questions").innerHTML = latestQuestions.map(q => `
             <div class="green-box" data-bs-toggle="collapse" data-bs-target="#answer${q._id}">
                 <div>${q.questionText || "Ukjent spørsmål"}</div>
                 <span>▼</span>
             </div>
             <div id="answer${q._id}" class="collapse px-3">
-                ${q.answers && q.answers.length ? q.answers.map(ans => `<p>${ans}</p>`).join(" ") : "<p>Ingen svar tilgjengelig.</p>"}
+                ${q.answers && q.answers.length
+                        ? q.answers.map(ans => `<p><strong>${ans.userId?.email || "Anonym"}:</strong> ${ans.answerText}</p>`).join("")
+                        : "<p>Ingen svar tilgjengelig.</p>"}
             </div>
         `).join("");
 
@@ -525,6 +535,7 @@
                 document.getElementById("questions").innerHTML = "<p>Kunne ikke laste spørsmål. Prøv igjen senere.</p>";
             }
         }
+
         // Run login status check on page load
         checkLoginStatus();
         fetchTopSystems();
