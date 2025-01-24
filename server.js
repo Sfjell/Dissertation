@@ -37,6 +37,10 @@ const upload = multer({ storage });
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  name: { type: String },
+  age: { type: Number },
+  gender: { type: String },
+  occupation: { type: String }
 });
 const User = mongoose.model('User', userSchema);
 
@@ -90,22 +94,6 @@ app.get('/my_diss/user-posts/:userId', async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 app.get('/my_diss/user-comments/:userId', async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -138,30 +126,6 @@ app.get('/my_diss/user-comments/:userId', async (req, res) => {
     res.status(500).json({ error: "Server error fetching comments." });
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // ✅ Henter ALLE spørsmål en bruker har stilt
 app.get('/my_diss/user-questions/:userId', async (req, res) => {
@@ -210,30 +174,6 @@ app.get('/my_diss/user-answers/:userId', async (req, res) => {
     res.status(500).json({ error: "Server error fetching answers." });
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 app.get("/my_diss/feedback/:feedbackId", async (req, res) => {
   try {
@@ -529,40 +469,6 @@ app.post("/my_diss/feedback/:feedbackId/comment", authenticateToken, async (req,
   }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ✅ Submit Question
 app.post('/my_diss/questions', authenticateToken, async (req, res) => {
   try {
@@ -648,26 +554,6 @@ app.delete('/my_diss/feedback/:id', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Error deleting feedback.' });
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Like a Question
 app.post('/my_diss/questions/like/:questionId', authenticateToken, async (req, res) => {
@@ -1131,6 +1017,41 @@ app.delete('/my_diss/answers/:answerId', authenticateToken, async (req, res) => 
   }
 });
 
+
+app.put('/my_diss/update-profile', authenticateToken, async (req, res) => {
+  try {
+    const { name, age, gender, occupation } = req.body;
+
+    // Oppdater brukeren i databasen
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.userId,
+      { name, age, gender, occupation },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({ message: "Profile updated successfully", user: updatedUser });
+  } catch (err) {
+    console.error("❌ Error updating profile:", err);
+    res.status(500).json({ error: "Server error updating profile" });
+  }
+});
+
+app.get('/my_diss/user-profile', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select('-password'); // Fjern passord fra responsen
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (err) {
+    console.error("❌ Error fetching user profile:", err);
+    res.status(500).json({ error: "Server error fetching user profile" });
+  }
+});
 
 
 

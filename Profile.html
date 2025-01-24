@@ -246,20 +246,19 @@
         }
 
         /* Endrer knappens farge ved hover */
-.btn-primary {
-    background-color: #e16539;
-    border-color: #e16539;
-}
+        .btn-primary {
+            background-color: #e16539;
+            border-color: #e16539;
+        }
 
-/* Endrer farge når knappen er klikket/fokusert */
-.btn-primary:focus, 
-.btn-primary:active {
-    background-color: darkorange !important;
-    border-color: darkorange !important;
-    box-shadow: 0 0 5px #e16539;
-    outline: none;
-}
-
+        /* Endrer farge når knappen er klikket/fokusert */
+        .btn-primary:focus,
+        .btn-primary:active {
+            background-color: darkorange !important;
+            border-color: darkorange !important;
+            box-shadow: 0 0 5px #e16539;
+            outline: none;
+        }
     </style>
 </head>
 
@@ -279,7 +278,7 @@
             <button class="btn btn-danger btn-small" id="deleteAccountBtn">🗑 Delete Account</button>
         </div>
 
-        <div class="container p-4">
+        <div id="settingsCard" class="container p-4" style="display: none;">
             <div class="card shadow p-4">
                 <h3 class="text-center">Account Settings</h3>
                 <h6 class="text-center">Change Details</h6>
@@ -771,6 +770,69 @@
 
 
 
+            document.addEventListener("DOMContentLoaded", function () {
+                const nameInput = document.getElementById("name");
+                const ageInput = document.getElementById("age");
+                const genderInput = document.getElementById("gender");
+                const occupationInput = document.getElementById("occupation");
+                const updateButton = document.querySelector(".btn-primary");
+
+                const token = localStorage.getItem("token");
+
+                if (!token) {
+                    alert("You need to log in first.");
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                // Hent brukerprofil
+                fetch("http://localhost:5000/my_diss/user-profile", {
+                    method: "GET",
+                    headers: { "Authorization": `Bearer ${token}` }
+                })
+                    .then(response => response.json())
+                    .then(user => {
+                        if (user.error) {
+                            console.error("Error fetching user:", user.error);
+                            return;
+                        }
+                        nameInput.value = user.name || "";
+                        ageInput.value = user.age || "";
+                        genderInput.value = user.gender || "";
+                        occupationInput.value = user.occupation || "";
+                    })
+                    .catch(error => console.error("Error fetching profile:", error));
+
+                // Oppdater brukerprofil
+                updateButton.addEventListener("click", function (event) {
+                    event.preventDefault();
+
+                    const updatedProfile = {
+                        name: nameInput.value,
+                        age: ageInput.value,
+                        gender: genderInput.value,
+                        occupation: occupationInput.value
+                    };
+
+                    fetch("http://localhost:5000/my_diss/update-profile", {
+                        method: "PUT",
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(updatedProfile)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                alert("Error updating profile: " + data.error);
+                            } else {
+                                alert("Profile updated successfully!");
+                            }
+                        })
+                        .catch(error => console.error("Error updating profile:", error));
+                });
+            });
 
             document.addEventListener("DOMContentLoaded", function () {
                 const emailInput = document.getElementById("email");
