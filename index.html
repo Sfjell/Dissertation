@@ -155,6 +155,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
         }
 
         .question-toggle {
@@ -470,32 +472,46 @@
         });
 
         async function fetchTopSystems() {
-            const response = await fetch("http://localhost:5000/my_diss");
-            const feedbacks = await response.json();
-            feedbacks.sort((a, b) => b.rating - a.rating);
-            const top3 = feedbacks.slice(0, 3);
+            try {
+                const response = await fetch("http://localhost:5000/my_diss");
+                if (!response.ok) throw new Error("Kunne ikke hente systemer");
 
-            document.getElementById("topSystems").innerHTML = top3.map(system => `
-                <div class="col-md-4 mb-3">
-                    <div class="system-card">
-                        <img src="http://localhost:5000${system.logoPath}" alt="Logo" class="img-fluid" style="max-width: 80px;">
-                        <h5 class="mt-2">${system.companyName}</h5>
-                        <p>${system.experienceDescription}</p>
-                        <p>Rating: ${'★'.repeat(system.rating)}${'☆'.repeat(5 - system.rating)}</p>
-                    </div>
+                const feedbacks = await response.json();
+                feedbacks.sort((a, b) => b.rating - a.rating);
+                const top3 = feedbacks.slice(0, 3);
+
+                document.getElementById("topSystems").innerHTML = top3.map(system => `
+            <div class="col-md-4 mb-3">
+                <div class="system-card">
+                    <img src="${system.logoPath ? `http://localhost:5000${system.logoPath}` : 'https://via.placeholder.com/80'}" 
+                         alt="Logo" class="img-fluid" style="max-width: 80px;">
+                    <h5 class="mt-2">${system.companyName}</h5>
+                    <p>${system.experienceDescription}</p>
+                    <div>${generateStarRating(system.rating)}</div>
                 </div>
-            `).join("");
+            </div>
+        `).join("");
+            } catch (error) {
+                console.error("Feil ved henting av systemer:", error);
+                document.getElementById("topSystems").innerHTML = "<p>Kunne ikke laste systemene.</p>";
+            }
+        }
+
+
+        function generateStarRating(rating) {
+            let starsHTML = "";
+            for (let i = 1; i <= 5; i++) {
+                starsHTML += `<i class="${i <= rating ? 'fas' : 'far'} fa-star text-warning"></i> `;
+            }
+            return starsHTML;
         }
 
         async function fetchQuestions() {
             try {
-                const response = await fetch("http://localhost:5000/my_diss/questions"); 
-                if (!response.ok) {
-                    throw new Error("Feil ved henting av spørsmål");
-                }
+                const response = await fetch("http://localhost:5000/my_diss/questions");
+                if (!response.ok) throw new Error("Feil ved henting av spørsmål");
 
                 let questions = await response.json();
-
                 if (!Array.isArray(questions) || questions.length === 0) {
                     document.getElementById("questions").innerHTML = "<p>Ingen spørsmål funnet.</p>";
                     return;
@@ -504,15 +520,19 @@
                 questions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
                 const latestQuestions = questions.slice(0, 3);
-
                 document.getElementById("questions").innerHTML = latestQuestions.map(q => `
-            <div class="green-box" data-bs-toggle="collapse" data-bs-target="#answer${q._id}">
+            <div class="green-box d-flex justify-content-between align-items-center" 
+                data-bs-toggle="collapse" data-bs-target="#answer${q._id}" 
+                onclick="toggleDropdownIcon('${q._id}')">
                 <div>${q.questionText || "Ukjent spørsmål"}</div>
-                <span>▼</span>
+                <i id="icon-${q._id}" class="fas fa-chevron-down"></i>
             </div>
             <div id="answer${q._id}" class="collapse px-3">
                 ${q.answers && q.answers.length
-                        ? q.answers.map(ans => `<p><strong>${ans.userId?.email || "Anonym"}:</strong> ${ans.answerText}</p>`).join("")
+                        ? q.answers.map(ans => `
+                        <p><strong>${ans.userId?.email || "Anonym"}:</strong> ${ans.answerText}</p>
+                        <div>${generateStarRating(ans.rating || 0)}</div>
+                    `).join("")
                         : "<p>Ingen svar tilgjengelig.</p>"}
             </div>
         `).join("");
@@ -522,6 +542,15 @@
                 document.getElementById("questions").innerHTML = "<p>Kunne ikke laste spørsmål. Prøv igjen senere.</p>";
             }
         }
+        function toggleDropdownIcon(questionId) {
+            const icon = document.getElementById(`icon-${questionId}`);
+            if (icon) {
+                icon.classList.toggle("fa-chevron-down");
+                icon.classList.toggle("fa-chevron-up");
+            }
+        }
+
+
 
         checkLoginStatus();
         fetchTopSystems();
