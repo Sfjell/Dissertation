@@ -21,19 +21,22 @@
         }
 
         .system-logo img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 8px;
+            max-width: 100px;
+            max-height: 100px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: auto;
         }
 
         .btn-primary {
-            background-color:  #e16539;
-            border-color:  #e16539;
+            background-color: #e16539;
+            border-color: #e16539;
         }
 
         .modal-header {
-            background-color:  #e16539;
+            background-color: #e16539;
             color: white;
         }
 
@@ -44,9 +47,7 @@
         .navbar {
             background-color: #fff !important;
             box-shadow: none !important;
-            /* Fjernet skyggen for å unngå grå linje */
             border-bottom: none !important;
-            /* Fjerner eventuell grå linje */
             display: flex;
             align-items: center;
             padding: 0.5rem 1rem;
@@ -60,7 +61,6 @@
             width: 100%;
             background: transparent !important;
             border: none !important;
-            /* Hindrer eventuelle rammer */
         }
 
         .navbar-collapse {
@@ -76,14 +76,12 @@
             border: none !important;
         }
 
-        /* Ekstra sikring for å fjerne en mulig linje som kan genereres av Bootstrap */
         .navbar::after,
         .navbar::before {
             display: none !important;
             content: "" !important;
         }
 
-        /* Justerer brukerikon-knappen */
         .btn-outline-primary {
             display: flex;
             align-items: center;
@@ -115,7 +113,6 @@
             border-radius: 5px;
         }
 
-        /* Fjerner eventuell hvit bakgrunn bak navbar */
         .navbar.fixed-top {
             background: #fff !important;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -128,6 +125,28 @@
             display: flex;
             flex-direction: column;
         }
+
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: start;
+            font-size: 1.5rem;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            cursor: pointer;
+            color: #ccc;
+            margin: 0 5px;
+        }
+
+        .star-rating input:checked~label {
+            color: #e16539;
+        }
+
 
         .container {
             flex: 1;
@@ -161,11 +180,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="help.html">Discussion</a>
                     </li>
-                    <!-- Show Login if NOT logged in -->
                     <li class="nav-item" id="loginNav">
                         <a class="nav-link" href="login.html">Login</a>
                     </li>
-                    <!-- Show User Dropdown if logged in -->
                     <li class="nav-item dropdown d-none" id="userDropdown">
                         <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                             <i class="fas fa-user"></i>
@@ -182,20 +199,13 @@
 
     <div class="container mt-5 pt-5">
         <h2 class="text-center mb-4">IT Systems Feedback</h2>
-
-        <!-- Button Container -->
         <div class="button-container my-3">
-            <!-- Gray Box (Filter Button) -->
             <button class="btn btn-secondary" onclick="toggleFilter()">Filter Feedback</button>
-
-            <!-- Blue Button (Submit Feedback) -->
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#feedbackModal">
                 Submit Feedback
             </button>
-
         </div>
 
-        <!-- Filter Section -->
         <div id="filterSection" style="display: none;">
             <label for="filterFactor" class="form-label">Filter by Critical Success Factor:</label>
             <select class="form-select" id="filterFactor" onchange="filterFeedback()">
@@ -206,14 +216,12 @@
                 <option value="Risk management">Risk management</option>
                 <option value="Monitoring">Monitoring</option>
                 <option value="Change management">Change management</option>
+                <option value="Implimentation Methodology">Implimentation Methodology</option>
             </select>
         </div>
-
-        <!-- Feedback List -->
         <div id="feedbackList" class="mt-4"></div>
     </div>
 
-    <!-- Feedback Modal -->
     <div class="modal fade" id="feedbackModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -242,17 +250,24 @@
                                 <option value="Risk management">Risk management</option>
                                 <option value="Monitoring">Monitoring</option>
                                 <option value="Change management">Change management</option>
+                                <option value="Implimentation Methodology">Implimentation Methodology</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="rating" class="form-label">Rating</label>
-                            <select class="form-select" id="rating" required>
-                                <option value="1">★☆☆☆☆</option>
-                                <option value="2">★★☆☆☆</option>
-                                <option value="3">★★★☆☆</option>
-                                <option value="4">★★★★☆</option>
-                                <option value="5">★★★★★</option>
-                            </select>
+                            <label class="form-label">Rating</label>
+                            <div class="star-rating">
+                                <input type="radio" id="star5" name="rating" value="5"><label for="star5"><i
+                                        class="fas fa-star"></i></label>
+                                <input type="radio" id="star4" name="rating" value="4"><label for="star4"><i
+                                        class="fas fa-star"></i></label>
+                                <input type="radio" id="star3" name="rating" value="3"><label for="star3"><i
+                                        class="fas fa-star"></i></label>
+                                <input type="radio" id="star2" name="rating" value="2"><label for="star2"><i
+                                        class="fas fa-star"></i></label>
+                                <input type="radio" id="star1" name="rating" value="1"><label for="star1"><i
+                                        class="fas fa-star"></i></label>
+                            </div>
+
                         </div>
                         <div class="mb-3">
                             <label for="logoUpload" class="form-label">Upload Logo</label>
@@ -265,7 +280,6 @@
         </div>
     </div>
 
-    <!-- Kommentar-modal -->
     <div class="modal fade" id="commentModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -275,25 +289,31 @@
                 </div>
                 <div class="modal-body">
                     <form id="commentForm">
-                        <input type="hidden" id="feedbackId"> <!-- Skjult input for feedback ID -->
+                        <input type="hidden" id="feedbackId">
                         <div class="mb-3">
                             <label for="commentText" class="form-label">Your Comment</label>
                             <textarea class="form-control" id="commentText" placeholder="Write your comment..."
                                 required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="commentRating" class="form-label">Your Rating</label>
-                            <select class="form-select" id="commentRating" required>
-                                <option value="1">★☆☆☆☆</option>
-                                <option value="2">★★☆☆☆</option>
-                                <option value="3">★★★☆☆</option>
-                                <option value="4">★★★★☆</option>
-                                <option value="5">★★★★★</option>
-                            </select>
+                            <label for="commentRating" class="form-label">Your Rating</label> <label for="commentRating"
+                                class="form-label">Your Rating</label>
+                            <div class="star-rating">
+                                <input type="radio" id="star5c" name="commentRating" value="5"><label for="star5c"><i
+                                        class="fas fa-star"></i></label>
+                                <input type="radio" id="star4c" name="commentRating" value="4"><label for="star4c"><i
+                                        class="fas fa-star"></i></label>
+                                <input type="radio" id="star3c" name="commentRating" value="3"><label for="star3c"><i
+                                        class="fas fa-star"></i></label>
+                                <input type="radio" id="star2c" name="commentRating" value="2"><label for="star2c"><i
+                                        class="fas fa-star"></i></label>
+                                <input type="radio" id="star1c" name="commentRating" value="1"><label for="star1c"><i
+                                        class="fas fa-star"></i></label>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
                 </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
             </div>
         </div>
     </div>
@@ -302,399 +322,425 @@
         <p>&copy; 2025 SysReviewSphere. All rights reserved.</p>
     </footer>
 
-       
+
     <script>
-
-document.addEventListener("DOMContentLoaded", () => {
-    checkLoginStatus();
-    fetchFeedback();
-});
-
-// ✅ Sjekk om brukeren er logget inn
-async function checkLoginStatus() {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-        console.warn("⚠ No token found. Redirecting to login page.");
-        updateNavbar(false);
-        return;
-    }
-
-    try {
-        const response = await fetch("http://localhost:5000/my_diss/check-token", {
-            method: "GET",
-            headers: { "Authorization": `Bearer ${token}` }
+        document.addEventListener("DOMContentLoaded", () => {
+            checkLoginStatus();
+            fetchFeedback();
         });
 
-        if (!response.ok) {
-            console.warn("⚠ Invalid or expired token. Logging out...");
-            logoutUser();
-        } else {
-            console.log("✅ User is logged in.");
-            updateNavbar(true);
+        async function checkLoginStatus() {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                console.warn("⚠ No token found. Redirecting to login page.");
+                updateNavbar(false);
+                return;
+            }
+
+            try {
+                const response = await fetch("http://localhost:5000/my_diss/check-token", {
+                    method: "GET",
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                if (!response.ok) {
+                    console.warn("⚠ Invalid or expired token. Logging out...");
+                    logoutUser();
+                } else {
+                    console.log("User is logged in.");
+                    updateNavbar(true);
+                }
+            } catch (error) {
+                console.error("Error checking token:", error);
+                logoutUser();
+            }
         }
-    } catch (error) {
-        console.error("❌ Error checking token:", error);
-        logoutUser();
-    }
-}
 
-// ✅ Oppdater navbar basert på brukerstatus
-function updateNavbar(isLoggedIn) {
-    document.getElementById("loginNav").classList.toggle("d-none", isLoggedIn);
-    document.getElementById("userDropdown").classList.toggle("d-none", !isLoggedIn);
-}
+        function updateNavbar(isLoggedIn) {
+            document.getElementById("loginNav").classList.toggle("d-none", isLoggedIn);
+            document.getElementById("userDropdown").classList.toggle("d-none", !isLoggedIn);
+        }
 
-// ✅ Logg ut bruker
-function logoutUser() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userEmail");
-    updateNavbar(false);
-    alert("You have been logged out.");
-    window.location.href = "login.html";
-}
+        function logoutUser() {
+            localStorage.removeItem("token");
+            localStorage.removeItem("userId");
+            localStorage.removeItem("userEmail");
+            updateNavbar(false);
+            alert("You have been logged out.");
+            window.location.href = "login.html";
+        }
 
-// ✅ Hent alle tilbakemeldinger fra API-et
-let allFeedbacks = [];
+        let allFeedbacks = [];
 
-async function fetchFeedback() {
-    try {
-        const response = await fetch("http://localhost:5000/my_diss");
+        async function fetchFeedback() {
+            try {
+                const response = await fetch("http://localhost:5000/my_diss");
 
-        if (!response.ok) throw new Error(`Failed to fetch feedback. Status: ${response.status}`);
+                if (!response.ok) throw new Error(`Failed to fetch feedback. Status: ${response.status}`);
 
-        let feedbacks = await response.json();
-        console.log("✅ API Response:", feedbacks);
+                let feedbacks = await response.json();
+                console.log("API Response:", feedbacks);
 
-        allFeedbacks = feedbacks.map(fb => ({
-            ...fb,
-            rating: Number(fb.rating) || 0, 
-            successFactor: fb.successFactor || "Unknown"
-        }));
+                allFeedbacks = feedbacks.map(fb => ({
+                    ...fb,
+                    rating: Number(fb.rating) || 0,
+                    successFactor: fb.successFactor || "Unknown"
+                }));
 
-        displayFeedbacks(allFeedbacks);
-    } catch (error) {
-        console.error("❌ Error fetching feedback:", error);
-    }
-}
+                displayFeedbacks(allFeedbacks);
+            } catch (error) {
+                console.error("Error fetching feedback:", error);
+            }
+        }
 
-// ✅ Vis tilbakemeldinger i HTML (with permission checks)
-function displayFeedbacks(feedbacks) {
-    const feedbackList = document.getElementById("feedbackList");
-    const currentUserId = localStorage.getItem("userId"); // 🔹 Get logged-in user ID
+        function displayFeedbacks(feedbacks) {
+            const feedbackList = document.getElementById("feedbackList");
+            const currentUserId = localStorage.getItem("userId");
 
-    
-     // Filtrer bort innlegg hvor bruker er slettet (Anonymous)
-     const validFeedbacks = feedbacks.filter(fb => fb.userId && fb.userId.email !== "Anonymous");
-
-    feedbackList.innerHTML = feedbacks.length > 0
-        ? feedbacks.map(feedback => `
-            <div class="system-card">
-                <div class="d-flex align-items-center">
-                    <div class="system-logo">
-                        <img src="${feedback.logoPath ? `http://localhost:5000${feedback.logoPath}` : 'https://via.placeholder.com/100'}" alt="Logo">
-                    </div>
-                    <div class="ms-3">
-                        <h5>${feedback.companyName}</h5>
-                        <p>${feedback.experienceDescription}</p>
-                        <p><strong>Success Factor:</strong> ${feedback.successFactor || 'Unknown'}</p>
-                        <div>${'★'.repeat(feedback.rating)}${'☆'.repeat(5 - feedback.rating)}</div>
-                    </div>
+            feedbackList.innerHTML = feedbacks.length > 0
+                ? feedbacks.map(feedback => `
+        <div class="system-card">
+            <div class="d-flex align-items-center">
+                <div class="system-logo">
+                   <img src="${feedback.logoPath ? `http://localhost:5000${feedback.logoPath}` : 'https://via.placeholder.com/100'}" 
+alt="Company Logo" class="img-fluid" style="max-width: 100px; max-height: 100px; object-fit: contain;">
                 </div>
-
-                <div class="mt-3">
-                    <button class="btn btn-info btn-sm" onclick="openCommentModal('${feedback._id}')">Comment & Rate</button>
-
-                    <!-- ✅ Only show Delete button if the logged-in user is the owner -->
-                    ${feedback.userId?._id === currentUserId ? `
-                        <button class="btn btn-danger btn-sm" onclick="deleteFeedback('${feedback._id}')">Delete</button>
-                    ` : ''}
-                </div>
-
-                <!-- Comments Section -->
-                <div class="mt-3 p-3 bg-light rounded">
-                    <h6>Comments:</h6>
-                    <div id="comments-${feedback._id}">
-                        ${feedback.comments && feedback.comments.length > 0
-                            ? feedback.comments.map(comment => `
-                                <div class="p-2 border rounded mb-2">
-                                    <p><strong>Comment by:</strong>  ${comment.userId?.email || 'Anonymous'}</p>
-                                    <p><strong>Rating:</strong> ${'★'.repeat(comment.rating)}${'☆'.repeat(5 - comment.rating)}</p>
-                                    <p>${comment.text}</p>
-
-                                    <!-- ✅ Only show Delete button if the logged-in user wrote the comment -->
-                                    ${comment.userId?._id === currentUserId ? `
-                                        <button class="btn btn-danger btn-sm" onclick="deleteComment('${feedback._id}', '${comment._id}')">Delete Comment</button>
-                                    ` : ''}
-                                </div>
-                            `).join("")
-                            : "<p class='text-muted'>No comments yet.</p>"
-                        }
-                    </div>
+                <div class="ms-3">
+                    <h5>${feedback.companyName}</h5>
+                    <p>${feedback.experienceDescription}</p>
+                    <p><strong>Success Factor:</strong> ${feedback.successFactor || 'Unknown'}</p>
+                    <div>${generateStarRating(feedback.rating)}</div>
                 </div>
             </div>
-        `).join("")
-        : "<p class='text-center'>No feedback available.</p>";
-}
+
+            <div class="mt-3">
+                <button class="btn btn-info btn-sm" onclick="openCommentModal('${feedback._id}')">Comment & Rate</button>
+
+                ${feedback.userId?._id === currentUserId ? `
+                    <button class="btn btn-danger btn-sm" onclick="deleteFeedback('${feedback._id}')">Delete</button>
+                ` : ''}
+            </div>
+
+            <div class="mt-3 p-3 bg-light rounded">
+                <h6>Comments:</h6>
+                <div id="comments-${feedback._id}">
+                    ${feedback.comments && feedback.comments.length > 0
+                        ? feedback.comments.map(comment => `
+                            <div class="p-2 border rounded mb-2">
+                                <p><strong>Comment by:</strong>  ${comment.userId?.email || 'Anonymous'}</p>
+                                <p><strong>Rating:</strong> ${generateStarRating(comment.rating)}</p>
+                                <p>${comment.text}</p>
+
+                                ${comment.userId?._id === currentUserId ? `
+                                    <button class="btn btn-danger btn-sm" onclick="deleteComment('${feedback._id}', '${comment._id}')">Delete Comment</button>
+                                ` : ''}
+                            </div>
+                        `).join("")
+                        : "<p class='text-muted'>No comments yet.</p>"
+                    }
+                </div>
+            </div>
+        </div>
+    `).join("")
+                : "<p class='text-center'>No feedback available.</p>";
+        }
 
 
-// ✅ Slette kommentar
-async function deleteComment(feedbackId, commentId) {
-    const token = localStorage.getItem('token');
+        async function deleteComment(feedbackId, commentId) {
+            const token = localStorage.getItem('token');
 
-    if (!token) {
-        alert('You must log in to delete a comment.');
-        return;
-    }
+            if (!token) {
+                alert('You must log in to delete a comment.');
+                return;
+            }
 
-    if (!confirm('Are you sure you want to delete this comment?')) {
-        return;
-    }
+            if (!confirm('Are you sure you want to delete this comment?')) {
+                return;
+            }
 
-    try {
-        const response = await fetch(`http://localhost:5000/my_diss/feedback/${feedbackId}/comment/${commentId}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${token}` }
+            try {
+                const response = await fetch(`http://localhost:5000/my_diss/feedback/${feedbackId}/comment/${commentId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    alert('Comment deleted successfully.');
+                    fetchFeedback();
+                } else {
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.error}`);
+                }
+            } catch (error) {
+                console.error('Error deleting comment:', error);
+            }
+        }
+
+        document.getElementById("commentForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const feedbackId = document.getElementById("feedbackId").value;
+            const commentText = document.getElementById("commentText").value.trim();
+            const commentRating = getSelectedRating();
+            const token = localStorage.getItem("token");
+
+            console.log("Submitting comment with data:", { text: commentText, rating: commentRating });
+
+            if (!token) {
+                alert("You must log in to comment.");
+                return;
+            }
+
+            if (!commentText || !commentRating) {
+                alert("Please enter both a comment and a rating.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/my_diss/feedback/${feedbackId}/comment`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ text: commentText, rating: Number(commentRating) })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server error: ${errorText}`);
+                }
+
+                alert("Comment & rating submitted successfully!");
+                await updateComments(feedbackId);
+                document.getElementById("commentModal").classList.remove("show");
+                document.body.classList.remove("modal-open");
+                document.querySelector(".modal-backdrop").remove();
+
+            } catch (error) {
+                console.error("Error submitting comment:", error);
+                alert("Error submitting comment. Check console for details.");
+            }
         });
 
-        if (response.ok) {
-            alert('Comment deleted successfully.');
-            fetchFeedback(); // Oppdater listen etter sletting
-        } else {
-            const errorData = await response.json();
-            alert(`Error: ${errorData.error}`);
-        }
-    } catch (error) {
-        console.error('Error deleting comment:', error);
-    }
-}
 
+        async function updateComments(feedbackId) {
+            console.log("Fetching updated comments for Feedback ID:", feedbackId);
 
-// ✅ Legg til kommentar
-document.getElementById("commentForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
+            try {
+                const response = await fetch(`http://localhost:5000/my_diss/feedback/${feedbackId}`);
 
-    const feedbackId = document.getElementById("feedbackId").value;
-    const commentText = document.getElementById("commentText").value.trim();
-    const commentRating = document.getElementById("commentRating").value;
-    const token = localStorage.getItem("token");
+                if (!response.ok) {
+                    console.error("Error fetching updated comments:", response.status, response.statusText);
+                    throw new Error(`Failed to fetch updated feedback. Status: ${response.status}`);
+                }
 
-    console.log("Submitting comment with data:", { text: commentText, rating: Number(commentRating) }); // 👈 Debug
+                const feedback = await response.json();
+                console.log("Updated feedback data:", feedback);
 
-    if (!token) {
-        alert("You must log in to comment.");
-        return;
-    }
-
-    if (!commentText || !commentRating) {
-        alert("Please enter both a comment and a rating.");
-        return;
-    }
-
-    try {
-        const response = await fetch(`http://localhost:5000/my_diss/feedback/${feedbackId}/comment`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({ text: commentText, rating: Number(commentRating) }) // 👈 Sørg for at successFactor IKKE sendes
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Server error: ${errorText}`);
-        }
-
-        alert("Comment & rating submitted successfully!");
-        await updateComments(feedbackId);
-
-    } catch (error) {
-        console.error("Error submitting comment:", error);
-        alert("Error submitting comment. Check console for details.");
-    }
-});
-
-// ✅ Oppdater kommentarer etter å ha lagt til en ny kommentar
-async function updateComments(feedbackId) {
-    console.log("🔹 Fetching updated comments for Feedback ID:", feedbackId); // Debugging
-
-    try {
-        const response = await fetch(`http://localhost:5000/my_diss/feedback/${feedbackId}`);
-        
-        if (!response.ok) {
-            console.error("❌ Error fetching updated comments:", response.status, response.statusText);
-            throw new Error(`Failed to fetch updated feedback. Status: ${response.status}`);
-        }
-
-        const feedback = await response.json();
-        console.log("✅ Updated feedback data:", feedback); // Debugging
-
-        // ✅ Update only the comments section without refreshing the entire page
-        const commentsDiv = document.getElementById(`comments-${feedbackId}`);
-        commentsDiv.innerHTML = feedback.comments.length > 0
-            ? feedback.comments.map(comment => `
+                const commentsDiv = document.getElementById(`comments-${feedbackId}`);
+                commentsDiv.innerHTML = feedback.comments.length > 0
+                    ? feedback.comments.map(comment => `
                 <div class="p-2 border rounded mb-2">
                     <p><strong>Comment by:</strong> ${comment.userId?.email || 'Anonymous'}</p>
-                    <p><strong>Rating:</strong> ${'★'.repeat(comment.rating)}${'☆'.repeat(5 - comment.rating)}</p>
                     <p>${comment.text}</p>
                 </div>
             `).join("")
-            : "<p class='text-muted'>No comments yet.</p>";
+                    : "<p class='text-muted'>No comments yet.</p>";
 
-    } catch (error) {
-        console.error("❌ Error fetching updated comments:", error);
-    }
-}
-
-
-// ✅ Filtrer tilbakemeldinger
-function filterFeedback() {
-    const filterValue = document.getElementById("filterFactor").value;
-    const filteredFeedbacks = filterValue === "All"
-        ? allFeedbacks
-        : allFeedbacks.filter(feedback => feedback.successFactor === filterValue);
-
-    displayFeedbacks(filteredFeedbacks);
-}
-
-// ✅ Toggle filter-seksjon
-function toggleFilter() {
-    const filterSection = document.getElementById("filterSection");
-    if (filterSection.style.display === "none" || filterSection.style.display === "") {
-        filterSection.style.display = "block";
-    } else {
-        filterSection.style.display = "none";
-    }
-}
-
-// ✅ Innsending av tilbakemelding
-document.getElementById('feedbackForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const companyName = document.getElementById('companyName').value;
-    const experienceDescription = document.getElementById('experienceDescription').value;
-    const successFactor = document.getElementById('successFactor').value;
-    const rating = document.getElementById('rating').value;
-    const logoFile = document.getElementById('logoUpload').files[0];
-
-    const formData = new FormData();
-    formData.append('companyName', companyName);
-    formData.append('experienceDescription', experienceDescription);
-    formData.append('successFactor', successFactor);
-    formData.append('rating', rating);
-    if (logoFile) formData.append('logo', logoFile);
-
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-        alert('You must log in to submit feedback.');
-        return;
-    }
-
-    try {
-        const response = await fetch('http://localhost:5000/my_diss/feedback', {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${token}` },
-            body: formData
-        });
-
-        if (response.ok) {
-            alert("Feedback submitted successfully!");
-            fetchFeedback();
-        } else {
-            const errorData = await response.json();
-            alert(`Error: ${errorData.error}`);
+            } catch (error) {
+                console.error("Error fetching updated comments:", error);
+            }
         }
-    } catch (error) {
-        console.error("Error submitting feedback:", error);
-    }
-});
 
-// ✅ Slett tilbakemelding
-async function deleteFeedback(feedbackId) {
-    const token = localStorage.getItem('token');
+        function filterFeedback() {
+            const filterValue = document.getElementById("filterFactor").value;
+            const filteredFeedbacks = filterValue === "All"
+                ? allFeedbacks
+                : allFeedbacks.filter(feedback => feedback.successFactor === filterValue);
 
-    if (!token) {
-        alert('You must log in to delete feedback.');
-        return;
-    }
-
-    if (!confirm('Are you sure you want to delete this feedback?')) {
-        return;
-    }
-
-    try {
-        const response = await fetch(`http://localhost:5000/my_diss/feedback/${feedbackId}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (response.ok) {
-            alert('Feedback deleted successfully.');
-            fetchFeedback();
-        } else {
-            const errorData = await response.json();
-            alert(`Error: ${errorData.error}`);
+            displayFeedbacks(filteredFeedbacks);
         }
-    } catch (error) {
-        console.error('Error deleting feedback:', error);
-    }
-}
 
-// ✅ Åpne kommentarmodal
-function openCommentModal(feedbackId) {
-    document.getElementById("feedbackId").value = feedbackId;
-    document.getElementById("commentText").value = "";
-    document.getElementById("commentRating").value = "3"; // Default rating
+        function toggleFilter() {
+            const filterSection = document.getElementById("filterSection");
+            if (filterSection.style.display === "none" || filterSection.style.display === "") {
+                filterSection.style.display = "block";
+            } else {
+                filterSection.style.display = "none";
+            }
+        }
+        function getSelectedRating() {
+            const selectedStar = document.querySelector('#commentModal input[name="commentRating"]:checked');
+            return selectedStar ? selectedStar.value : null;
+        }
 
-    var commentModal = new bootstrap.Modal(document.getElementById('commentModal'));
-    commentModal.show();
-}
 
-document.addEventListener("DOMContentLoaded", function () {
-    const logoutBtn = document.getElementById("logoutBtn");
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", function () {
-            console.log("🔹 Logout button clicked!");
+        document.getElementById('feedbackForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-            localStorage.removeItem("token"); // Fjern token
-            localStorage.removeItem("userId"); // Fjern bruker ID
-            localStorage.removeItem("userEmail"); // Fjern e-post
+            const companyName = document.getElementById('companyName').value;
+            const experienceDescription = document.getElementById('experienceDescription').value;
+            const successFactor = document.getElementById('successFactor').value;
+            const rating = getSelectedRating();
+            const logoFile = document.getElementById('logoUpload').files[0];
 
-            console.log("🔹 Local storage cleared!");
 
-            // Oppdater navbar
-            document.getElementById("loginNav").classList.remove("d-none");
-            document.getElementById("userDropdown").classList.add("d-none");
+            const formData = new FormData();
+            formData.append('companyName', companyName);
+            formData.append('experienceDescription', experienceDescription);
+            formData.append('successFactor', successFactor);
+            formData.append('rating', rating);
+            if (logoFile) formData.append('logo', logoFile);
 
-            alert("Logged out successfully!");
-            window.location.href = "index.html";
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                alert('You must log in to submit feedback.');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/my_diss/feedback', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert("Feedback submitted successfully!");
+                    fetchFeedback();
+                } else {
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.error}`);
+                }
+            } catch (error) {
+                console.error("Error submitting feedback:", error);
+            }
         });
-    } else {
-        console.error("❌ Logout button not found in DOM!");
-    }
-});
 
-function checkLoginStatus() {
-    const token = localStorage.getItem("token");
-    if (token) {
-        console.log("✅ User is logged in.");
-        document.getElementById("loginNav").classList.add("d-none");
-        document.getElementById("userDropdown").classList.remove("d-none");
-    } else {
-        console.log("⚠ No token found. User is logged out.");
-        document.getElementById("loginNav").classList.remove("d-none");
-        document.getElementById("userDropdown").classList.add("d-none");
-    }
-}
-
-// Kjør sjekk ved lasting av siden
-document.addEventListener("DOMContentLoaded", checkLoginStatus);
+        function getSelectedRating() {
+            const selectedStar = document.querySelector('input[name="rating"]:checked');
+            return selectedStar ? selectedStar.value : null;
+        }
 
 
+        document.addEventListener("DOMContentLoaded", function () {
+            const ratingElement = document.querySelector('input[name="rating"]:checked');
+            if (ratingElement) {
+                console.log("Rating valgt:", ratingElement.value);
+            } else {
+                console.error("Ingen rating er valgt.");
+            }
+        });
 
+        function generateStarRating(rating) {
+            let starsHTML = "";
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    starsHTML += `<i class="fas fa-star text-warning"></i> `; // Fylte stjerner
+                } else {
+                    starsHTML += `<i class="far fa-star text-warning"></i> `; // Uutfylte stjerner
+                }
+            }
+            return starsHTML;
+        }
+
+
+
+        async function deleteFeedback(feedbackId) {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                alert('You must log in to delete feedback.');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to delete this feedback?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/my_diss/feedback/${feedbackId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    alert('Feedback deleted successfully.');
+                    fetchFeedback();
+                } else {
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.error}`);
+                }
+            } catch (error) {
+                console.error('Error deleting feedback:', error);
+            }
+        }
+
+        function openCommentModal(feedbackId) {
+            const feedbackInput = document.getElementById("feedbackId");
+            const commentText = document.getElementById("commentText");
+
+            if (!feedbackInput) {
+                console.error("❌ FEIL: Skjult input for feedbackId mangler i DOM.");
+                return;
+            }
+
+            feedbackInput.value = feedbackId; // Sett feedback ID
+
+            if (commentText) {
+                commentText.value = ""; // Nullstill tekstfeltet
+            }
+
+            // Nullstill stjernene
+            document.querySelectorAll("#commentModal input[name='commentRating']").forEach(star => {
+                star.checked = false;
+            });
+
+            const commentModal = new bootstrap.Modal(document.getElementById("commentModal"));
+            commentModal.show();
+        }
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const logoutBtn = document.getElementById("logoutBtn");
+            if (logoutBtn) {
+                logoutBtn.addEventListener("click", function () {
+                    console.log("Logout button clicked!");
+
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("userId");
+                    localStorage.removeItem("userEmail");
+
+                    console.log("Local storage cleared!");
+
+                    document.getElementById("loginNav").classList.remove("d-none");
+                    document.getElementById("userDropdown").classList.add("d-none");
+
+                    alert("Logged out successfully!");
+                    window.location.href = "index.html";
+                });
+            } else {
+                console.error("Logout button not found in DOM!");
+            }
+        });
+
+        function checkLoginStatus() {
+            const token = localStorage.getItem("token");
+            if (token) {
+                console.log("User is logged in.");
+                document.getElementById("loginNav").classList.add("d-none");
+                document.getElementById("userDropdown").classList.remove("d-none");
+            } else {
+                console.log("⚠ No token found. User is logged out.");
+                document.getElementById("loginNav").classList.remove("d-none");
+                document.getElementById("userDropdown").classList.add("d-none");
+            }
+        }
+        document.addEventListener("DOMContentLoaded", checkLoginStatus);
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

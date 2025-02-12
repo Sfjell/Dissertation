@@ -307,7 +307,6 @@
             const questionInput = document.getElementById("questionInput");
 
             if (!isLoggedIn) {
-                // ❌ Deaktiver innsending av spørsmål
                 submitQuestionBtn.disabled = true;
                 submitQuestionBtn.innerText = "Login to ask a question";
                 submitQuestionBtn.addEventListener("click", () => alert("You must be logged in to ask a question."));
@@ -345,26 +344,25 @@
                 })
                 .then(() => {
                     document.getElementById('questionInput').value = "";
-                    fetchQuestions(); // Oppdater listen
+                    fetchQuestions();
                 })
                 .catch(error => {
-                    console.error("❌ Error submitting question:", error);
+                    console.error("Error submitting question:", error);
                     alert("There was an issue submitting the question. Please try again later.");
                 });
         }
 
         async function fetchQuestions() {
             const token = localStorage.getItem("token");
-            const currentUserId = localStorage.getItem("userId"); // Hent bruker-ID for sjekk
-            const isLoggedIn = !!token; // Sjekker om bruker er logget inn
+            const currentUserId = localStorage.getItem("userId");
+            const isLoggedIn = !!token;
 
             try {
                 const response = await fetch("http://localhost:5000/my_diss/questions");
                 if (!response.ok) throw new Error("Error fetching questions");
 
-                let questions = await response.json();  // ❗ Endret fra const til let
+                let questions = await response.json();
 
-                // 🔹 Filtrer bort spørsmål hvor bruker-ID er null eller "Anonymous"
                 questions = questions.filter(q => q.userId && q.userId.email !== "Anonymous");
 
                 const questionsContainer = document.getElementById("questions");
@@ -427,7 +425,6 @@
             }
         }
 
-
         async function deleteAnswer(questionId, answerId, event) {
             event.preventDefault();
 
@@ -450,7 +447,7 @@
                 }
 
                 alert("Answer deleted successfully!");
-                fetchQuestions(); // Refresh questions list
+                fetchQuestions();
             } catch (error) {
                 console.error("Error deleting answer:", error);
                 alert("There was an issue deleting the answer. Please try again later.");
@@ -479,10 +476,9 @@
                     return;
                 }
 
-                // Oppdater antall likes etter suksess
                 const responseData = await response.json();
                 alert("Like updated successfully!");
-                fetchQuestions(); // Henter oppdatert liste
+                fetchQuestions(); 
             } catch (error) {
                 console.error("Error liking answer:", error);
                 alert("There was an issue liking the answer. Please try again later.");
@@ -490,7 +486,7 @@
         }
 
         async function deleteQuestion(questionId, event) {
-            event.preventDefault(); // Hindrer at siden oppdateres ved sletting
+            event.preventDefault(); 
 
             const token = localStorage.getItem("token");
             if (!token) {
@@ -511,7 +507,7 @@
                 }
 
                 alert("Question deleted successfully!");
-                fetchQuestions(); // Oppdater listen etter sletting
+                fetchQuestions();
             } catch (error) {
                 console.error("Error deleting question:", error);
                 alert("There was an issue deleting the question. Please try again later.");
@@ -540,7 +536,6 @@
                 console.error("Error submitting answer:", error);
             }
         }
-
 
         function logoutUser() {
             localStorage.removeItem("token");

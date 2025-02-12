@@ -407,18 +407,16 @@
                 const cancelDelete = document.getElementById("cancelDelete");
                 const confirmDelete = document.getElementById("confirmDelete");
 
-                let token = localStorage.getItem("token");  // Bruk riktig nøkkel!
+                let token = localStorage.getItem("token");
 
                 if (!token || token === "null" || token === "undefined") {
-                    console.log("❌ No valid token found, redirecting to login...");
+                    console.log("No valid token found, redirecting to login...");
                     logoutUser();
                 } else {
-                    console.log("✅ Token found:", token);
+                    console.log("Token found:", token);
                     fetchUserData(token);
                 }
 
-
-                // 🔹 Henter brukerdata basert på token
                 function fetchUserData(token) {
                     fetch("http://localhost:5000/my_diss/check-token", {
                         method: "GET",
@@ -426,64 +424,61 @@
                     })
                         .then(response => response.json())
                         .then(data => {
-                            console.log("🔍 check-token response:", data);
+                            console.log("check-token response:", data);
 
                             if (data.message === "Token is valid" && data.userId) {
-                                console.log("✅ Token is valid, userId:", data.userId);
+                                console.log("Token is valid, userId:", data.userId);
 
-                                // 🚀 Sørg for at `userEmail` er lagret i localStorage
                                 if (!localStorage.getItem("userEmail")) {
-                                    console.warn("⚠ `userEmail` not found in localStorage. Fetching from backend...");
+                                    console.warn("`userEmail` not found in localStorage. Fetching from backend...");
                                     fetchUserEmailFromBackend(data.userId, token);
                                 } else {
                                     fetchUserProfile(token);
                                 }
                             } else {
-                                console.warn("⚠ Invalid token or missing userId. Redirecting to login...");
+                                console.warn("Invalid token or missing userId. Redirecting to login...");
                                 logoutUser();
                             }
                         })
                         .catch(err => {
-                            console.error("❌ Error validating token:", err);
+                            console.error("Error validating token:", err);
                             logoutUser();
                         });
                 }
 
-
-                // 🔹 Henter brukerprofil
                 function fetchUserProfile(userId, token) {
                     if (!userId || typeof userId !== "string") {
-                        console.error("❌ userId is invalid! Cannot fetch user profile.");
+                        console.error("userId is invalid! Cannot fetch user profile.");
                         logoutUser();
                         return;
                     }
 
-                    let email = localStorage.getItem("userEmail"); // Henter email fra localStorage
+                    let email = localStorage.getItem("userEmail");
 
                     if (!email || email === "null" || email === "undefined") {
-                        console.warn("⚠ `userEmail` not found in localStorage. Trying to fetch from backend...");
+                        console.warn("`userEmail` not found in localStorage. Trying to fetch from backend...");
                         fetchUserEmailFromBackend(userId, token);
                         return;
                     }
 
-                    console.log("✅ Fetching user profile for:", email);
+                    console.log("Fetching user profile for:", email);
 
                     fetch(`http://localhost:5000/my_diss/get-user/${email}`, {
                         headers: { "Authorization": `Bearer ${token}` }
                     })
                         .then(res => res.json())
                         .then(user => {
-                            console.log("🔍 User profile response:", user);
+                            console.log("User profile response:", user);
 
                             if (user.error) {
-                                console.error("❌ User not found:", user.error);
+                                console.error("User not found:", user.error);
                                 logoutUser();
                             } else {
                                 updateProfileUI(user);
                             }
                         })
                         .catch(err => {
-                            console.error("❌ Error fetching user data:", err);
+                            console.error("Error fetching user data:", err);
                             logoutUser();
                         });
                 }
@@ -495,21 +490,20 @@
                         .then(res => res.json())
                         .then(data => {
                             if (data.email) {
-                                console.log("✅ Fetched email from backend:", data.email);
+                                console.log("Fetched email from backend:", data.email);
                                 localStorage.setItem("userEmail", data.email);
-                                fetchUserProfile(userId, token); // Kall funksjonen igjen med ny email
+                                fetchUserProfile(userId, token);
                             } else {
-                                console.error("❌ Could not fetch email. Logging out...");
+                                console.error("Could not fetch email. Logging out...");
                                 logoutUser();
                             }
                         })
                         .catch(err => {
-                            console.error("❌ Error fetching email from backend:", err);
+                            console.error("Error fetching email from backend:", err);
                             logoutUser();
                         });
                 }
 
-                // 🔹 Oppdaterer UI med brukerens data
                 function updateProfileUI(user) {
                     profileName.innerText = user.name || "Not logged in";
 
@@ -521,22 +515,20 @@
                     fetchUserPosts(user._id);
                 }
 
-                // 🔹 Henter brukerens bidrag (poster, kommentarer, spørsmål, svar)
                 function fetchUserPosts(userId) {
                     if (!userId) {
-                        console.error("❌ No userId provided for fetching data.");
+                        console.error("No userId provided for fetching data.");
                         return;
                     }
 
                     const token = localStorage.getItem("token");
                     if (!token) {
-                        console.error("❌ No token found in localStorage.");
+                        console.error("No token found in localStorage.");
                         return;
                     }
 
-                    console.log("🔹 Fetching all user contributions for userId:", userId);
+                    console.log("Fetching all user contributions for userId:", userId);
 
-                    // ✅ Henter brukerens IT-system anmeldelser
                     fetch(`http://localhost:5000/my_diss/user-posts/${userId}`, {
                         headers: { "Authorization": `Bearer ${token}` }
                     })
@@ -556,16 +548,15 @@
                                 postItem.innerHTML = `
                     <h6>${post.companyName}</h6>
                     <p>${post.experienceDescription}</p>
-                    <p>⭐ Rating: ${post.rating}</p>
+                    <p> Rating: ${post.rating}</p>
                 `;
                                 postsContainer.appendChild(postItem);
                             });
 
-                            console.log("✅ Successfully loaded user posts:", posts);
+                            console.log("Successfully loaded user posts:", posts);
                         })
-                        .catch(err => console.error("❌ Error fetching user posts:", err));
+                        .catch(err => console.error("Error fetching user posts:", err));
 
-                    // ✅ Henter brukerens kommentarer på IT-systemer
                     fetch(`http://localhost:5000/my_diss/user-comments/${userId}`, {
                         headers: { "Authorization": `Bearer ${token}` }
                     })
@@ -585,14 +576,14 @@
                                 commentItem.innerHTML = `
                     <h6>${comment.companyName}</h6>
                     <p>${comment.commentText}</p>
-                    <p>⭐ Rating: ${comment.rating}</p>
+                    <p> Rating: ${comment.rating}</p>
                 `;
                                 commentsContainer.appendChild(commentItem);
                             });
 
-                            console.log("✅ Successfully loaded user comments:", comments);
+                            console.log("Successfully loaded user comments:", comments);
                         })
-                        .catch(err => console.error("❌ Error fetching user comments:", err));
+                        .catch(err => console.error("Error fetching user comments:", err));
 
                     // ✅ Henter brukerens spørsmål
                     fetch(`http://localhost:5000/my_diss/user-questions/${userId}`, {
@@ -615,11 +606,10 @@
                                 questionsContainer.appendChild(questionItem);
                             });
 
-                            console.log("✅ Successfully loaded user questions:", questions);
+                            console.log("Successfully loaded user questions:", questions);
                         })
-                        .catch(err => console.error("❌ Error fetching user questions:", err));
+                        .catch(err => console.error("Error fetching user questions:", err));
 
-                    // ✅ Henter brukerens svar
                     fetch(`http://localhost:5000/my_diss/user-answers/${userId}`, {
                         headers: { "Authorization": `Bearer ${token}` }
                     })
@@ -640,38 +630,33 @@
                                 answersContainer.appendChild(answerItem);
                             });
 
-                            console.log("✅ Successfully loaded user answers:", answers);
+                            console.log("Successfully loaded user answers:", answers);
                         })
-                        .catch(err => console.error("❌ Error fetching user answers:", err));
+                        .catch(err => console.error("Error fetching user answers:", err));
                 }
 
-                // 🔹 Toggle settings visning
                 settingsBtn.addEventListener("click", function () {
                     settingsCard.style.display = settingsCard.style.display === "none" ? "block" : "none";
                     settingsBtn.classList.add("active-btn");
                     setTimeout(() => settingsBtn.classList.remove("active-btn"), 200);
                 });
 
-                // 🔹 Åpne modal for sletting av konto
-                // Åpne modal for sletting av konto
                 deleteBtn.addEventListener("click", function () {
                     modalConfirm.style.display = "block";
                     modalOverlay.style.display = "block";
                 });
 
-                // Avbryt sletting
                 cancelDelete.addEventListener("click", function () {
                     modalConfirm.style.display = "none";
                     modalOverlay.style.display = "none";
                 });
 
-                // Bekreft sletting av konto
                 confirmDelete.addEventListener("click", async function () {
-                    console.log("🗑 Deleting account...");
+                    console.log(" Deleting account...");
                     let email = localStorage.getItem("userEmail");
 
                     if (!email) {
-                        console.error("❌ No email found in localStorage. Cannot delete user.");
+                        console.error("No email found in localStorage. Cannot delete user.");
                         alert("Error: User email not found.");
                         return;
                     }
@@ -687,26 +672,25 @@
                         }
 
                         const data = await response.json();
-                        console.log("✅ Account deleted:", data);
+                        console.log("Account deleted:", data);
 
                         alert("Your account has been successfully deleted.");
                         logoutUser();
                     } catch (err) {
-                        console.error("❌ Error deleting account:", err);
+                        console.error("Error deleting account:", err);
                         alert("An error occurred while deleting your account.");
                     }
                 });
 
-                // 🔹 Logout-funksjon
                 function logoutUser() {
-                    console.warn("🔹 Logging out user...");
-                    console.log("🔹 LocalStorage before logout:", localStorage);
+                    console.warn("Logging out user...");
+                    console.log("LocalStorage before logout:", localStorage);
 
                     localStorage.removeItem("authToken");
                     localStorage.removeItem("userId");
                     localStorage.removeItem("userEmail");
 
-                    console.log("🔹 LocalStorage after logout:", localStorage);
+                    console.log("LocalStorage after logout:", localStorage);
 
                     if (!window.location.href.includes("login.html")) {
                         alert("You have been logged out.");
@@ -735,12 +719,11 @@
             </div>
         `).join("");
                 } catch (error) {
-                    console.error("❌ Feil under henting av IT-systemer:", error);
+                    console.error("Feil under henting av IT-systemer:", error);
                     document.getElementById("topSystems").innerHTML = "<p>Kunne ikke laste systemene.</p>";
                 }
             }
 
-            // ✅ Hent spørsmål med feilhåndtering
             async function fetchQuestions() {
                 try {
                     const response = await fetch("http://localhost:5000/my_diss/questions");
@@ -762,148 +745,138 @@
             </div>
         `).join("");
                 } catch (error) {
-                    console.error("❌ Feil under henting av spørsmål:", error);
+                    console.error("Feil under henting av spørsmål:", error);
                     document.getElementById("questions").innerHTML = "<p>Kunne ikke laste spørsmål.</p>";
                 }
             }
 
 
             document.addEventListener("DOMContentLoaded", function () {
-    console.log("🔹 Profile settings script loaded!");
+                console.log("Profile settings script loaded!");
 
-    const nameInput = document.getElementById("name");
-    const ageInput = document.getElementById("age");
-    const genderInput = document.getElementById("gender");
-    const occupationInput = document.getElementById("occupation");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const updateButton = document.querySelector(".btn-primary");
+                const nameInput = document.getElementById("name");
+                const ageInput = document.getElementById("age");
+                const genderInput = document.getElementById("gender");
+                const occupationInput = document.getElementById("occupation");
+                const emailInput = document.getElementById("email");
+                const passwordInput = document.getElementById("password");
+                const updateButton = document.querySelector(".btn-primary");
 
-    let token = localStorage.getItem("token");
+                let token = localStorage.getItem("token");
 
-    if (!token) {
-        console.warn("❌ No token found, redirecting to login.");
-        alert("You need to log in first.");
-        window.location.href = "login.html";
-        return;
-    }
-
-    console.log("✅ Token found:", token);
-
-    // 🔹 Henter brukerprofil
-    function fetchUserProfile() {
-        fetch("http://localhost:5000/my_diss/user-profile", {
-            method: "GET",
-            headers: { "Authorization": `Bearer ${token}` }
-        })
-            .then(response => {
-                if (!response.ok) throw new Error("Failed to fetch user profile.");
-                return response.json();
-            })
-            .then(user => {
-                console.log("🔹 Fetched user data:", user);
-
-                if (user.error) {
-                    console.error("❌ Error fetching user:", user.error);
-                    alert("Session expired. Please log in again.");
-                    logoutUser();
+                if (!token) {
+                    console.warn("No token found, redirecting to login.");
+                    alert("You need to log in first.");
+                    window.location.href = "login.html";
                     return;
                 }
 
-                nameInput.value = user.name || "";
-                ageInput.value = user.age || "";
-                genderInput.value = user.gender || "";
-                occupationInput.value = user.occupation || "";
-                emailInput.value = user.email || "";
-                passwordInput.value = ""; // Ikke vis passord
+                console.log("Token found:", token);
 
-                // 🔹 Lagre e-posten i localStorage for å huske oppdatert email
-                localStorage.setItem("userEmail", user.email);
-            })
-            .catch(error => {
-                console.error("❌ Error fetching profile:", error);
-                alert("Error loading profile. Please try again.");
-            });
-    }
+                function fetchUserProfile() {
+                    fetch("http://localhost:5000/my_diss/user-profile", {
+                        method: "GET",
+                        headers: { "Authorization": `Bearer ${token}` }
+                    })
+                        .then(response => {
+                            if (!response.ok) throw new Error("Failed to fetch user profile.");
+                            return response.json();
+                        })
+                        .then(user => {
+                            console.log("🔹 Fetched user data:", user);
 
-    fetchUserProfile(); // 🚀 Hent data ved sideinnlasting
+                            if (user.error) {
+                                console.error("Error fetching user:", user.error);
+                                alert("Session expired. Please log in again.");
+                                logoutUser();
+                                return;
+                            }
 
-    // 🔹 Oppdater brukerprofil
-    updateButton.addEventListener("click", function (event) {
-        event.preventDefault();
+                            nameInput.value = user.name || "";
+                            ageInput.value = user.age || "";
+                            genderInput.value = user.gender || "";
+                            occupationInput.value = user.occupation || "";
+                            emailInput.value = user.email || "";
+                            passwordInput.value = "";
 
-        const updatedProfile = {
-            name: nameInput.value,
-            age: ageInput.value,
-            gender: genderInput.value,
-            occupation: occupationInput.value,
-            email: emailInput.value,
-            password: passwordInput.value ? passwordInput.value : null // Oppdater passord hvis det er angitt
-        };
-
-        console.log("🚀 Sending updated profile:", updatedProfile);
-
-        fetch("http://localhost:5000/my_diss/update-profile", {
-            method: "PUT",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(updatedProfile)
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    console.error("❌ Error updating profile:", data.error);
-                    alert("Error updating profile: " + data.error);
-                } else {
-                    alert("✅ Profile updated successfully!");
-
-                    // 🔹 Oppdater token i localStorage etter passord/e-post endring
-                    if (data.token) {
-                        console.log("🔑 Storing new token in localStorage.");
-                        localStorage.setItem("token", data.token);
-                    }
-
-                    // 🔹 Oppdater e-posten i localStorage hvis den er endret
-                    if (data.email) {
-                        localStorage.setItem("userEmail", data.email);
-                    }
-
-                    fetchUserProfile(); // 🚀 Hent data på nytt etter oppdatering
+                            localStorage.setItem("userEmail", user.email);
+                        })
+                        .catch(error => {
+                            console.error("Error fetching profile:", error);
+                            alert("Error loading profile. Please try again.");
+                        });
                 }
-            })
-            .catch(error => {
-                console.error("❌ Error updating profile:", error);
-                alert("An error occurred while updating the profile. Please try again.");
+
+                fetchUserProfile();
+
+                updateButton.addEventListener("click", function (event) {
+                    event.preventDefault();
+
+                    const updatedProfile = {
+                        name: nameInput.value,
+                        age: ageInput.value,
+                        gender: genderInput.value,
+                        occupation: occupationInput.value,
+                        email: emailInput.value,
+                        password: passwordInput.value ? passwordInput.value : null // Oppdater passord hvis det er angitt
+                    };
+
+                    console.log("Sending updated profile:", updatedProfile);
+
+                    fetch("http://localhost:5000/my_diss/update-profile", {
+                        method: "PUT",
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(updatedProfile)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                console.error("Error updating profile:", data.error);
+                                alert("Error updating profile: " + data.error);
+                            } else {
+                                alert("Profile updated successfully!");
+
+                                if (data.token) {
+                                    console.log("Storing new token in localStorage.");
+                                    localStorage.setItem("token", data.token);
+                                }
+
+                                if (data.email) {
+                                    localStorage.setItem("userEmail", data.email);
+                                }
+
+                                fetchUserProfile();
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error updating profile:", error);
+                            alert("An error occurred while updating the profile. Please try again.");
+                        });
+                });
+
+                function logoutUser() {
+                    console.warn("Logging out user...");
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("userEmail");
+                    alert("Session expired. Please log in again.");
+                    window.location.href = "login.html";
+                }
             });
-    });
-
-    // 🔹 Logg ut bruker (Hvis token er ugyldig)
-    function logoutUser() {
-        console.warn("🔹 Logging out user...");
-        localStorage.removeItem("token");
-        localStorage.removeItem("userEmail");
-        alert("Session expired. Please log in again.");
-        window.location.href = "login.html";
-    }
-});
-
-
-          
 
             document.addEventListener("DOMContentLoaded", function () {
                 const emailInput = document.getElementById("email");
                 const passwordInput = document.getElementById("password");
                 const form = document.getElementById("accountSettingsForm");
 
-                // Simulert API-kall for å hente lagret brukerinfo
                 function fetchUserData() {
                     fetch("http://localhost:5000/get-user-data", { method: "GET" })
                         .then(response => response.json())
                         .then(data => {
                             emailInput.value = data.email;
-                            passwordInput.value = ""; // Tomt for sikkerhet
+                            passwordInput.value = "";
                         })
                         .catch(error => console.error("Error fetching user data:", error));
                 }
@@ -922,7 +895,6 @@
                         return;
                     }
 
-                    // Fetch current user details and pre-fill email field
                     fetch("http://localhost:5000/my_diss/get-user-profile", {
                         method: "GET",
                         headers: { "Authorization": `Bearer ${token}` }
@@ -937,7 +909,6 @@
                         })
                         .catch(error => console.error("Error fetching profile:", error));
 
-                    // Handle form submission
                     updateCredentialsForm.addEventListener("submit", function (event) {
                         event.preventDefault();
 
@@ -958,15 +929,14 @@
                                     alert("Error updating credentials: " + data.error);
                                 } else {
                                     alert("Email and password updated successfully! Please log in again.");
-                                    localStorage.removeItem("token"); // Log out the user
-                                    window.location.href = "login.html"; // Redirect to login
+                                    localStorage.removeItem("token"); 
+                                    window.location.href = "login.html";
                                 }
                             })
                             .catch(error => console.error("Error updating credentials:", error));
                     });
                 });
 
-                // Håndtering av oppdatering
                 form.addEventListener("submit", function (event) {
                     event.preventDefault();
 

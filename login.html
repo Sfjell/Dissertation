@@ -62,7 +62,6 @@
 
 <body>
     <div class="container">
-        <!-- Login Form -->
         <div class="auth-container" id="loginContainer">
             <h2 class="auth-title">Login</h2>
             <form id="loginForm">
@@ -89,7 +88,6 @@
             checkLoginStatus();
         });
 
-        // ✅ Handle Login Form Submission
         document.getElementById("loginForm").addEventListener("submit", async (event) => {
             event.preventDefault();
             const email = document.getElementById("loginEmail").value;
@@ -109,19 +107,18 @@
                     localStorage.setItem("userId", data.userId);
                     localStorage.setItem("userEmail", email);
 
-                    alert("✅ Login successful!");
+                    alert("Login successful!");
                     window.location.href = "index.html";
                 } else {
                     errorMessage.textContent = data.error || "Invalid login credentials.";
                     localStorage.removeItem("token");
                 }
             } catch (error) {
-                console.error("❌ Error during login:", error);
+                console.error("Error during login:", error);
                 errorMessage.textContent = "An error occurred. Please try again later.";
             }
         });
 
-        // ✅ Check Login Status
         async function checkLoginStatus() {
             const token = localStorage.getItem("token");
             if (!token) {
@@ -138,11 +135,11 @@
                 });
 
                 if (!response.ok) {
-                    console.warn("⚠ Token expired or invalid. Redirecting to login...");
+                    console.warn("Token expired or invalid. Redirecting to login...");
                     logoutUser();
                 }
             } catch (error) {
-                console.error("❌ Error checking token:", error);
+                console.error("Error checking token:", error);
                 logoutUser();
             }
         }

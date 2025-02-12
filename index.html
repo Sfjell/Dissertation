@@ -353,11 +353,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="help.html">Discussion</a>
                     </li>
-                    <!-- Show Login if NOT logged in -->
+
                     <li class="nav-item" id="loginNav">
                         <a class="nav-link" href="login.html">Login</a>
                     </li>
-                    <!-- Show User Dropdown if logged in -->
+
                     <li class="nav-item dropdown d-none" id="userDropdown">
                         <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                             <i class="fas fa-user"></i>
@@ -385,7 +385,6 @@
         <div id="questions"></div>
     </div>
 
-    <!-- About Section -->
     <div class="about-section">
         <h2>About SysReviewSphere</h2>
         <div class="about-content">
@@ -415,7 +414,6 @@
             </div>
         </div>
     </div>
-    <!-- Features Section -->
     <div class="features-section">
         <h2>Platform Features</h2>
         <div class="features-content">
@@ -436,7 +434,6 @@
             </div>
         </div>
     </div>
-    <!-- Call to Action Section -->
     <div class="cta-section">
         <div class="cta-content">
             <h2>Ready to Find the Best IT Systems?</h2>
@@ -453,21 +450,17 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Function to check if user is logged in
         function checkLoginStatus() {
             const token = localStorage.getItem("token");
             if (token) {
-                // User is logged in
                 document.getElementById("loginNav").classList.add("d-none");
                 document.getElementById("userDropdown").classList.remove("d-none");
             } else {
-                // User is not logged in
                 document.getElementById("loginNav").classList.remove("d-none");
                 document.getElementById("userDropdown").classList.add("d-none");
             }
         }
 
-        // Logout function
         document.getElementById("logoutBtn").addEventListener("click", function () {
             localStorage.removeItem("token");
             localStorage.removeItem("userId");
@@ -476,8 +469,6 @@
             window.location.href = "index.html";
         });
 
-
-        // Fetch Top Systems
         async function fetchTopSystems() {
             const response = await fetch("http://localhost:5000/my_diss");
             const feedbacks = await response.json();
@@ -496,10 +487,9 @@
             `).join("");
         }
 
-        // Fetch Questions with Error Handling
         async function fetchQuestions() {
             try {
-                const response = await fetch("http://localhost:5000/my_diss/questions"); // Sjekk at dette er riktig endepunkt
+                const response = await fetch("http://localhost:5000/my_diss/questions"); 
                 if (!response.ok) {
                     throw new Error("Feil ved henting av spørsmål");
                 }
@@ -511,13 +501,10 @@
                     return;
                 }
 
-                // Sorter etter `createdAt` synkende (nyeste først)
                 questions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-                // Begrens til de 3 nyeste spørsmålene
                 const latestQuestions = questions.slice(0, 3);
 
-                // Generer HTML for spørsmålene
                 document.getElementById("questions").innerHTML = latestQuestions.map(q => `
             <div class="green-box" data-bs-toggle="collapse" data-bs-target="#answer${q._id}">
                 <div>${q.questionText || "Ukjent spørsmål"}</div>
@@ -536,7 +523,6 @@
             }
         }
 
-        // Run login status check on page load
         checkLoginStatus();
         fetchTopSystems();
         fetchQuestions();
