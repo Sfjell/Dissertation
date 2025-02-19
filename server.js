@@ -64,7 +64,7 @@ app.get('/my_diss/get-user-id/:userId', async (req, res) => {
     }
     res.status(200).json({ email: user.email });
   } catch (err) {
-    console.error("❌ Error fetching user email:", err);
+    console.error("Error fetching user email:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
@@ -81,7 +81,7 @@ app.get('/my_diss/user-posts/:userId', async (req, res) => {
 
     res.status(200).json(posts);
   } catch (err) {
-    console.error("❌ Error fetching user posts:", err);
+    console.error("Error fetching user posts:", err);
     res.status(500).json({ error: "Server error fetching posts." });
   }
 });
@@ -112,7 +112,7 @@ app.get('/my_diss/user-comments/:userId', async (req, res) => {
 
     res.status(200).json(userComments.length ? userComments : []);
   } catch (err) {
-    console.error("❌ Error fetching user comments:", err);
+    console.error("Error fetching user comments:", err);
     res.status(500).json({ error: "Server error fetching comments." });
   }
 });
@@ -128,7 +128,7 @@ app.get('/my_diss/user-questions/:userId', async (req, res) => {
 
     res.status(200).json(questions);
   } catch (err) {
-    console.error("❌ Error fetching user questions:", err);
+    console.error("Error fetching user questions:", err);
     res.status(500).json({ error: "Server error fetching questions." });
   }
 });
@@ -164,30 +164,30 @@ app.get('/my_diss/user-answers/:userId', async (req, res) => {
 app.get("/my_diss/feedback/:feedbackId", async (req, res) => {
   try {
     const { feedbackId } = req.params;
-    console.log("🔹 Fetching feedback for ID:", feedbackId);
+    console.log("Fetching feedback for ID:", feedbackId);
 
     const feedback = await Feedback.findById(feedbackId)
       .populate('userId', 'email')
       .populate('comments.userId', 'email');
 
     if (!feedback) {
-      console.warn("⚠️ Feedback not found for ID:", feedbackId);
+      console.warn("Feedback not found for ID:", feedbackId);
       return res.status(404).json({ error: "Feedback not found" });
     }
 
     res.status(200).json(feedback);
   } catch (err) {
-    console.error("❌ Error fetching feedback:", err);
+    console.error("Error fetching feedback:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
-  console.log("🔹 Received Authorization header:", authHeader);
+  console.log("Received Authorization header:", authHeader);
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    console.log("⚠️ No token provided or incorrect format.");
+    console.log("No token provided or incorrect format.");
     return res.status(403).json({ error: 'Access denied. No token provided.' });
   }
 
@@ -309,7 +309,6 @@ app.post('/my_diss/login', async (req, res) => {
       console.log("Found User:", user.email);
       console.log("Stored Hashed Password:", user.password);
 
-      // 🔹 Sjekk passord mot hash
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
@@ -325,7 +324,7 @@ app.post('/my_diss/login', async (req, res) => {
           { expiresIn: '24h' }
       );
 
-      console.log("🔑 New Token Generated:", token);
+      console.log("New Token Generated:", token);
 
       res.status(200).json({
           message: 'Login successful.',
@@ -897,7 +896,7 @@ app.delete('/my_diss/answers/:answerId', authenticateToken, async (req, res) => 
       return res.status(404).json({ error: 'Answer not found' });
     }
 
-    console.log("ℹ️ Current answers before deletion:", question.answers);
+    console.log("Current answers before deletion:", question.answers);
 
     const answer = question.answers.id(answerId);
     if (!answer) {

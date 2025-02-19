@@ -10,7 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
-        /* Global Styles */
         body {
             background-color: #eef2f7;
             font-family: Arial, sans-serif;
@@ -18,7 +17,6 @@
             padding: 0;
         }
 
-        /* Profile Header */
         .profile-header {
             width: 100%;
             background-color: #e16539;
@@ -29,7 +27,6 @@
             border-bottom-right-radius: 50px;
         }
 
-        /* Profile Icon */
         .profile-icon {
             width: 120px;
             height: 120px;
@@ -44,7 +41,6 @@
             color: white;
         }
 
-        /* Contributions Main Header */
         .contributions-header {
             text-align: center;
             font-size: 28px;
@@ -55,10 +51,8 @@
             padding-bottom: 10px;
             border-bottom: 3px solid #e16539;
             display: block;
-            /* Ensures it's on its own line */
         }
 
-        /* Section Titles (Subheadings) */
         .section-title {
             text-align: center;
             font-size: 22px;
@@ -69,13 +63,9 @@
             padding-bottom: 5px;
             border-bottom: 2px solid #e16539;
             display: inline-block;
-            /* Prevents full-width styling */
             width: auto;
-            /* Prevents it from stretching */
         }
 
-
-        /* Centering Headers */
         .container h5,
         .container h4 {
             text-align: center;
@@ -83,14 +73,12 @@
             color: #333;
         }
 
-        /* Container Styling */
         .container {
             max-width: 800px;
             margin: auto;
             padding: 20px;
         }
 
-        /* Post Styling */
         .post-list {
             max-width: 700px;
             margin: auto;
@@ -112,7 +100,6 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        /* Post Content */
         .post-item h6 {
             margin: 0;
             font-weight: bold;
@@ -123,13 +110,11 @@
             color: #555;
         }
 
-        /* Rating Styling */
         .rating {
             color: gold;
             font-weight: bold;
         }
 
-        /* Buttons */
         .btn-group-custom {
             display: flex;
             justify-content: center;
@@ -143,7 +128,6 @@
             border-radius: 5px;
         }
 
-        /* Black Button */
         .btn-black {
             background-color: black;
             color: white;
@@ -154,12 +138,10 @@
             background-color: #333;
         }
 
-        /* Red Delete Button */
         .btn-danger {
             border-radius: 5px;
         }
 
-        /* Settings Card */
         .settings-card {
             background-color: #fff;
             border-radius: 10px;
@@ -169,17 +151,14 @@
             margin: 20px auto;
             text-align: center;
             display: none;
-            /* Hidden by default */
         }
 
-        /* Form Styling */
         .form-control {
             border-radius: 5px;
             max-width: 400px;
             margin: auto;
         }
 
-        /* Modal Styling */
         .modal-confirm {
             display: none;
             position: fixed;
@@ -195,14 +174,10 @@
             z-index: 1000;
         }
 
-        /* Endrer outline (blå ramme) til oransje */
         .form-control:focus {
             border-color: #e16539;
-            /* Oransje kant */
             box-shadow: 0 0 5px #e16539;
-            /* Oransje glød */
             outline: none;
-            /* Fjerner standard blå kant */
         }
 
         .modal-overlay {
@@ -245,13 +220,11 @@
             background-color: #c84f2f;
         }
 
-        /* Endrer knappens farge ved hover */
         .btn-primary {
             background-color: #e16539;
             border-color: #e16539;
         }
 
-        /* Endrer farge når knappen er klikket/fokusert */
         .btn-primary:focus,
         .btn-primary:active {
             background-color: darkorange !important;
@@ -274,8 +247,8 @@
 
     <div class="container">
         <div class="btn-group-custom">
-            <button class="btn btn-black btn-small" id="toggleSettingsBtn">⚙️ Settings</button>
-            <button class="btn btn-danger btn-small" id="deleteAccountBtn">🗑 Delete Account</button>
+            <button class="btn btn-black btn-small" id="toggleSettingsBtn">Settings</button>
+            <button class="btn btn-danger btn-small" id="deleteAccountBtn">Delete Account</button>
         </div>
 
         <div id="settingsCard" class="container p-4" style="display: none;">
@@ -365,7 +338,6 @@
             </div>
         </div>
 
-
         <div class="container">
             <h2 class="contributions-header">Your Contributions</h2>
 
@@ -382,9 +354,6 @@
             <div class="post-list" id="yourAnswers"></div>
         </div>
 
-
-
-        <!-- Modal for Delete Confirmation -->
         <div class="modal-overlay" id="modalOverlay"></div>
         <div class="modal-confirm" id="modalConfirm">
             <h5>Are you sure?</h5>
@@ -395,7 +364,7 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                console.log("🔄 Page loaded");
+                console.log("Page loaded");
 
                 const profileEmail = document.getElementById("profileEmail");
                 const profileIcon = document.getElementById("profileIcon");
@@ -585,7 +554,6 @@
                         })
                         .catch(err => console.error("Error fetching user comments:", err));
 
-                    // ✅ Henter brukerens spørsmål
                     fetch(`http://localhost:5000/my_diss/user-questions/${userId}`, {
                         headers: { "Authorization": `Bearer ${token}` }
                     })
@@ -783,7 +751,7 @@
                             return response.json();
                         })
                         .then(user => {
-                            console.log("🔹 Fetched user data:", user);
+                            console.log("Fetched user data:", user);
 
                             if (user.error) {
                                 console.error("Error fetching user:", user.error);
@@ -818,7 +786,7 @@
                         gender: genderInput.value,
                         occupation: occupationInput.value,
                         email: emailInput.value,
-                        password: passwordInput.value ? passwordInput.value : null // Oppdater passord hvis det er angitt
+                        password: passwordInput.value ? passwordInput.value : null
                     };
 
                     console.log("Sending updated profile:", updatedProfile);

@@ -322,7 +322,6 @@
         <p>&copy; 2025 SysReviewSphere. All rights reserved.</p>
     </footer>
 
-
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             checkLoginStatus();
@@ -404,7 +403,7 @@
             <div class="d-flex align-items-center">
                 <div class="system-logo">
                    <img src="${feedback.logoPath ? `http://localhost:5000${feedback.logoPath}` : 'https://via.placeholder.com/100'}" 
-alt="Company Logo" class="img-fluid" style="max-width: 100px; max-height: 100px; object-fit: contain;">
+                    alt="Company Logo" class="img-fluid" style="max-width: 100px; max-height: 100px; object-fit: contain;">
                 </div>
                 <div class="ms-3">
                     <h5>${feedback.companyName}</h5>
@@ -445,7 +444,6 @@ alt="Company Logo" class="img-fluid" style="max-width: 100px; max-height: 100px;
     `).join("")
                 : "<p class='text-center'>No feedback available.</p>";
         }
-
 
         async function deleteComment(feedbackId, commentId) {
             const token = localStorage.getItem('token');
@@ -524,7 +522,6 @@ alt="Company Logo" class="img-fluid" style="max-width: 100px; max-height: 100px;
             }
         });
 
-
         async function updateComments(feedbackId) {
             console.log("Fetching updated comments for Feedback ID:", feedbackId);
 
@@ -576,7 +573,6 @@ alt="Company Logo" class="img-fluid" style="max-width: 100px; max-height: 100px;
             return selectedStar ? selectedStar.value : null;
         }
 
-
         document.getElementById('feedbackForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
@@ -625,7 +621,6 @@ alt="Company Logo" class="img-fluid" style="max-width: 100px; max-height: 100px;
             return selectedStar ? selectedStar.value : null;
         }
 
-
         document.addEventListener("DOMContentLoaded", function () {
             const ratingElement = document.querySelector('input[name="rating"]:checked');
             if (ratingElement) {
@@ -639,15 +634,13 @@ alt="Company Logo" class="img-fluid" style="max-width: 100px; max-height: 100px;
             let starsHTML = "";
             for (let i = 1; i <= 5; i++) {
                 if (i <= rating) {
-                    starsHTML += `<i class="fas fa-star text-warning"></i> `; // Fylte stjerner
+                    starsHTML += `<i class="fas fa-star text-warning"></i> `; 
                 } else {
-                    starsHTML += `<i class="far fa-star text-warning"></i> `; // Uutfylte stjerner
+                    starsHTML += `<i class="far fa-star text-warning"></i> `; 
                 }
             }
             return starsHTML;
         }
-
-
 
         async function deleteFeedback(feedbackId) {
             const token = localStorage.getItem('token');
@@ -684,17 +677,16 @@ alt="Company Logo" class="img-fluid" style="max-width: 100px; max-height: 100px;
             const commentText = document.getElementById("commentText");
 
             if (!feedbackInput) {
-                console.error("❌ FEIL: Skjult input for feedbackId mangler i DOM.");
+                console.error("FEIL: Skjult input for feedbackId mangler i DOM.");
                 return;
             }
 
-            feedbackInput.value = feedbackId; // Sett feedback ID
+            feedbackInput.value = feedbackId; 
 
             if (commentText) {
-                commentText.value = ""; // Nullstill tekstfeltet
+                commentText.value = ""; 
             }
 
-            // Nullstill stjernene
             document.querySelectorAll("#commentModal input[name='commentRating']").forEach(star => {
                 star.checked = false;
             });
@@ -702,8 +694,6 @@ alt="Company Logo" class="img-fluid" style="max-width: 100px; max-height: 100px;
             const commentModal = new bootstrap.Modal(document.getElementById("commentModal"));
             commentModal.show();
         }
-
-
 
         document.addEventListener("DOMContentLoaded", function () {
             const logoutBtn = document.getElementById("logoutBtn");
