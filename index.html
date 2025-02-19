@@ -16,9 +16,7 @@
         .navbar {
             background-color: #fff !important;
             box-shadow: none !important;
-            /* Fjernet skyggen for å unngå grå linje */
             border-bottom: none !important;
-            /* Fjerner eventuell grå linje */
             display: flex;
             align-items: center;
             padding: 0.5rem 1rem;
@@ -32,7 +30,6 @@
             width: 100%;
             background: transparent !important;
             border: none !important;
-            /* Hindrer eventuelle rammer */
         }
 
         .navbar-collapse {
@@ -48,14 +45,12 @@
             border: none !important;
         }
 
-        /* Ekstra sikring for å fjerne en mulig linje som kan genereres av Bootstrap */
         .navbar::after,
         .navbar::before {
             display: none !important;
             content: "" !important;
         }
 
-        /* Justerer brukerikon-knappen */
         .btn-outline-primary {
             display: flex;
             align-items: center;
@@ -87,17 +82,14 @@
             border-radius: 5px;
         }
 
-        /* Fjerner eventuell hvit bakgrunn bak navbar */
         .navbar.fixed-top {
             background: #fff !important;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
 
-
         .container {
             background: none !important;
         }
-
 
         .hero-section {
             background: #e16539;
@@ -193,7 +185,6 @@
             margin-top: 10px;
         }
 
-        /* About Section Styling */
         .about-section {
             background-color: #f4f7fc;
             padding: 60px 20px;
@@ -245,7 +236,6 @@
             margin-top: 15px;
         }
 
-        /* Features Section Styling */
         .features-section {
             background-color: #f4f7fc;
             padding: 60px 20px;
@@ -301,7 +291,6 @@
             line-height: 1.5;
         }
 
-        /* Call to Action Section Styling */
         .cta-section {
             background-color: #f4f7fc;
             padding: 60px 20px;
@@ -445,7 +434,6 @@
         </div>
     </div>
 
-
     <footer class="footer">
         <p>&copy; 2025 SysReviewSphere. All rights reserved.</p>
     </footer>
@@ -496,7 +484,6 @@
                 document.getElementById("topSystems").innerHTML = "<p>Kunne ikke laste systemene.</p>";
             }
         }
-
 
         function generateStarRating(rating) {
             let starsHTML = "";
