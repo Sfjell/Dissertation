@@ -13,6 +13,7 @@
             font-family: 'Arial', sans-serif;
         }
 
+        /* Adds margin to the top and bottom of system cards */
         .system-card {
             background-color: #fff;
             padding: 20px;
@@ -20,6 +21,7 @@
             border-radius: 10px;
         }
 
+        /* Styles the system logo inside the card */
         .system-logo img {
             max-width: 100px;
             max-height: 100px;
@@ -30,16 +32,19 @@
             margin: auto;
         }
 
+        /* Customizes the primary button color */
         .btn-primary {
             background-color: #e16539;
             border-color: #e16539;
         }
 
+        /* Styles the modal header */
         .modal-header {
             background-color: #e16539;
             color: white;
         }
 
+        /* Hides the filter section by default */
         #filterSection {
             display: none;
         }
@@ -126,6 +131,7 @@
             flex-direction: column;
         }
 
+        /* Ensures star ratings are displayed properly */
         .star-rating {
             display: flex;
             flex-direction: row-reverse;
@@ -133,16 +139,19 @@
             font-size: 1.5rem;
         }
 
+        /* Hides the radio inputs for stars */
         .star-rating input {
             display: none;
         }
 
+        /* Styles the star icons */
         .star-rating label {
             cursor: pointer;
             color: #ccc;
             margin: 0 5px;
         }
 
+        /* Changes the color of selected stars */
         .star-rating input:checked~label {
             color: #e16539;
         }

@@ -7,12 +7,15 @@
     <title>System Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
+    <style>¨
+    /* Sets the background color of the entire webpage to a light bluish-gray (#eef1f6).
+   The !important rule ensures this style overrides other conflicting styles. */
         body {
             background-color: #eef1f6 !important;
             font-family: 'Poppins', sans-serif;
         }
 
+        /* Styles the navigation bar */
         .navbar {
             background-color: #fff !important;
             box-shadow: none !important;
@@ -22,6 +25,7 @@
             padding: 0.5rem 1rem;
         }
 
+        /* Styles the container inside the navbar */
         .navbar .container {
             display: flex;
             align-items: center;
@@ -32,11 +36,13 @@
             border: none !important;
         }
 
+        /* Styles the collapsible navbar section */
         .navbar-collapse {
             background: transparent !important;
             border: none !important;
         }
 
+        /* Styles the navigation links container */
         .navbar-nav {
             display: flex;
             align-items: center;
@@ -45,12 +51,14 @@
             border: none !important;
         }
 
+        /* Removes default pseudo-elements (::before and ::after) from navbar */
         .navbar::after,
         .navbar::before {
             display: none !important;
             content: "" !important;
         }
 
+        /* Styles the outline-styled primary button */
         .btn-outline-primary {
             display: flex;
             align-items: center;
@@ -59,21 +67,25 @@
             border-radius: 5px;
         }
 
+        /* Styles individual navigation items */
         .nav-item {
             display: flex;
             align-items: center;
         }
 
+        /* Styles navigation links */
         .nav-link {
             font-size: 1.1rem;
             color: #555;
             transition: color 0.3s ease;
         }
 
+        /* Changes link color on hover */
         .nav-link:hover {
             color: #007bff;
         }
 
+        /* Ensures buttons with the 'btn-outline-primary' class have consistent styling */
         .btn-outline-primary {
             display: flex;
             align-items: center;
@@ -82,15 +94,18 @@
             border-radius: 5px;
         }
 
+        /* Styles a fixed-top navbar */ 
         .navbar.fixed-top {
             background: #fff !important;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
 
+        /* Ensures the container has no background */
         .container {
             background: none !important;
         }
 
+        /* Styles the hero section with a bold background color */
         .hero-section {
             background: #e16539;
             color: white;
@@ -99,6 +114,7 @@
             border-radius: 10px;
         }
 
+        /* Styles the system cards */
         .system-card {
             background-color: #fff;
             padding: 20px;
@@ -113,10 +129,12 @@
             min-height: 250px;
         }
 
+        /* Adds a hover effect to system cards */
         .system-card:hover {
             transform: translateY(-5px);
         }
 
+        /* Ensures the page takes up the full height of the viewport */
         html,
         body {
             height: 100%;
@@ -125,10 +143,12 @@
             flex-direction: column;
         }
 
+        /* Makes the container expand to fill available space */
         .container {
             flex: 1;
         }
 
+        /* Styles the footer */
         .footer {
             background-color: #222;
             color: white;
@@ -138,6 +158,7 @@
             width: 100%;
         }
 
+        /* Styles the green information box */
         .green-box {
             background-color: #f8f9fa;
             border-left: 5px solid #e16539;
@@ -151,25 +172,30 @@
             font-size: 1.2rem;
         }
 
+        /* Styles the question toggle button */
         .question-toggle {
             cursor: pointer;
             font-weight: 600;
         }
 
+        /* Adds a hover effect to the question toggle */
         .question-toggle:hover {
             background-color: #f1f1f1;
         }
 
+        /* Styles the container for question-related buttons */
         .question-buttons {
             display: flex;
             gap: 10px;
         }
 
+        /* Styles the question buttons */
         .question-buttons button {
             font-size: 0.9rem;
             padding: 5px 10px;
         }
 
+        /* Styles collapsible sections */
         .collapse {
             margin-top: 10px;
             border-top: 1px solid #ddd;
@@ -177,14 +203,17 @@
             background-color: #f9f9f9;
         }
 
+        /* Styles text areas */
         textarea {
             margin-top: 10px;
         }
 
+        /* Adds margin to the top of primary buttons */
         .btn-primary {
             margin-top: 10px;
         }
 
+        /* Styles the About section */
         .about-section {
             background-color: #f4f7fc;
             padding: 60px 20px;
@@ -193,12 +222,14 @@
             margin-top: 40px;
         }
 
+        /* Styles the heading in the About section */
         .about-section h2 {
             color: #333;
             font-size: 2.2rem;
             font-weight: 600;
         }
 
+        /* Styles the container for the About section content */
         .about-content {
             display: flex;
             justify-content: center;
@@ -207,6 +238,7 @@
             margin-top: 40px;
         }
 
+        /* Styles the About section image */
         .about-image {
             flex: 1;
             max-width: 400px;
@@ -214,28 +246,33 @@
             overflow: hidden;
         }
 
+        /* Ensures the image inside the About section is responsive */
         .about-image img {
             width: 100%;
             height: auto;
         }
 
+        /* Styles the text container in the About section */
         .about-text {
             flex: 1;
             max-width: 600px;
             text-align: left;
         }
 
+        /* Styles paragraphs in the About section */
         .about-text p {
             font-size: 1.1rem;
             color: #555;
             line-height: 1.6;
         }
 
+        /* Styles subheadings in the About section */
         .about-text h4 {
             font-weight: 600;
             margin-top: 15px;
         }
 
+        /* Styles the Features section */
         .features-section {
             background-color: #f4f7fc;
             padding: 60px 20px;
@@ -244,12 +281,14 @@
             margin-top: 40px;
         }
 
+        /* Styles the heading in the Features section */
         .features-section h2 {
             color: #333;
             font-size: 2.2rem;
             font-weight: 600;
         }
 
+        /* Styles the container for feature content */
         .features-content {
             display: flex;
             justify-content: center;
@@ -257,6 +296,7 @@
             margin-top: 40px;
         }
 
+        /* Styles individual feature cards */
         .feature-card {
             background-color: #fff;
             padding: 30px;
@@ -267,17 +307,20 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
+        /* Adds a hover effect to feature cards */
         .feature-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
         }
 
+        /* Styles icons inside feature cards */
         .feature-card i {
             font-size: 3rem;
             color: #007bff;
             margin-bottom: 20px;
         }
 
+        /* Styles feature card headings */
         .feature-card h5 {
             font-size: 1.4rem;
             font-weight: 600;
@@ -285,12 +328,14 @@
             color: #333;
         }
 
+        /* Styles text inside feature cards */
         .feature-card p {
             font-size: 1rem;
             color: #555;
             line-height: 1.5;
         }
 
+        /* Styles the Call-to-Action (CTA) section */
         .cta-section {
             background-color: #f4f7fc;
             padding: 60px 20px;
@@ -299,28 +344,32 @@
             margin-top: 40px;
         }
 
+        /* Styles the main heading in the CTA section */
         .cta-content h2 {
             font-size: 2.5rem;
             font-weight: 600;
             margin-bottom: 20px;
         }
 
+        /* Styles text inside the CTA section */
         .cta-content p {
             font-size: 1.2rem;
             margin-bottom: 30px;
             color: #000000;
         }
 
+        /* Styles the CTA button */
         .cta-content .btn {
             background-color: #007bff;
             font-size: 1.1rem;
-            padding: 12px 30px;
+            padding: 12px 30px; 
             border-radius: 5px;
             color: rgb(0, 0, 0);
             transition: background-color 0.3s ease;
             text-decoration: none;
         }
 
+        /* Adds a hover effect to the CTA button */
         .cta-content .btn:hover {
             background-color: #007bff;
         }

@@ -9,6 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
     <style>
    
+   /* Adds padding to the top of the body to prevent content from being hidden under a fixed navbar */
         body {
             background-color: #eef1f6;
             font-family: 'Poppins', sans-serif;
@@ -102,10 +103,12 @@
             font-size: 1.2rem;
         }
 
+        /* Adds a hover effect for the green box */
         .green-box:hover {
             background-color: #f1f1f1;
         }
 
+        /* Styles the question content container */
         .question-content {
             display: flex;
             flex-direction: column;
@@ -115,6 +118,7 @@
             margin-bottom: 5px;
         }
 
+        /* Styles the question text */
         .question-content .question-text {
             font-weight: 600;
             font-size: 1.1rem;
@@ -122,12 +126,14 @@
             word-wrap: break-word;
         }
 
+        /* Styles the question metadata */
         .question-meta {
             font-size: 0.9rem;
             color: #555;
             word-wrap: break-word;
         }
 
+        /* Styles the action button container */
         .action-buttons {
             display: flex;
             justify-content: flex-end;
@@ -137,11 +143,13 @@
             text-align: center;
         }
 
+        /* Styles the icons inside the action buttons */
         .action-buttons span {
             font-size: 1.5rem;
             cursor: pointer;
         }
 
+        /* Responsive styles for screens smaller than 768px */
         @media (max-width: 768px) {
             .action-buttons {
                 justify-content: flex-end;
@@ -153,6 +161,7 @@
             }
         }
 
+        /* Styles collapsible sections */
         .collapse {
             padding: 15px;
             background-color: #f9f9f9;
@@ -160,24 +169,29 @@
             margin-bottom: 15px;
         }
 
+        /* Styles the answer container */
         .answer-container {
             display: flex;
             flex-direction: column;
             gap: 5px;
         }
 
+        /* Makes bold text inside answers more prominent */
         .answer-container b {
             font-weight: 600;
         }
 
+        /* Adds spacing above answer paragraphs */
         .answer-container p {
             margin-top: 5px;
         }
 
+        /* Adds spacing above the answer button container */
         .answer-button-container {
             margin-top: 10px;
         }
 
+        /* Styles the "Ask a Question" button */
         .ask-question-btn {
             background-color: #e16539;
             color: white;
@@ -187,10 +201,12 @@
             cursor: pointer;
         }
 
+        /* Keeps the button background the same on hover */
         .ask-question-btn:hover {
             background-color: #e16539;
         }
 
+        /* Styles the content wrapper */
         .content-wrapper {
             flex: 1;
             padding-bottom: 20px;
