@@ -11,7 +11,7 @@
     /* Sets the background color of the entire webpage to a light bluish-gray (#eef1f6).
    The !important rule ensures this style overrides other conflicting styles. */
         body {
-            background-color: #eef1f6 !important;
+            background-color: #f4f7fc !important;
             font-family: 'Poppins', sans-serif;
         }
 
@@ -569,7 +569,7 @@
                         <p><strong>${ans.userId?.email || "Anonym"}:</strong> ${ans.answerText}</p>
                         <div>${generateStarRating(ans.rating || 0)}</div>
                     `).join("")
-                        : "<p>Ingen svar tilgjengelig.</p>"}
+                        : "<p>No content her yet...</p>"}
             </div>
         `).join("");
 
