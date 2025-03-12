@@ -113,7 +113,7 @@
                     localStorage.setItem("userId", data.userId);
                     localStorage.setItem("userEmail", email);
 
-                    alert("Login successful!");
+                    
                     window.location.href = "index.html";
                 } else {
                     errorMessage.textContent = data.error || "Invalid login credentials.";
@@ -154,7 +154,6 @@
             localStorage.removeItem("token");
             localStorage.removeItem("userId");
             localStorage.removeItem("userEmail");
-            alert("You have been logged out.");
             window.location.href = "login.html";
         }
     </script>

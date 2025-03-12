@@ -443,7 +443,6 @@
                     return;
                 }
 
-                alert("Answer deleted successfully!");
                 fetchQuestions();
             } catch (error) {
                 console.error("Error deleting answer:", error);
@@ -481,7 +480,6 @@
                 }
 
                 const responseData = await response.json();
-                alert("Like updated successfully!");
                 fetchQuestions();
             } catch (error) {
                 console.error("Error liking answer:", error);
@@ -510,7 +508,6 @@
                     return;
                 }
 
-                alert("Question deleted successfully!");
                 fetchQuestions();
             } catch (error) {
                 console.error("Error deleting question:", error);
@@ -546,7 +543,6 @@
             localStorage.removeItem("userId");
             localStorage.removeItem("userEmail");
             checkLoginStatus();
-            alert("You have been logged out.");
             window.location.href = "login.html";
         }
 

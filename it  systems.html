@@ -519,7 +519,6 @@
                     throw new Error(`Server error: ${errorText}`);
                 }
 
-                alert("Comment and rating submitted successfully!");
                 await updateComments(feedbackId);
                 document.getElementById("commentModal").classList.remove("show");
                 document.body.classList.remove("modal-open");
@@ -527,7 +526,6 @@
 
             } catch (error) {
                 console.error("Error submitting comment:", error);
-                alert("Error submitting comment. Check console for details.");
             }
         });
 
@@ -614,7 +612,6 @@
                 });
 
                 if (response.ok) {
-                    alert("Feedback submitted successfully!");
                     fetchFeedback();
                 } else {
                     const errorData = await response.json();
@@ -670,7 +667,6 @@
                 });
 
                 if (response.ok) {
-                    alert('Feedback deleted successfully.');
                     fetchFeedback();
                 } else {
                     const errorData = await response.json();
@@ -719,7 +715,6 @@
                     document.getElementById("loginNav").classList.remove("d-none");
                     document.getElementById("userDropdown").classList.add("d-none");
 
-                    alert("Logged out successfully!");
                     window.location.href = "index.html";
                 });
             } else {
