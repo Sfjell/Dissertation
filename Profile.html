@@ -310,25 +310,25 @@
                         <div class="col-sm-10">
                             <select id="occupation" class="form-control" required>
                                 <option value="">Select Occupation</option>
-                                <option value="software_engineer">Software Engineer</option>
-                                <option value="data_scientist">Data Scientist</option>
+                                <option value="software_engineer">Software engineer</option>
+                                <option value="data_scientist">Data scientist</option>
                                 <option value="teacher">Teacher</option>
                                 <option value="doctor">Doctor</option>
                                 <option value="nurse">Nurse</option>
                                 <option value="engineer">Engineer</option>
                                 <option value="accountant">Accountant</option>
                                 <option value="lawyer">Lawyer</option>
-                                <option value="marketing_specialist">Marketing Specialist</option>
-                                <option value="graphic_designer">Graphic Designer</option>
-                                <option value="business_analyst">Business Analyst</option>
-                                <option value="sales_representative">Sales Representative</option>
-                                <option value="customer_service_rep">Customer Service Representative</option>
-                                <option value="project_manager">Project Manager</option>
+                                <option value="marketing_specialist">Marketing specialist</option>
+                                <option value="graphic_designer">Graphic designer</option>
+                                <option value="business_analyst">Business analyst</option>
+                                <option value="sales_representative">Sales representative</option>
+                                <option value="customer_service_rep">Customer service representative</option>
+                                <option value="project_manager">Project manager</option>
                                 <option value="electrician">Electrician</option>
                                 <option value="mechanic">Mechanic</option>
                                 <option value="chef">Chef</option>
                                 <option value="pilot">Pilot</option>
-                                <option value="police_officer">Police Officer</option>
+                                <option value="police_officer">Police officer</option>
                                 <option value="firefighter">Firefighter</option>
                                 <option value="student">Student</option>
                                 <option value="unemployed">Unemployed</option>
@@ -360,18 +360,18 @@
         </div>
 
         <div class="container">
-            <h2 class="contributions-header">Your Contributions</h2>
+            <h2 class="contributions-header">Your contributions</h2>
 
-            <h4 class="section-title">Your IT System Reviews</h4>
+            <h4 class="section-title">Your IT system reviews</h4>
             <div class="post-list" id="userPosts"></div>
 
-            <h4 class="section-title">Your Comments on IT Systems</h4>
+            <h4 class="section-title">Your comments on IT systems</h4>
             <div class="post-list" id="itSystemComments"></div>
 
-            <h4 class="section-title">Your Questions</h4>
+            <h4 class="section-title">Your questions</h4>
             <div class="post-list" id="yourQuestions"></div>
 
-            <h4 class="section-title">Your Answers</h4>
+            <h4 class="section-title">Your answers</h4>
             <div class="post-list" id="yourAnswers"></div>
         </div>
 
@@ -536,11 +536,11 @@
                                 const postItem = document.createElement("div");
                                 postItem.classList.add("post-item");
                                 postItem.innerHTML = `
-                    <h6>${post.companyName}</h6>
-                    <p>${post.experienceDescription}</p>
-                    <p> Rating: ${post.rating}</p>
-                `;
-                                postsContainer.appendChild(postItem);
+                                <h6>${post.companyName}</h6>
+                                <p>${post.experienceDescription}</p>
+                                <p> Rating: ${post.rating}</p>
+                            `;
+                             postsContainer.appendChild(postItem);
                             });
 
                             console.log("Successfully loaded user posts:", posts);
@@ -564,10 +564,10 @@
                                 const commentItem = document.createElement("div");
                                 commentItem.classList.add("post-item");
                                 commentItem.innerHTML = `
-                    <h6>${comment.companyName}</h6>
-                    <p>${comment.commentText}</p>
-                    <p> Rating: ${comment.rating}</p>
-                `;
+                                    <h6>${comment.companyName}</h6>
+                                    <p>${comment.commentText}</p>
+                                    <p> Rating: ${comment.rating}</p>
+                                `;
                                 commentsContainer.appendChild(commentItem);
                             });
 
@@ -698,44 +698,44 @@
                     const top3 = feedbacks.slice(0, 3);
 
                     document.getElementById("topSystems").innerHTML = top3.map(system => `
-            <div class="col-md-4 mb-3">
-                <div class="system-card">
-                    <img src="http://localhost:5000${system.logoPath}" alt="Logo" class="img-fluid" style="max-width: 80px;">
-                    <h5 class="mt-2">${system.companyName}</h5>
-                    <p>${system.experienceDescription}</p>
-                    <p>Rating: ${'★'.repeat(system.rating)}${'☆'.repeat(5 - system.rating)}</p>
-                </div>
-            </div>
-        `).join("");
+                        <div class="col-md-4 mb-3">
+                            <div class="system-card">
+                                <img src="http://localhost:5000${system.logoPath}" alt="Logo" class="img-fluid" style="max-width: 80px;">
+                                <h5 class="mt-2">${system.companyName}</h5>
+                                <p>${system.experienceDescription}</p>
+                                <p>Rating: ${'★'.repeat(system.rating)}${'☆'.repeat(5 - system.rating)}</p>
+                            </div>
+                        </div>
+                    `).join("");
                 } catch (error) {
-                    console.error("Feil under henting av IT-systemer:", error);
-                    document.getElementById("topSystems").innerHTML = "<p>Kunne ikke laste systemene.</p>";
+                    console.error("An error accured during uploading of IT-systemer:", error);
+                    document.getElementById("topSystems").innerHTML = "<p>Could not upload the systems.</p>";
                 }
             }
 
             async function fetchQuestions() {
                 try {
                     const response = await fetch("http://localhost:5000/my_diss/questions");
-                    if (!response.ok) throw new Error("Feil ved henting av spørsmål");
+                    if (!response.ok) throw new Error("An error occured when uploading the questions");
 
                     const questions = await response.json();
                     if (!Array.isArray(questions) || questions.length === 0) {
-                        document.getElementById("questions").innerHTML = "<p>Ingen spørsmål funnet.</p>";
+                        document.getElementById("questions").innerHTML = "<p>No questions found.</p>";
                         return;
                     }
 
                     document.getElementById("questions").innerHTML = questions.map(q => `
-            <div class="green-box" data-bs-toggle="collapse" data-bs-target="#answer${q._id}">
-                <div>${q.questionText || "Ukjent spørsmål"}</div>
-                <span>▼</span>
-            </div>
-            <div id="answer${q._id}" class="collapse px-3">
-                ${q.answers && q.answers.length ? q.answers.map(ans => `<p>${ans}</p>`).join(" ") : "<p>Ingen svar tilgjengelig.</p>"}
-            </div>
-        `).join("");
+                    <div class="green-box" data-bs-toggle="collapse" data-bs-target="#answer${q._id}">
+                        <div>${q.questionText || "Not a known question"}</div>
+                        <span>▼</span>
+                    </div>
+                    <div id="answer${q._id}" class="collapse px-3">
+                        ${q.answers && q.answers.length ? q.answers.map(ans => `<p>${ans}</p>`).join(" ") : "<p>No replays avelabol.</p>"}
+                    </div>
+                `).join("");
                 } catch (error) {
-                    console.error("Feil under henting av spørsmål:", error);
-                    document.getElementById("questions").innerHTML = "<p>Kunne ikke laste spørsmål.</p>";
+                    console.error("An error occured when uploading the questions:", error);
+                    document.getElementById("questions").innerHTML = "<p>Could not download the questions.</p>";
                 }
             }
 

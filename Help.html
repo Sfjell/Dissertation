@@ -302,7 +302,7 @@
 
             if (!isLoggedIn) {
                 submitQuestionBtn.disabled = true;
-                submitQuestionBtn.innerText = "Login to ask a question";
+                submitQuestionBtn.innerText = "Login to ask a question.";
                 submitQuestionBtn.addEventListener("click", () => alert("You must be logged in to ask a question."));
 
                 questionInput.disabled = true;
@@ -314,7 +314,7 @@
             const questionText = document.getElementById('questionInput').value.trim();
 
             if (!questionText) {
-                alert('⚠ Please enter a question!');
+                alert('Please enter a question!');
                 return;
             }
 

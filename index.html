@@ -414,14 +414,14 @@
 
     <div class="container mt-5 pt-5">
         <div class="hero-section">
-            <h1>Welcome to SysReviewSphere</h1>
-            <p>Explore IT systems, share experiences, and find answers quickly.</p>
+            <h1>Explore IT systems, share experiences, and find answers quickly.</h1>
+            <p>Welcome to SysReviewSphere</p>
         </div>
 
-        <h4 class="mt-5">Top 3 Rated Systems</h4>
+        <h4 class="mt-5">The highest Rated Systems</h4>
         <div class="row" id="topSystems"></div>
 
-        <h4 class="mt-4">Latest Questions</h4>
+        <h4 class="mt-4">Latest Questions asked</h4>
         <div id="questions"></div>
     </div>
 
@@ -433,53 +433,51 @@
             </div>
             <div class="about-text">
                 <p>
-                    Hello, my name is Sebastian J. Fjell, and I am the founder of SysReviewSphere. SysReviewSphere is a
-                    community-driven platform designed to help users discover and evaluate the best IT systems through
-                    feedback and shared experiences. Developed as part of my dissertation, this system aims to explore
-                    the critical success factors that contribute to successful IT project implementations. By providing
-                    unbiased reviews and user-generated content, SysReviewSphere simplifies the decision-making process
-                    for selecting IT systems, empowering users to make informed choices based on real-world insights.
+                    My name is Sebastian J. Fjell, and I am the founder and developer of SysReviewSphere. SysReviewSphere 
+                    was foundedn when i developed my dissaration regarding Success Factors for the Effective Implementation of IT Projects: A Study of Management Practices.
+                    The platform is designed to help users discover and evaluate the best IT systems through feedback and shared experiences. 
+                    Since this system was developed as a part of my dissertation at Heriot-Watt University, this system aims to let users explore
+                    the critical success factors that helped to a successful IT project implementations. 
                 </p>
-                <h4>My Vision</h4>
+                <h4>SysReviewSphere vision</h4>
                 <p>
-                    SysReviewSphere vision is to provide a comprehensive space for IT professionals and enthusiasts to
-                    collaborate, review, and find the most effective IT systems for their needs.
+                    SysReviewSphere vision is to provide users with a extensive webpage for users to
+                    collaborate, review, share oppinios radring IT systems and find the most effective IT systems for their entity.
                 </p>
-                <h4>Why use SysReviewSphere?</h4>
+                <h4>Why should you use SysReviewSphere?</h4>
                 <p>
-                    - Comprehensive Reviews<br>
-                    - Community Engagement<br>
-                    - Easy Navigation and Access to Information
+                    - Extensive reviews<br>
+                    - User engagement<br>
+                    - Userfriendly
                 </p>
             </div>
         </div>
     </div>
     <div class="features-section">
-        <h2>Platform Features</h2>
+        <h2>The platform contains</h2>
         <div class="features-content">
             <div class="feature-card">
                 <i class="fas fa-star"></i>
-                <h5>Top Ratings</h5>
-                <p>Discover the best IT systems based on real user feedback and ratings.</p>
+                <h5>The best rated systems</h5>
+                <p>Explore the best project managment systems based on users feedback, ratings and comments.</p>
             </div>
             <div class="feature-card">
                 <i class="fas fa-comments"></i>
-                <h5>Community Discussions</h5>
-                <p>Engage with other professionals and share your insights on systems and tools.</p>
+                <h5>User discussions</h5>
+                <p>Engage with other users experience regaridng a system and share your thought on numerius project managment systems and tools.</p>
             </div>
             <div class="feature-card">
                 <i class="fas fa-search"></i>
-                <h5>Advanced Search</h5>
-                <p>Find the right system quickly using powerful search filters and recommendations.</p>
+                <h5>Easy search</h5>
+                <p>Find the right system easly with filtering or searchin on your critical success factos.</p>
             </div>
         </div>
     </div>
     <div class="cta-section">
         <div class="cta-content">
-            <h2>Ready to Find the Best IT Systems?</h2>
-            <p>Join SysReviewSphere today and start reviewing and comparing IT systems to find the best fit for your
-                needs!</p>
-            <a href="register.html" class="btn btn-primary">Sign Up Now</a>
+            <h2>Ready to share your opinion or rate a system?</h2>
+            <p>Join SysReviewSphere today and help others to find the best system or find the best system for you!</p>
+            <a href="register.html" class="btn btn-primary">Sign Up here</a>
         </div>
     </div>
 
@@ -529,8 +527,8 @@
             </div>
         `).join("");
             } catch (error) {
-                console.error("Feil ved henting av systemer:", error);
-                document.getElementById("topSystems").innerHTML = "<p>Kunne ikke laste systemene.</p>";
+                console.error("There was ann error when uploading the system:", error);
+                document.getElementById("topSystems").innerHTML = "<p>Could not download the system.</p>";
             }
         }
 
@@ -545,11 +543,11 @@
         async function fetchQuestions() {
             try {
                 const response = await fetch("http://localhost:5000/my_diss/questions");
-                if (!response.ok) throw new Error("Feil ved henting av spørsmål");
+                if (!response.ok) throw new Error("Could not upload the questions");
 
                 let questions = await response.json();
                 if (!Array.isArray(questions) || questions.length === 0) {
-                    document.getElementById("questions").innerHTML = "<p>Ingen spørsmål funnet.</p>";
+                    document.getElementById("questions").innerHTML = "<p>No questions found.</p>";
                     return;
                 }
 
@@ -560,22 +558,22 @@
             <div class="green-box d-flex justify-content-between align-items-center" 
                 data-bs-toggle="collapse" data-bs-target="#answer${q._id}" 
                 onclick="toggleDropdownIcon('${q._id}')">
-                <div>${q.questionText || "Ukjent spørsmål"}</div>
+                <div>${q.questionText || "Unknown question"}</div>
                 <i id="icon-${q._id}" class="fas fa-chevron-down"></i>
             </div>
             <div id="answer${q._id}" class="collapse px-3">
                 ${q.answers && q.answers.length
                         ? q.answers.map(ans => `
-                        <p><strong>${ans.userId?.email || "Anonym"}:</strong> ${ans.answerText}</p>
+                        <p><strong>${ans.userId?.email || "Anonomus"}:</strong> ${ans.answerText}</p>
                         <div>${generateStarRating(ans.rating || 0)}</div>
                     `).join("")
-                        : "<p>No content her yet...</p>"}
+                        : "<p>No content her yet. </p>"}
             </div>
         `).join("");
 
             } catch (error) {
-                console.error("Feil under henting av spørsmål:", error);
-                document.getElementById("questions").innerHTML = "<p>Kunne ikke laste spørsmål. Prøv igjen senere.</p>";
+                console.error("There was ann error when uploading the system:", error);
+                document.getElementById("questions").innerHTML = "<p>Could not dowload the questions. Pleas try agin later.</p>";
             }
         }
         function toggleDropdownIcon(questionId) {

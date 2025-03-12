@@ -187,8 +187,8 @@ const authenticateToken = (req, res, next) => {
   console.log("Received Authorization header:", authHeader);
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    console.log("No token provided or incorrect format.");
-    return res.status(403).json({ error: 'Access denied. No token provided.' });
+    console.log("No token or incorrect format.");
+    return res.status(403).json({ error: 'Access denied. No token.' });
   }
 
   const token = authHeader.split(' ')[1];
@@ -203,7 +203,7 @@ const authenticateToken = (req, res, next) => {
     console.log("Token verified for user:", decoded);
 
     if (!decoded.userId) {
-      console.error("Token is missing userId!");
+      console.error("The token is missing userId!");
       return res.status(400).json({ error: "Invalid token: missing userId." });
     }
 
@@ -294,7 +294,7 @@ app.post('/my_diss/login', async (req, res) => {
   try {
       const { email, password } = req.body;
 
-      console.log("Login Attempt for:", email);
+      console.log("Login attempt for:", email);
 
       if (!email || !password) {
           return res.status(400).json({ error: 'Email and password are required.' });
@@ -307,7 +307,7 @@ app.post('/my_diss/login', async (req, res) => {
       }
 
       console.log("Found User:", user.email);
-      console.log("Stored Hashed Password:", user.password);
+      console.log("Hashed password stored:", user.password);
 
       const isMatch = await bcrypt.compare(password, user.password);
 
@@ -432,7 +432,7 @@ app.post("/my_diss/feedback/:feedbackId/comment", authenticateToken, async (req,
     });
 
     await feedback.save();
-    res.status(201).json({ message: "Comment added successfully!", feedback });
+    res.status(201).json({ message: "Comment successfully added!", feedback });
 
   } catch (error) {
     console.error("Error adding comment:", error);
@@ -532,7 +532,7 @@ app.post('/my_diss/questions/like/:questionId', authenticateToken, async (req, r
       question.likes.push(userId);
     }
     await question.save();
-    res.status(200).json({ message: 'Like updated successfully!', likes: question.likes.length });
+    res.status(200).json({ message: 'The like was successfully updated!', likes: question.likes.length });
   } catch (err) {
     console.error("Error liking question:", err);
     res.status(500).json({ error: 'Error updating like.' });
@@ -615,7 +615,7 @@ app.post('/my_diss/feedback', authenticateToken, upload.single('logo'), async (r
     const logoPath = req.file ? `/uploads/${req.file.filename}` : null;
 
     if (!companyName || !experienceDescription || !rating || !successFactor) {
-      return res.status(400).json({ error: 'Alle feltene er påkrevd.' });
+      return res.status(400).json({ error: 'All filds are requierd' });
     }
 
     const feedback = new Feedback({
@@ -629,10 +629,10 @@ app.post('/my_diss/feedback', authenticateToken, upload.single('logo'), async (r
 
     await feedback.save();
 
-    res.status(201).json({ message: 'Tilbakemelding sendt inn!', feedback });
+    res.status(201).json({ message: 'Your feedback was submited!', feedback });
   } catch (err) {
-    console.error('Feil ved innsending av tilbakemelding:', err);
-    res.status(500).json({ error: 'Feil ved lagring av tilbakemelding. Prøv igjen.' });
+    console.error('Somthing went wrong when submiting feedback:', err);
+    res.status(500).json({ error: 'Could not save the feedback. Pleas try agin.' });
   }
 });
 
@@ -836,7 +836,7 @@ app.delete('/my_diss/questions/:questionId/answers/:answerId', authenticateToken
       return res.status(404).json({ error: 'Answer not found' });
     }
     if (answer.userId.toString() !== userId) {
-      console.log("Unauthorized: User does not own this answer");
+      console.log("Unauthorised: User does not own this answer");
       return res.status(403).json({ error: 'You do not have permission to delete this answer.' });
     }
     question.answers.pull(answerId);
