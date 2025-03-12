@@ -516,16 +516,16 @@
                 const top3 = feedbacks.slice(0, 3);
 
                 document.getElementById("topSystems").innerHTML = top3.map(system => `
-            <div class="col-md-4 mb-3">
-                <div class="system-card">
-                    <img src="${system.logoPath ? `http://localhost:5000${system.logoPath}` : 'https://via.placeholder.com/80'}" 
-                         alt="Logo" class="img-fluid" style="max-width: 80px;">
-                    <h5 class="mt-2">${system.companyName}</h5>
-                    <p>${system.experienceDescription}</p>
-                    <div>${generateStarRating(system.rating)}</div>
-                </div>
-            </div>
-        `).join("");
+                    <div class="col-md-4 mb-3">
+                        <div class="system-card">
+                            <img src="${system.logoPath ? `http://localhost:5000${system.logoPath}` : 'https://via.placeholder.com/80'}" 
+                                alt="Logo" class="img-fluid" style="max-width: 80px;">
+                            <h5 class="mt-2">${system.companyName}</h5>
+                            <p>${system.experienceDescription}</p>
+                            <div>${generateStarRating(system.rating)}</div>
+                        </div>
+                    </div>
+                `).join("");
             } catch (error) {
                 console.error("There was ann error when uploading the system:", error);
                 document.getElementById("topSystems").innerHTML = "<p>Could not download the system.</p>";
@@ -555,21 +555,21 @@
 
                 const latestQuestions = questions.slice(0, 3);
                 document.getElementById("questions").innerHTML = latestQuestions.map(q => `
-            <div class="green-box d-flex justify-content-between align-items-center" 
-                data-bs-toggle="collapse" data-bs-target="#answer${q._id}" 
-                onclick="toggleDropdownIcon('${q._id}')">
-                <div>${q.questionText || "Unknown question"}</div>
-                <i id="icon-${q._id}" class="fas fa-chevron-down"></i>
-            </div>
-            <div id="answer${q._id}" class="collapse px-3">
-                ${q.answers && q.answers.length
-                        ? q.answers.map(ans => `
-                        <p><strong>${ans.userId?.email || "Anonomus"}:</strong> ${ans.answerText}</p>
-                        <div>${generateStarRating(ans.rating || 0)}</div>
-                    `).join("")
-                        : "<p>No content her yet. </p>"}
-            </div>
-        `).join("");
+                    <div class="green-box d-flex justify-content-between align-items-center" 
+                        data-bs-toggle="collapse" data-bs-target="#answer${q._id}" 
+                        onclick="toggleDropdownIcon('${q._id}')">
+                        <div>${q.questionText || "Unknown question"}</div>
+                        <i id="icon-${q._id}" class="fas fa-chevron-down"></i>
+                    </div>
+                    <div id="answer${q._id}" class="collapse px-3">
+                        ${q.answers && q.answers.length
+                                ? q.answers.map(ans => `
+                                <p><strong>${ans.userId?.email || "Anonomus"}:</strong> ${ans.answerText}</p>
+                                <div>${generateStarRating(ans.rating || 0)}</div>
+                            `).join("")
+                                : "<p>No content her yet. </p>"}
+                    </div>
+                `).join("");
 
             } catch (error) {
                 console.error("There was ann error when uploading the system:", error);
