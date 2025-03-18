@@ -84,7 +84,7 @@
                 <p class="error-message" id="loginError"></p>
             </form>
             <div class="auth-footer">
-                <p>Do you not have an account? <a href="registerPage.html">Sign up</a></p>
+                <p>Do you not have an account? <a href="registerpage.html">Sign up</a></p>
             </div>
         </div>
     </div>
@@ -128,8 +128,8 @@
         async function checkLoginStatus() {
             const token = localStorage.getItem("token");
             if (!token) {
-                if (!window.location.href.includes("loginPage.html")) {
-                    window.location.href = "loginPage.html";
+                if (!window.location.href.includes("loginpage.html")) {
+                    window.location.href = "loginpage.html";
                 }
                 return;
             }
@@ -154,7 +154,7 @@
             localStorage.removeItem("token");
             localStorage.removeItem("userId");
             localStorage.removeItem("userEmail");
-            window.location.href = "loginPage.html";
+            window.location.href = "loginpage.html";
         }
     </script>
 </body>

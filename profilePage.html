@@ -681,9 +681,9 @@
 
                     console.log("LocalStorage after logout:", localStorage);
 
-                    if (!window.location.href.includes("loginPage.html")) {
+                    if (!window.location.href.includes("loginpage.html")) {
                         alert("You have been logged out.");
-                        window.location.href = "loginPage.html";
+                        window.location.href = "loginpage.html";
                     }
                 }
             });
@@ -756,7 +756,7 @@
                 if (!token) {
                     console.warn("No token found, redirecting to login.");
                     alert("You need to log in first.");
-                    window.location.href = "loginPage.html";
+                    window.location.href = "loginpage.html";
                     return;
                 }
 
@@ -851,7 +851,7 @@
                     localStorage.removeItem("token");
                     localStorage.removeItem("userEmail");
                     alert("Session expired. Please log in again.");
-                    window.location.href = "loginPage.html";
+                    window.location.href = "loginpage.html";
                 }
             });
 
@@ -880,7 +880,7 @@
                     const token = localStorage.getItem("token");
                     if (!token) {
                         alert("You need to log in first.");
-                        window.location.href = "loginPage.html";
+                        window.location.href = "loginpage.html";
                         return;
                     }
 
@@ -919,7 +919,7 @@
                                 } else {
                                     alert("Email and password updated successfully! Please refresh the page.");
                                     localStorage.removeItem("token"); 
-                                    window.location.href = "loginPage.html";
+                                    window.location.href = "loginpage.html";
                                 }
                             })
                             .catch(error => console.error("Error updating credentials:", error));
