@@ -242,14 +242,14 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="it  systems.html">IT Systems</a></li>
-                    <li class="nav-item"><a class="nav-link" href="help.html">Discussion</a></li>
-                    <li class="nav-item" id="loginNav"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="helpPage.html">Discussion</a></li>
+                    <li class="nav-item" id="loginNav"><a class="nav-link" href="loginPage.html">Login</a></li>
                     <li class="nav-item dropdown d-none" id="userDropdown">
                         <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                             <i class="fas fa-user"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                            <li><a class="dropdown-item" href="profilePage.html">Profile</a></li>
                             <li><a class="dropdown-item text-danger" href="#" id="logoutBtn">Logout</a></li>
                         </ul>
                     </li>
@@ -545,7 +545,7 @@
             localStorage.removeItem("userId");
             localStorage.removeItem("userEmail");
             checkLoginStatus();
-            window.location.href = "login.html";
+            window.location.href = "loginPage.html";
         }
 
         document.addEventListener("DOMContentLoaded", function () {
