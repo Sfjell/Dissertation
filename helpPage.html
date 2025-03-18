@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Section</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <style>
+   
+   /* Adds padding to the top of the body to prevent content from being hidden under a fixed navbar */
+        body {
+            background-color: #f4f7fc;
+            font-family: 'Poppins', sans-serif;
+            padding-top: 70px;
+        }
+
+        .navbar {
+            background-color: #fff !important;
+            box-shadow: none !important;
+            border-bottom: none !important;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            width: 100%;
+            background: transparent !important;
+            border: none !important;
+        }
+
+        .navbar-collapse {
+            background: transparent !important;
+            border: none !important;
+        }
+
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: transparent !important;
+            border: none !important;
+        }
+
+        .navbar::after,
+        .navbar::before {
+            display: none !important;
+            content: "" !important;
+        }
+
+        .btn-outline-primary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 1.1rem;
+            color: #555;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #007bff;
+        }
+
+        .btn-outline-primary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        .navbar.fixed-top {
+            background: #fff !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .green-box {
+            background-color: #f8f9fa;
+            border-left: 5px solid #e16539;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        /* Adds a hover effect for the green box */
+        .green-box:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Styles the question content container */
+        .question-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        /* Styles the question text */
+        .question-content .question-text {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #333;
+            word-wrap: break-word;
+        }
+
+        /* Styles the question metadata */
+        .question-meta {
+            font-size: 0.9rem;
+            color: #555;
+            word-wrap: break-word;
+        }
+
+        /* Styles the action button container */
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Styles the icons inside the action buttons */
+        .action-buttons span {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive styles for screens smaller than 768px */
+        @media (max-width: 768px) {
+            .action-buttons {
+                justify-content: flex-end;
+                width: 100%;
+            }
+
+            .question-meta {
+                word-wrap: break-word;
+            }
+        }
+
+        /* Styles collapsible sections */
+        .collapse {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        /* Styles the answer container */
+        .answer-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        /* Makes bold text inside answers more prominent */
+        .answer-container b {
+            font-weight: 600;
+        }
+
+        /* Adds spacing above answer paragraphs */
+        .answer-container p {
+            margin-top: 5px;
+        }
+
+        /* Adds spacing above the answer button container */
+        .answer-button-container {
+            margin-top: 10px;
+        }
+
+        /* Styles the "Ask a Question" button */
+        .ask-question-btn {
+            background-color: #e16539;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Keeps the button background the same on hover */
+        .ask-question-btn:hover {
+            background-color: #e16539;
+        }
+
+        /* Styles the content wrapper */
+        .content-wrapper {
+            flex: 1;
+            padding-bottom: 20px;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="2.png" alt="Brand Logo" style="height: 60px;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="it  systems.html">IT Systems</a></li>
+                    <li class="nav-item"><a class="nav-link" href="help.html">Discussion</a></li>
+                    <li class="nav-item" id="loginNav"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item dropdown d-none" id="userDropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                            <li><a class="dropdown-item text-danger" href="#" id="logoutBtn">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content-wrapper">
+        <div class="container mt-5">
+            <h4 class="mt-4">People have asked these questions</h4>
+            <div id="questions" class="mb-4"></div>
+            <div class="my-4">
+                <h5>Ask a Question</h5>
+                <textarea id="questionInput" class="form-control" rows="3"
+                    placeholder="Type your question here"></textarea>
+                <div class="validation-error text-danger mt-2" id="questionError"></div>
+                <button class="btn btn-primary mt-3" style=" background-color: #e16539; border-color:#e16539;"
+                    id="submitQuestionBtn" onclick="submitQuestion()">Submit Question</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 SysReviewSphere. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            checkLoginStatus();
+            fetchQuestions();
+        });
+
+        async function checkLoginStatus() {
+            const token = localStorage.getItem("token");
+            if (token) {
+                document.getElementById("loginNav").classList.add("d-none");
+                document.getElementById("userDropdown").classList.remove("d-none");
+                enableUserActions(true);
+            } else {
+                document.getElementById("loginNav").classList.remove("d-none");
+                document.getElementById("userDropdown").classList.add("d-none");
+                enableUserActions(false);
+            }
+        }
+
+        function enableUserActions(isLoggedIn) {
+            const submitQuestionBtn = document.getElementById("submitQuestionBtn");
+            const questionInput = document.getElementById("questionInput");
+
+            if (!isLoggedIn) {
+                submitQuestionBtn.disabled = true;
+                submitQuestionBtn.innerText = "Login to ask a question.";
+                submitQuestionBtn.addEventListener("click", () => alert("You must be logged in to ask a question."));
+
+                questionInput.disabled = true;
+                questionInput.placeholder = "You must be logged in to ask a question.";
+            }
+        }
+
+        function submitQuestion() {
+            const questionText = document.getElementById('questionInput').value.trim();
+
+            if (!questionText) {
+                alert('Please enter a question!');
+                return;
+            }
+
+            const token = localStorage.getItem("token");
+            if (!token) {
+                alert("You must be logged in to submit a question.");
+                return;
+            }
+
+            fetch("http://localhost:5000/my_diss/questions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ questionText })
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error("Failed to submit question.");
+                    return response.json();
+                })
+                .then(() => {
+                    document.getElementById('questionInput').value = "";
+                    fetchQuestions();
+                })
+                .catch(error => {
+                    console.error("Error submitting question:", error);
+                    alert("There was an issue submitting the question. Please try again later.");
+                });
+        }
+
+        async function fetchQuestions() {
+            const token = localStorage.getItem("token");
+            const currentUserId = localStorage.getItem("userId");
+            const isLoggedIn = !!token;
+
+            try {
+                const response = await fetch("http://localhost:5000/my_diss/questions");
+                if (!response.ok) throw new Error("Error fetching questions");
+
+                let questions = await response.json();
+
+                questions = questions.filter(q => q.userId && q.userId.email !== "Anonymous");
+
+                const questionsContainer = document.getElementById("questions");
+
+                questionsContainer.innerHTML = questions.length > 0
+                    ? questions.map(question => `
+            <div class="green-box d-flex justify-content-between align-items-center"
+                data-bs-toggle="collapse" data-bs-target="#answer${question._id}"
+                onclick="toggleDropdownIcon('${question._id}')">
+                <div class="question-content">
+                    <div class="question-text">${question.questionText}</div>
+                    <div class="question-meta">Asked by: ${question.userId?.email || "Anonymous"}</div>
+                </div>
+
+                <div class="action-buttons">
+                    ${question.userId && (question.userId._id || question.userId.id) === currentUserId ? `
+                        <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${question._id}', event)">Delete</button>
+                    ` : ''}
+                    <i id="icon-${question._id}" class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+
+            <div id="answer${question._id}" class="collapse px-3">
+                <h6>Replies:</h6>
+                <div id="replies${question._id}">
+                    ${question.answers && question.answers.length > 0
+                            ? question.answers.map(ans => `
+                            <div class="border p-2 mt-2">
+                                <div class="answer-container">
+                                    <b>${ans.userId?.email || "Anonymous"}</b>
+                                    <p>${ans.answerText}</p>
+                                </div>
+                                <button class="btn btn-outline-success btn-sm" onclick="likeAnswer('${ans._id}')">
+                                    ${ans.likes ? ans.likes.length : 0} Like
+                                </button>
+                                ${ans.userId && (ans.userId._id || ans.userId.id) === currentUserId ? `
+                                    <button class="btn btn-outline-danger btn-sm" onclick="deleteAnswer('${question._id}', '${ans._id}', event)">Delete</button>
+                                ` : ''}
+                            </div>
+                        `).join("")
+                            : "<p>No answers yet</p>"
+                        }
+                </div>
+
+                <textarea class="form-control mt-2" id="answerInput${question._id}" rows="2"
+                    placeholder="${isLoggedIn ? 'Type your answer' : 'You must be logged in to reply'}"
+                    ${!isLoggedIn ? 'disabled' : ''}>
+                </textarea>
+
+                <button class="btn btn-primary mt-2" style="background-color: #e16539; border-color:#e16539;"
+                    ${!isLoggedIn ? 'disabled' : ''}
+                    onclick="${isLoggedIn ? `submitAnswer('${question._id}')` : `alert('You must be logged in to reply.')`}">
+                    Submit Answer
+                </button>
+            </div>
+        `).join("")
+                    : "<p class='text-danger'>No questions available.</p>";
+
+            } catch (error) {
+                console.error("Error fetching questions:", error);
+                document.getElementById("questions").innerHTML = "<p class='text-danger'>Error loading questions. Please try again later.</p>";
+            }
+        }
+
+
+        async function deleteAnswer(questionId, answerId, event) {
+            event.preventDefault();
+
+            const token = localStorage.getItem("token");
+            if (!token) {
+                alert("You must be logged in to delete an answer.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/my_diss/questions/${questionId}/answers/${answerId}`, {
+                    method: "DELETE",
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.error}`);
+                    return;
+                }
+
+                fetchQuestions();
+            } catch (error) {
+                console.error("Error deleting answer:", error);
+                alert("There was an issue deleting the answer. Please try again later.");
+            }
+        }
+        function toggleDropdownIcon(questionId) {
+            const icon = document.getElementById(`icon-${questionId}`);
+            if (icon) {
+                icon.classList.toggle("fa-chevron-down");
+                icon.classList.toggle("fa-chevron-up");
+            }
+        }
+
+        async function likeAnswer(answerId) {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                alert("You must be logged in to like an answer.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/my_diss/questions/like/${answerId}`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.error}`);
+                    return;
+                }
+
+                const responseData = await response.json();
+                fetchQuestions();
+            } catch (error) {
+                console.error("Error liking answer:", error);
+                alert("There was an issue liking the answer. Please try again later.");
+            }
+        }
+
+        async function deleteQuestion(questionId, event) {
+            event.preventDefault();
+
+            const token = localStorage.getItem("token");
+            if (!token) {
+                alert("You must be logged in to delete a question.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/my_diss/questions/${questionId}`, {
+                    method: "DELETE",
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.error}`);
+                    return;
+                }
+
+                fetchQuestions();
+            } catch (error) {
+                console.error("Error deleting question:", error);
+                alert("There was an issue deleting the question. Please try again later.");
+            }
+        }
+        async function submitAnswer(questionId) {
+            const answerText = document.getElementById(`answerInput${questionId}`).value.trim();
+            if (!answerText) {
+                alert("Please enter an answer!");
+                return;
+            }
+
+            const token = localStorage.getItem("token");
+            try {
+                const response = await fetch(`http://localhost:5000/my_diss/questions/reply/${questionId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                    body: JSON.stringify({ replyText: answerText })
+                });
+
+                if (!response.ok) throw new Error("Failed to submit answer.");
+
+                document.getElementById(`answerInput${questionId}`).value = "";
+                fetchQuestions();
+            } catch (error) {
+                console.error("Error submitting answer:", error);
+            }
+        }
+
+        
+
+        function logoutUser() {
+            localStorage.removeItem("token");
+            localStorage.removeItem("userId");
+            localStorage.removeItem("userEmail");
+            checkLoginStatus();
+            window.location.href = "login.html";
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const logoutBtn = document.getElementById("logoutBtn");
+            if (logoutBtn) {
+                logoutBtn.addEventListener("click", logoutUser);
+            }
+        });
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
