@@ -377,14 +377,18 @@
 </head>
 
 <body>
+     <!-- This is the nav bare section. This section remains the same for all pages using the navbar -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
+              <!-- This is where the logo for SRS is plased-->
             <a class="navbar-brand" href="index.html">
                 <img src="2.png" alt="Brand Logo" style="height: 60px;">
             </a>
+              <!-- Toogle button for smaler screens (mobile) -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
+              <!-- Navigation links container. -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -402,6 +406,7 @@
                         <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                             <i class="fas fa-user"></i>
                         </button>
+                          <!-- Dopdown menu if the user is loged in-->
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="profilepage.html">Profile</a></li>
                             <li><a class="dropdown-item text-danger" href="#" id="logoutBtn">Logout</a></li>
@@ -412,25 +417,32 @@
         </div>
     </nav>
 
+    <!-- Main container with spacing at the top -->
     <div class="container mt-5 pt-5">
+        <!-- Hero section to display the welcome message. -->
         <div class="hero-section">
             <h1>Explore IT systems, share experiences, and find answers quickly.</h1>
             <p>Welcome to SysReviewSphere</p>
         </div>
 
+        <!-- This is where the highest rated system is displayed -->
         <h4 class="mt-5">The highest Rated Systems</h4>
         <div class="row" id="topSystems"></div>
 
+        <!-- this section is to disply the last 3 asked questions. -->
         <h4 class="mt-4">Latest Questions asked</h4>
         <div id="questions"></div>
     </div>
 
+    <!-- About section.  -->
     <div class="about-section">
         <h2>About SysReviewSphere</h2>
         <div class="about-content">
+            <!-- IMG section -->
             <div class="about-image">
                 <img src="Img - Sebastian.jpg" alt="About SysReviewSphere Image">
             </div>
+            <!-- Description of the webpage and the developer -->
             <div class="about-text">
                 <p>
                     My name is Sebastian J. Fjell, and I am the founder and developer of SysReviewSphere. SysReviewSphere 
@@ -453,6 +465,7 @@
             </div>
         </div>
     </div>
+    <!-- Features section highlighting key functionalities -->
     <div class="features-section">
         <h2>The platform contains</h2>
         <div class="features-content">
@@ -473,6 +486,7 @@
             </div>
         </div>
     </div>
+    <!-- Call-to-action section encouraging users to sign up or log in-->
     <div class="cta-section">
         <div class="cta-content">
             <h2>Ready to share your opinion or rate a system?</h2>
@@ -480,7 +494,7 @@
             <a href="loginpage.html" class="btn btn-primary">Sign Up here</a>
         </div>
     </div>
-
+    <!-- footer -->
     <footer class="footer">
         <p>&copy; 2025 SysReviewSphere. All rights reserved.</p>
     </footer>

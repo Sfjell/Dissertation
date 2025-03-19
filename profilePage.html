@@ -257,21 +257,24 @@
 </head>
 
 <body>
+    <!-- Link to the index page (main page)-->
     <a href="index.html" class="home-button">
         <i class="fas fa-arrow-left"></i> Main page
     </a>
-
+    <!--profile header, displaying users name and initials-->
     <div class="profile-header">
         <div class="profile-icon" id="profileIcon">AB</div>
         <h2 id="profileName" class="mt-2">Guest</h2>
     </div>
 
+    <!-- conatiner for user settings and delete account -->
     <div class="container">
         <div class="btn-group-custom">
             <button class="btn btn-black btn-small" id="toggleSettingsBtn">Settings</button>
             <button class="btn btn-danger btn-small" id="deleteAccountBtn">Delete Account</button>
         </div>
 
+        <!-- The settings menu will only be displayed if the user press the button above. -->
         <div id="settingsCard" class="container p-4" style="display: none;">
             <div class="card shadow p-4">
                 <h3 class="text-center">Account Settings</h3>
@@ -343,7 +346,7 @@
                             <input type="email" id="email" class="form-control" required>
                         </div>
                     </div>
-
+                    <!-- Allows the user to change password -->
                     <div class="mb-3 row">
                         <label for="password" class="col-sm-2 col-form-label text-end">Password</label>
                         <div class="col-sm-10">
@@ -351,14 +354,14 @@
                                 placeholder="Enter new password (optional)">
                         </div>
                     </div>
-
+                        <!-- When the button is pressed, the settings is updated -->
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary mt-2 btn-small">Update</button>
                     </div>
                 </form>
             </div>
         </div>
-
+            <!-- This is where the users contibution will be displayed -->
         <div class="container">
             <h2 class="contributions-header">Your contributions</h2>
 
@@ -375,6 +378,7 @@
             <div class="post-list" id="yourAnswers"></div>
         </div>
 
+        <!-- this modal will display, to ensure the user wants to delete the account -->
         <div class="modal-overlay" id="modalOverlay"></div>
         <div class="modal-confirm" id="modalConfirm">
             <h5>Are you sure?</h5>

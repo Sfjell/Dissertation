@@ -207,14 +207,18 @@
     </nav>
 
     <div class="container mt-5 pt-5">
+        <!-- Heading for the feedback -->
         <h2 class="text-center mb-4">IT Systems Feedback</h2>
         <div class="button-container my-3">
+            <!-- Buten for filtering feedback -->
             <button class="btn btn-secondary" onclick="toggleFilter()">Filter Feedback</button>
+            <!-- Button to open the feedback form-->
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#feedbackModal">
                 Submit Feedback
             </button>
         </div>
 
+        <!-- The different cattegories a user can filter on. -->
         <div id="filterSection" style="display: none;">
             <label for="filterFactor" class="form-label">Filter by Critical Success Factor:</label>
             <select class="form-select" id="filterFactor" onchange="filterFeedback()">
@@ -228,9 +232,12 @@
                 <option value="Implimentation Methodology">Implimentation Methodology</option>
             </select>
         </div>
+
+        <!-- This is whrere the feedback will be displayed -->
         <div id="feedbackList" class="mt-4"></div>
     </div>
 
+    <!-- This is the form the user will use to give feedback on a system.-->
     <div class="modal fade" id="feedbackModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -250,6 +257,8 @@
                             <textarea class="form-control" id="experienceDescription"
                                 placeholder="Describe your experience" rows="3" required></textarea>
                         </div>
+
+                        <!-- Dropdown menu for seting a CSF -->
                         <div class="mb-3">
                             <label for="successFactor" class="form-label">Critical Success Factor</label>
                             <select class="form-select" id="successFactor" required>
@@ -262,6 +271,7 @@
                                 <option value="Implimentation Methodology">Implimentation Methodology</option>
                             </select>
                         </div>
+                        <!-- Star rating based on fant awsome-->
                         <div class="mb-3">
                             <label class="form-label">Rating</label>
                             <div class="star-rating">
@@ -278,6 +288,7 @@
                             </div>
 
                         </div>
+                        <!-- The function for uploading the logos -->
                         <div class="mb-3">
                             <label for="logoUpload" class="form-label">Upload Logo</label>
                             <input type="file" class="form-control" id="logoUpload" accept="image/*">
@@ -288,7 +299,7 @@
             </div>
         </div>
     </div>
-
+    <!-- This is the form the user will use to give a comment on a system.-->
     <div class="modal fade" id="commentModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -296,31 +307,31 @@
                     <h5 class="modal-title">Comment and rate</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <form id="commentForm">
-                        <input type="hidden" id="feedbackId">
-                        <div class="mb-3">
-                            <label for="commentText" class="form-label">Your comment</label>
-                            <textarea class="form-control" id="commentText" placeholder="Write your comment..."
-                                required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="commentRating" class="form-label">Your rating</label> <label for="commentRating"
-                                class="form-label">Your rating</label>
-                            <div class="star-rating">
-                                <input type="radio" id="star5c" name="commentRating" value="5"><label for="star5c"><i
-                                        class="fas fa-star"></i></label>
-                                <input type="radio" id="star4c" name="commentRating" value="4"><label for="star4c"><i
-                                        class="fas fa-star"></i></label>
-                                <input type="radio" id="star3c" name="commentRating" value="3"><label for="star3c"><i
-                                        class="fas fa-star"></i></label>
-                                <input type="radio" id="star2c" name="commentRating" value="2"><label for="star2c"><i
-                                        class="fas fa-star"></i></label>
-                                <input type="radio" id="star1c" name="commentRating" value="1"><label for="star1c"><i
-                                        class="fas fa-star"></i></label>
+                    <div class="modal-body">
+                        <form id="commentForm">
+                            <input type="hidden" id="feedbackId">
+                            <div class="mb-3">
+                                <label for="commentText" class="form-label">Your comment</label>
+                                <textarea class="form-control" id="commentText" placeholder="Write your comment..."
+                                    required></textarea>
                             </div>
-                        </div>
-                </div>
+                            <div class="mb-3">
+                                <label for="commentRating" class="form-label">Your rating</label> <label for="commentRating"
+                                    class="form-label">Your rating</label>
+                                <div class="star-rating">
+                                    <input type="radio" id="star5c" name="commentRating" value="5"><label for="star5c"><i
+                                            class="fas fa-star"></i></label>
+                                    <input type="radio" id="star4c" name="commentRating" value="4"><label for="star4c"><i
+                                            class="fas fa-star"></i></label>
+                                    <input type="radio" id="star3c" name="commentRating" value="3"><label for="star3c"><i
+                                            class="fas fa-star"></i></label>
+                                    <input type="radio" id="star2c" name="commentRating" value="2"><label for="star2c"><i
+                                            class="fas fa-star"></i></label>
+                                    <input type="radio" id="star1c" name="commentRating" value="1"><label for="star1c"><i
+                                            class="fas fa-star"></i></label>
+                                </div>
+                            </div>
+                    </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
@@ -408,49 +419,49 @@
 
             feedbackList.innerHTML = feedbacks.length > 0
                 ? feedbacks.map(feedback => `
-        <div class="system-card">
-            <div class="d-flex align-items-center">
-                <div class="system-logo">
-                   <img src="${feedback.logoPath ? `http://localhost:5000${feedback.logoPath}` : 'https://via.placeholder.com/100'}" 
-                    alt="Company Logo" class="img-fluid" style="max-width: 100px; max-height: 100px; object-fit: contain;">
+                <div class="system-card">
+                    <div class="d-flex align-items-center">
+                        <div class="system-logo">
+                        <img src="${feedback.logoPath ? `http://localhost:5000${feedback.logoPath}` : 'https://via.placeholder.com/100'}" 
+                            alt="Company Logo" class="img-fluid" style="max-width: 100px; max-height: 100px; object-fit: contain;">
+                        </div>
+                        <div class="ms-3">
+                            <h5>${feedback.companyName}</h5>
+                            <p>${feedback.experienceDescription}</p>
+                            <p><strong>Success Factor:</strong> ${feedback.successFactor || 'Unknown'}</p>
+                            <div>${generateStarRating(feedback.rating)}</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <button class="btn btn-info btn-sm" onclick="openCommentModal('${feedback._id}')">Comment and rate</button>
+
+                        ${feedback.userId?._id === currentUserId ? `
+                            <button class="btn btn-danger btn-sm" onclick="deleteFeedback('${feedback._id}')">Delete</button>
+                        ` : ''}
+                    </div>
+
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <h6>Comments:</h6>
+                        <div id="comments-${feedback._id}">
+                            ${feedback.comments && feedback.comments.length > 0
+                                ? feedback.comments.map(comment => `
+                                    <div class="p-2 border rounded mb-2">
+                                        <p><strong>Comment by:</strong>  ${comment.userId?.email || 'Anonymous'}</p>
+                                        <p><strong>Rating:</strong> ${generateStarRating(comment.rating)}</p>
+                                        <p>${comment.text}</p>
+
+                                        ${comment.userId?._id === currentUserId ? `
+                                            <button class="btn btn-danger btn-sm" onclick="deleteComment('${feedback._id}', '${comment._id}')">Delete comment</button>
+                                        ` : ''}
+                                    </div>
+                                `).join("")
+                                : "<p class='text-muted'>No comments yet.</p>"
+                            }
+                        </div>
+                    </div>
                 </div>
-                <div class="ms-3">
-                    <h5>${feedback.companyName}</h5>
-                    <p>${feedback.experienceDescription}</p>
-                    <p><strong>Success Factor:</strong> ${feedback.successFactor || 'Unknown'}</p>
-                    <div>${generateStarRating(feedback.rating)}</div>
-                </div>
-            </div>
-
-            <div class="mt-3">
-                <button class="btn btn-info btn-sm" onclick="openCommentModal('${feedback._id}')">Comment and rate</button>
-
-                ${feedback.userId?._id === currentUserId ? `
-                    <button class="btn btn-danger btn-sm" onclick="deleteFeedback('${feedback._id}')">Delete</button>
-                ` : ''}
-            </div>
-
-            <div class="mt-3 p-3 bg-light rounded">
-                <h6>Comments:</h6>
-                <div id="comments-${feedback._id}">
-                    ${feedback.comments && feedback.comments.length > 0
-                        ? feedback.comments.map(comment => `
-                            <div class="p-2 border rounded mb-2">
-                                <p><strong>Comment by:</strong>  ${comment.userId?.email || 'Anonymous'}</p>
-                                <p><strong>Rating:</strong> ${generateStarRating(comment.rating)}</p>
-                                <p>${comment.text}</p>
-
-                                ${comment.userId?._id === currentUserId ? `
-                                    <button class="btn btn-danger btn-sm" onclick="deleteComment('${feedback._id}', '${comment._id}')">Delete comment</button>
-                                ` : ''}
-                            </div>
-                        `).join("")
-                        : "<p class='text-muted'>No comments yet.</p>"
-                    }
-                </div>
-            </div>
-        </div>
-    `).join("")
+            `).join("")
                 : "<p class='text-center'>No feedback available.</p>";
         }
 
@@ -546,11 +557,11 @@
                 const commentsDiv = document.getElementById(`comments-${feedbackId}`);
                 commentsDiv.innerHTML = feedback.comments.length > 0
                     ? feedback.comments.map(comment => `
-                <div class="p-2 border rounded mb-2">
-                    <p><strong>Comment by:</strong> ${comment.userId?.email || 'Anonymous'}</p>
-                    <p>${comment.text}</p>
-                </div>
-            `).join("")
+                        <div class="p-2 border rounded mb-2">
+                            <p><strong>Comment by:</strong> ${comment.userId?.email || 'Anonymous'}</p>
+                            <p>${comment.text}</p>
+                        </div>
+                    `).join("")
                     : "<p class='text-muted'>No comments yet.</p>";
 
             } catch (error) {

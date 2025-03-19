@@ -258,6 +258,7 @@
         </div>
     </nav>
 
+    <!-- This is where the content will be uploaded and displayed-->
     <div class="content-wrapper">
         <div class="container mt-5">
             <h4 class="mt-4">People have asked these questions</h4>
@@ -363,56 +364,56 @@
 
                 questionsContainer.innerHTML = questions.length > 0
                     ? questions.map(question => `
-            <div class="green-box d-flex justify-content-between align-items-center"
-                data-bs-toggle="collapse" data-bs-target="#answer${question._id}"
-                onclick="toggleDropdownIcon('${question._id}')">
-                <div class="question-content">
-                    <div class="question-text">${question.questionText}</div>
-                    <div class="question-meta">Asked by: ${question.userId?.email || "Anonymous"}</div>
-                </div>
+                    <div class="green-box d-flex justify-content-between align-items-center"
+                        data-bs-toggle="collapse" data-bs-target="#answer${question._id}"
+                        onclick="toggleDropdownIcon('${question._id}')">
+                        <div class="question-content">
+                            <div class="question-text">${question.questionText}</div>
+                            <div class="question-meta">Asked by: ${question.userId?.email || "Anonymous"}</div>
+                        </div>
 
-                <div class="action-buttons">
-                    ${question.userId && (question.userId._id || question.userId.id) === currentUserId ? `
-                        <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${question._id}', event)">Delete</button>
-                    ` : ''}
-                    <i id="icon-${question._id}" class="fas fa-chevron-down"></i>
-                </div>
-            </div>
+                        <div class="action-buttons">
+                            ${question.userId && (question.userId._id || question.userId.id) === currentUserId ? `
+                                <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${question._id}', event)">Delete</button>
+                            ` : ''}
+                            <i id="icon-${question._id}" class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
 
-            <div id="answer${question._id}" class="collapse px-3">
-                <h6>Replies:</h6>
-                <div id="replies${question._id}">
-                    ${question.answers && question.answers.length > 0
-                            ? question.answers.map(ans => `
-                            <div class="border p-2 mt-2">
-                                <div class="answer-container">
-                                    <b>${ans.userId?.email || "Anonymous"}</b>
-                                    <p>${ans.answerText}</p>
-                                </div>
-                                <button class="btn btn-outline-success btn-sm" onclick="likeAnswer('${ans._id}')">
-                                    ${ans.likes ? ans.likes.length : 0} Like
-                                </button>
-                                ${ans.userId && (ans.userId._id || ans.userId.id) === currentUserId ? `
-                                    <button class="btn btn-outline-danger btn-sm" onclick="deleteAnswer('${question._id}', '${ans._id}', event)">Delete</button>
-                                ` : ''}
-                            </div>
-                        `).join("")
-                            : "<p>No answers yet</p>"
-                        }
-                </div>
+                    <div id="answer${question._id}" class="collapse px-3">
+                        <h6>Replies:</h6>
+                        <div id="replies${question._id}">
+                            ${question.answers && question.answers.length > 0
+                                    ? question.answers.map(ans => `
+                                    <div class="border p-2 mt-2">
+                                        <div class="answer-container">
+                                            <b>${ans.userId?.email || "Anonymous"}</b>
+                                            <p>${ans.answerText}</p>
+                                        </div>
+                                        <button class="btn btn-outline-success btn-sm" onclick="likeAnswer('${ans._id}')">
+                                            ${ans.likes ? ans.likes.length : 0} Like
+                                        </button>
+                                        ${ans.userId && (ans.userId._id || ans.userId.id) === currentUserId ? `
+                                            <button class="btn btn-outline-danger btn-sm" onclick="deleteAnswer('${question._id}', '${ans._id}', event)">Delete</button>
+                                        ` : ''}
+                                    </div>
+                                `).join("")
+                                    : "<p>No answers yet</p>"
+                                }
+                        </div>
 
-                <textarea class="form-control mt-2" id="answerInput${question._id}" rows="2"
-                    placeholder="${isLoggedIn ? 'Type your answer' : 'You must be logged in to reply'}"
-                    ${!isLoggedIn ? 'disabled' : ''}>
-                </textarea>
+                        <textarea class="form-control mt-2" id="answerInput${question._id}" rows="2"
+                            placeholder="${isLoggedIn ? 'Type your answer' : 'You must be logged in to reply'}"
+                            ${!isLoggedIn ? 'disabled' : ''}>
+                        </textarea>
 
-                <button class="btn btn-primary mt-2" style="background-color: #e16539; border-color:#e16539;"
-                    ${!isLoggedIn ? 'disabled' : ''}
-                    onclick="${isLoggedIn ? `submitAnswer('${question._id}')` : `alert('You must be logged in to reply.')`}">
-                    Submit Answer
-                </button>
-            </div>
-        `).join("")
+                        <button class="btn btn-primary mt-2" style="background-color: #e16539; border-color:#e16539;"
+                            ${!isLoggedIn ? 'disabled' : ''}
+                            onclick="${isLoggedIn ? `submitAnswer('${question._id}')` : `alert('You must be logged in to reply.')`}">
+                            Submit Answer
+                        </button>
+                    </div>
+                `).join("")
                     : "<p class='text-danger'>No questions available.</p>";
 
             } catch (error) {
