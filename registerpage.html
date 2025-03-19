@@ -97,18 +97,24 @@
     </div>
 S
     <script>
+
+        // When the registration form is sent, the system is remembering the user.
         document.getElementById("registerForm").addEventListener("submit", async function (event) {
             event.preventDefault();
+
+             // geting the email, password and repitition of the password from the form.
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
             const confirmPassword = document.getElementById("confirmPassword").value;
 
+             // Cheking if the passowrds match. If not, show an error and stop the process.
             if (password !== confirmPassword) {
                 alert("Passwords do not match!");
                 return;
             }
 
             try {
+                 // Send a POST-request to the surver to register the user.
                 const response = await fetch("http://localhost:5000/my_diss/register", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -117,11 +123,14 @@ S
 
                 const data = await response.json();
                 if (response.ok) {
+                    // saves the user information to localStorage
                     localStorage.setItem("token", data.token);
                     localStorage.setItem("userId", data.userId);
                     localStorage.setItem("userEmail", email);
-                    window.location.href = "index.html";
+
+                    window.location.href = "index.html"; // sending the user to the index page
                 } else {
+                    // If there is anny errors, display error massage
                     alert(data.error || "Registration failed");
                 }
             } catch (error) {
@@ -129,7 +138,7 @@ S
                 alert("An error occurred. Please try again.");
             }
         });
-
+        // cheking if the user already has an account based on localStorage
         if (localStorage.getItem("token")) {
             window.location.href = "index.html";
         }
