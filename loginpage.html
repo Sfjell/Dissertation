@@ -92,30 +92,39 @@
     </div>
 
     <script>
+        // Cheking if the user is logged in
         document.addEventListener("DOMContentLoaded", () => {
             checkLoginStatus();
         });
 
+        // when the login form is sent
         document.getElementById("loginForm").addEventListener("submit", async (event) => {
             event.preventDefault();
+
+            // Finding the users email and password form the form
             const email = document.getElementById("loginEmail").value;
             const password = document.getElementById("loginPassword").value;
             const errorMessage = document.getElementById("loginError");
 
             try {
+
+                // sending a POST-request to the surver for authentication of the user
                 const response = await fetch("http://localhost:5000/my_diss/login", {
-                    method: "POST",
+                    method: "POST", // Usin the POST-metod for sending login data
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email, password }),
                 });
 
-                const data = await response.json();
+                const data = await response.json(); // Geting the JSON-data fron the server
+
                 if (response.ok) {
+
+                    // Saving the token, user id and email in localStorage so it can be used later
                     localStorage.setItem("token", data.token);
                     localStorage.setItem("userId", data.userId);
                     localStorage.setItem("userEmail", email);
 
-                    
+                    // Sending the user back to the index page if the login was succesful
                     window.location.href = "index.html";
                 } else {
                     errorMessage.textContent = data.error || "Invalid login credentials.";
@@ -127,21 +136,23 @@
             }
         });
 
+        // Cheking if the users login stauts based on the saved token. 
         async function checkLoginStatus() {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("token"); // Geting the token from LocalStorage
             if (!token) {
                 if (!window.location.href.includes("loginpage.html")) {
                     window.location.href = "loginpage.html";
                 }
-                return;
+                return; // Ending the process if the token was not found
             }
 
             try {
+                 // Chacking if the token is valied by sending a GET-request to the server with the Authorization-header.
                 const response = await fetch("http://localhost:5000/my_diss/check-token", {
                     method: "GET",
                     headers: { "Authorization": `Bearer ${token}` },
                 });
-
+                // if the respons is not okey, logout the user.
                 if (!response.ok) {
                     console.warn("Token expired or invalid. Redirecting to login...");
                     logoutUser();
@@ -152,6 +163,7 @@
             }
         }
 
+        // Function for logging a user out, removes the data from localStorage and redirecting to login-page.
         function logoutUser() {
             localStorage.removeItem("token");
             localStorage.removeItem("userId");
