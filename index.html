@@ -501,33 +501,38 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+
+        // This is the function cheking if the user is logget inn. The system is looking for the "token" i localStorage
         function checkLoginStatus() {
             const token = localStorage.getItem("token");
-            if (token) {
+            if (token) { // if token exist, log user inn
                 document.getElementById("loginNav").classList.add("d-none");
                 document.getElementById("userDropdown").classList.remove("d-none");
-            } else {
+            } else {// if the token dose not exist, log the user out. 
                 document.getElementById("loginNav").classList.remove("d-none");
                 document.getElementById("userDropdown").classList.add("d-none");
             }
         }
 
+        // Checking if the "logoutBtn" is klikked and removes the information about the user from localStorage
         document.getElementById("logoutBtn").addEventListener("click", function () {
-            localStorage.removeItem("token");
-            localStorage.removeItem("userId");
-            localStorage.removeItem("userEmail");
-            window.location.href = "index.html";
+            localStorage.removeItem("token"); // removes the token from localStorage
+            localStorage.removeItem("userId"); // removes the user-id from localStorage
+            localStorage.removeItem("userEmail"); // removes the emial from localStorage
+            window.location.href = "index.html"; // redirecting to index page
         });
 
+        // the function to upload the top rated sytems from ther server. 
         async function fetchTopSystems() {
             try {
-                const response = await fetch("http://localhost:5000/my_diss");
-                if (!response.ok) throw new Error("Kunne ikke hente systemer");
+                const response = await fetch("http://localhost:5000/my_diss"); // Uploading the data from the server
+                if (!response.ok) throw new Error("Could not find the systems");
 
-                const feedbacks = await response.json();
+                const feedbacks = await response.json(); // Upload the JSON-dataen
                 feedbacks.sort((a, b) => b.rating - a.rating);
-                const top3 = feedbacks.slice(0, 3);
+                const top3 = feedbacks.slice(0, 3); // Gets the three beste systems
 
+                // the html for the three best system
                 document.getElementById("topSystems").innerHTML = top3.map(system => `
                     <div class="col-md-4 mb-3">
                         <div class="system-card">
@@ -538,21 +543,23 @@
                             <div>${generateStarRating(system.rating)}</div>
                         </div>
                     </div>
-                `).join("");
+                `).join(""); 
             } catch (error) {
                 console.error("There was ann error when uploading the system:", error);
                 document.getElementById("topSystems").innerHTML = "<p>Could not download the system.</p>";
             }
         }
 
+        // the function for generating the star retings
         function generateStarRating(rating) {
             let starsHTML = "";
-            for (let i = 1; i <= 5; i++) {
+            for (let i = 1; i <= 5; i++) { // Loop to ensure of 5 stars
                 starsHTML += `<i class="${i <= rating ? 'fas' : 'far'} fa-star text-warning"></i> `;
             }
-            return starsHTML;
-        }
+            return starsHTML; // returns the HTML for the stars
+        } 
 
+        // the function for uploading the questins from the server. 
         async function fetchQuestions() {
             try {
                 const response = await fetch("http://localhost:5000/my_diss/questions");
@@ -560,13 +567,13 @@
 
                 let questions = await response.json();
                 if (!Array.isArray(questions) || questions.length === 0) {
-                    document.getElementById("questions").innerHTML = "<p>No questions found.</p>";
+                    document.getElementById("questions").innerHTML = "<p>No questions found.</p>"; // Display this massage if now questions found
                     return;
                 }
 
-                questions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                questions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sorting the questions based on when they where uploaded, Newest first. 
 
-                const latestQuestions = questions.slice(0, 3);
+                const latestQuestions = questions.slice(0, 3); // Uploading the three newest questions
                 document.getElementById("questions").innerHTML = latestQuestions.map(q => `
                     <div class="green-box d-flex justify-content-between align-items-center" 
                         data-bs-toggle="collapse" data-bs-target="#answer${q._id}" 
@@ -589,6 +596,8 @@
                 document.getElementById("questions").innerHTML = "<p>Could not dowload the questions. Pleas try agin later.</p>";
             }
         }
+
+        // function for meking the arrows on the questions change, based on if they are up or down
         function toggleDropdownIcon(questionId) {
             const icon = document.getElementById(`icon-${questionId}`);
             if (icon) {
@@ -597,6 +606,7 @@
             }
         }
 
+        // Asking the functions to start when the page loads
         checkLoginStatus();
         fetchTopSystems();
         fetchQuestions();
