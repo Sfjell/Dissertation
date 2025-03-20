@@ -373,6 +373,7 @@ app.post('/my_diss/login', async (req, res) => {
   }
 });
 
+//route for liking or unliking a reply
 app.post('/my_diss/questions/like/:answerId', authenticateToken, async (req, res) => {
   try {
     const { answerId } = req.params;
@@ -398,6 +399,7 @@ app.post('/my_diss/questions/like/:answerId', authenticateToken, async (req, res
   }
 });
 
+//route for submitting feedback with company logo. However, the logo is made optional. 
 app.post('/my_diss/feedback', authenticateToken, upload.single('logo'), async (req, res) => {
   try {
     const { companyName, experienceDescription, rating, successFactor } = req.body;
@@ -423,6 +425,7 @@ app.post('/my_diss/feedback', authenticateToken, upload.single('logo'), async (r
   }
 });
 
+//route for fecting users data based on their email. 
 app.get('/my_diss/get-user/:email', async (req, res) => {
   try {
     console.log("Fetching user data for:", req.params.email);
@@ -438,6 +441,7 @@ app.get('/my_diss/get-user/:email', async (req, res) => {
   }
 });
 
+//route for adding comments to posted feedback.
 app.post("/my_diss/feedback/:feedbackId/comment", authenticateToken, async (req, res) => {
   try {
     const { feedbackId } = req.params;
@@ -474,6 +478,7 @@ app.post("/my_diss/feedback/:feedbackId/comment", authenticateToken, async (req,
   }
 });
 
+//route for submitting new questions. 
 app.post('/my_diss/questions', authenticateToken, async (req, res) => {
   try {
     const { questionText } = req.body;
@@ -496,6 +501,7 @@ app.post('/my_diss/questions', authenticateToken, async (req, res) => {
   }
 });
 
+//route for deleting comments that the user own on feedbacks. 
 app.delete('/my_diss/feedback/:feedbackId/comment/:commentId', authenticateToken, async (req, res) => {
   try {
     const { feedbackId, commentId } = req.params;
@@ -524,6 +530,7 @@ app.delete('/my_diss/feedback/:feedbackId/comment/:commentId', authenticateToken
   }
 });
 
+//route for deleting feedback based on the users id
 app.delete('/my_diss/feedback/:id', authenticateToken, async (req, res) => {
   try {
     const feedbackId = req.params.id;
@@ -552,6 +559,7 @@ app.delete('/my_diss/feedback/:id', authenticateToken, async (req, res) => {
   }
 });
 
+//route for liking or unliking a question. However, this was never implimented in the front end. 
 app.post('/my_diss/questions/like/:questionId', authenticateToken, async (req, res) => {
   const { questionId } = req.params;
   const userId = req.user.userId;
@@ -573,6 +581,7 @@ app.post('/my_diss/questions/like/:questionId', authenticateToken, async (req, r
   }
 });
 
+//route for liking or unliking an answer. 
 app.post('/my_diss/questions/like/:answerId', authenticateToken, async (req, res) => {
   const { answerId } = req.params;
   const userId = req.user.userId;
@@ -600,6 +609,7 @@ app.post('/my_diss/questions/like/:answerId', authenticateToken, async (req, res
   }
 });
 
+//route for deleting an answer.  
 app.delete('/my_diss/answers/:id', authenticateToken, async (req, res) => {
   try {
     const answer = await Answer.findByIdAndDelete(req.params.id);
@@ -611,6 +621,7 @@ app.delete('/my_diss/answers/:id', authenticateToken, async (req, res) => {
   }
 });
 
+//route for retrieving all feedback. 
 app.get('/my_diss', async (req, res) => {
   try {
     const feedbacks = await Feedback.find()
@@ -624,24 +635,25 @@ app.get('/my_diss', async (req, res) => {
   }
 });
 
+//route for retrieving all questions
 app.get('/my_diss/questions', async (req, res) => {
   try {
     const questions = await Question.find()
-      .populate('userId', 'email')
+      .populate('userId', 'email') //populate userId with email field.
       .populate('answers.userId', 'email');
 
     if (!questions.length) {
       return res.status(404).json({ error: 'No questions found.' });
     }
 
-    res.status(200).json(questions);
+    res.status(200).json(questions); //returns the questions.
   } catch (err) {
     console.error('Error fetching questions:', err);
     res.status(500).json({ error: 'Error retrieving questions.' });
   }
 });
 
-
+//route for submitting feedback. 
 app.post('/my_diss/feedback', authenticateToken, upload.single('logo'), async (req, res) => {
   try {
     const { companyName, experienceDescription, rating, successFactor } = req.body;
@@ -661,7 +673,7 @@ app.post('/my_diss/feedback', authenticateToken, upload.single('logo'), async (r
       userId: req.user.userId,
     });
 
-    await feedback.save();
+    await feedback.save(); //saves the feedback to the DB. 
 
     res.status(201).json({ message: 'Your feedback was submited!', feedback });
   } catch (err) {
@@ -670,6 +682,7 @@ app.post('/my_diss/feedback', authenticateToken, upload.single('logo'), async (r
   }
 });
 
+//route for submitting new questions. 
 app.post('/my_diss/questions', authenticateToken, async (req, res) => {
   try {
     const { questionText } = req.body;
@@ -689,6 +702,7 @@ app.post('/my_diss/questions', authenticateToken, async (req, res) => {
   }
 });
 
+//route for replying to a question. 
 app.post('/my_diss/questions/reply/:questionId', authenticateToken, async (req, res) => {
   try {
     const { questionId } = req.params;
@@ -716,6 +730,7 @@ app.post('/my_diss/questions/reply/:questionId', authenticateToken, async (req, 
   }
 });
 
+//route for liking an answare. 
 app.post('/my_diss/questions/like/:answerId', authenticateToken, async (req, res) => {
   try {
     const { answerId } = req.params;
@@ -742,6 +757,7 @@ app.post('/my_diss/questions/like/:answerId', authenticateToken, async (req, res
   }
 });
 
+//route for deleting a question. 
 app.delete('/my_diss/questions/:questionId', authenticateToken, async (req, res) => {
   const { questionId } = req.params;
   const userId = req.user.userId; 
@@ -762,6 +778,7 @@ app.delete('/my_diss/questions/:questionId', authenticateToken, async (req, res)
   }
 });
 
+//route for deleting a answer. 
 app.delete('/my_diss/questions/delete/:answerId', authenticateToken, async (req, res) => {
   const { answerId } = req.params;
   console.log("Attempting to delete answer with ID:", answerId); 
@@ -795,9 +812,10 @@ app.delete('/my_diss/questions/delete/:answerId', authenticateToken, async (req,
   }
 });
 
+//route for registering new users. 
 app.post('/register', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body; //extract email and password from the request. 
     if (!email || !password) return res.status(400).json({ error: 'Email and password are required.' });
 
     const existingUser = await User.findOne({ email });
@@ -813,6 +831,7 @@ app.post('/register', async (req, res) => {
   }
 });
 
+//rute for loging for user authentication. 
 app.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -828,16 +847,19 @@ app.post('/login', async (req, res) => {
   }
 });
 
+//like or unlike. 
 app.post('/my_diss/questions/like/:answerId', authenticateToken, async (req, res) => {
   try {
     const { answerId } = req.params;
     const userId = req.user.userId;
 
+    //find the question containing the replys. 
     const question = await Question.findOne({ "answers._id": answerId });
     if (!question) return res.status(404).json({ error: 'Answer not found.' });
 
     const answer = question.answers.id(answerId);
 
+    //toggle the like status for the replys. 
     if (answer.likes.includes(userId)) {
       answer.likes = answer.likes.filter(id => id.toString() !== userId);
     } else {
@@ -852,6 +874,7 @@ app.post('/my_diss/questions/like/:answerId', authenticateToken, async (req, res
   }
 });
 
+//rute for deleteing a specisif answare from a question.  
 app.delete('/my_diss/questions/:questionId/answers/:answerId', authenticateToken, async (req, res) => {
   const { questionId, answerId } = req.params;
   const userId = req.user.userId;
@@ -859,11 +882,14 @@ app.delete('/my_diss/questions/:questionId/answers/:answerId', authenticateToken
   console.log("Attempting to delete answer:", answerId, "from question:", questionId);
 
   try {
+    //finds the question. 
     const question = await Question.findById(questionId);
     if (!question) {
       console.log("No question found with ID:", questionId);
       return res.status(404).json({ error: 'Question not found' });
     }
+
+    //finds the specific reply. 
     const answer = question.answers.id(answerId);
     if (!answer) {
       console.log("Answer not found in question ID:", questionId);
@@ -885,6 +911,7 @@ app.delete('/my_diss/questions/:questionId/answers/:answerId', authenticateToken
   }
 });
 
+//delete answer by the id. 
 app.delete('/my_diss/questions/delete/:answerId', authenticateToken, async (req, res) => {
   try {
     const { answerId } = req.params;
@@ -955,6 +982,7 @@ app.delete('/my_diss/answers/:answerId', authenticateToken, async (req, res) => 
   }
 });
 
+//rute for updating the profile information. 
 app.put("/my_diss/update-profile", authenticateToken, async (req, res) => {
   try {
       const { name, age, gender, occupation, email, password } = req.body;
@@ -968,6 +996,7 @@ app.put("/my_diss/update-profile", authenticateToken, async (req, res) => {
           return res.status(404).json({ error: "User not found" });
       }
 
+      //updates the fields that were given.
       if (name) user.name = name;
       if (age) user.age = age;
       if (gender) user.gender = gender;
@@ -1001,6 +1030,7 @@ app.put("/my_diss/update-profile", authenticateToken, async (req, res) => {
   }
 });
 
+//rute for checking the status of the users token. if it is valied or not. 
 app.get('/my_diss/check-token', authenticateToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select("email");
@@ -1022,6 +1052,7 @@ app.get('/my_diss/check-token', authenticateToken, async (req, res) => {
   }
 });
 
+//rute for updating the users credentials. 
 app.put('/my_diss/update-credentials', authenticateToken, async (req, res) => {
   try {
       const { email, password } = req.body;
@@ -1054,6 +1085,7 @@ app.put('/my_diss/update-credentials', authenticateToken, async (req, res) => {
   }
 });
 
+//rute for fetching the users profile specifications. 
 app.get('/my_diss/user-profile', authenticateToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select('-password');
@@ -1067,6 +1099,7 @@ app.get('/my_diss/user-profile', authenticateToken, async (req, res) => {
   }
 });
 
+//starts the server on the port 5000 by default. 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
