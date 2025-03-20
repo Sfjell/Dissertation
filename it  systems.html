@@ -286,7 +286,6 @@
                                 <input type="radio" id="star1" name="rating" value="1"><label for="star1"><i
                                         class="fas fa-star"></i></label>
                             </div>
-
                         </div>
                         <!-- The function for uploading the logos -->
                         <div class="mb-3">
@@ -299,6 +298,7 @@
             </div>
         </div>
     </div>
+
     <!-- This is the form the user will use to give a comment on a system.-->
     <div class="modal fade" id="commentModal" tabindex="-1">
         <div class="modal-dialog">
@@ -600,6 +600,7 @@
             return selectedStar ? selectedStar.value : null;
         }
 
+        // handals the submision form of a feedback. 
         document.getElementById('feedbackForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
@@ -631,15 +632,20 @@
                     body: formData
                 });
 
-                if (response.ok) {
-                    fetchFeedback();
-                } else {
-                    const errorData = await response.json();
-                    alert(`Error: ${errorData.error}`);
-                }
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server error: ${errorText}`);
+                } 
+
+                await fetchFeedback();
+                document.getElementById("feedbackModal").classList.remove("show");
+                document.body.classList.remove("modal-open");
+                document.querySelector(".modal-backdrop").remove();
+
             } catch (error) {
                 console.error("Error submitting feedback:", error);
             }
+
         });
 
         // function for uploading the chossen rating. 
