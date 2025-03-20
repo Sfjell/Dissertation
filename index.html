@@ -491,7 +491,7 @@
         <div class="cta-content">
             <h2>Ready to share your opinion or rate a system?</h2>
             <p>Join SysReviewSphere today and help others to find the best system or find the best system for you!</p>
-            <a href="loginpage.html" class="btn btn-primary">Sign Up here</a>
+            <a href="registerpage.html" class="btn btn-primary">Sign Up here</a>
         </div>
     </div>
     <!-- footer -->
@@ -585,7 +585,6 @@
                         ${q.answers && q.answers.length
                                 ? q.answers.map(ans => `
                                 <p><strong>${ans.userId?.email || "Anonomus"}:</strong> ${ans.answerText}</p>
-                                <div>${generateStarRating(ans.rating || 0)}</div>
                             `).join("")
                                 : "<p>No content her yet. </p>"}
                     </div>
