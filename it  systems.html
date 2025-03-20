@@ -348,8 +348,9 @@
             fetchFeedback();
         });
 
+        // Cheking if the user is loged in. 
         async function checkLoginStatus() {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("token"); // Geting the login token form localStorage
 
             if (!token) {
                 console.warn("No token found. Redirecting to login page.");
@@ -376,11 +377,13 @@
             }
         }
 
+        // Updating the nav bar based on the users log in status.
         function updateNavbar(isLoggedIn) {
             document.getElementById("loginNav").classList.toggle("d-none", isLoggedIn);
             document.getElementById("userDropdown").classList.toggle("d-none", !isLoggedIn);
         }
 
+        // loging the user out by removing the token and related data. 
         function logoutUser() {
             localStorage.removeItem("token");
             localStorage.removeItem("userId");
@@ -392,6 +395,7 @@
 
         let allFeedbacks = [];
 
+        // Gets the feedback data from a API. 
         async function fetchFeedback() {
             try {
                 const response = await fetch("http://localhost:5000/my_diss");
@@ -413,6 +417,7 @@
             }
         }
 
+        // Showes the user feedback in HTMl format. 
         function displayFeedbacks(feedbacks) {
             const feedbackList = document.getElementById("feedbackList");
             const currentUserId = localStorage.getItem("userId");
@@ -465,6 +470,7 @@
                 : "<p class='text-center'>No feedback available.</p>";
         }
 
+        //Deletes function for deleting a comment the user own. 
         async function deleteComment(feedbackId, commentId) {
             const token = localStorage.getItem('token');
 
@@ -495,6 +501,7 @@
             }
         }
 
+        //Handals the submition of comments
         document.getElementById("commentForm").addEventListener("submit", async function (e) {
             e.preventDefault();
 
@@ -540,6 +547,7 @@
             }
         });
 
+        //uploads and updates the comment for a feedback. 
         async function updateComments(feedbackId) {
             console.log("Fetching updated comments for Feedback ID:", feedbackId);
 
@@ -569,6 +577,7 @@
             }
         }
 
+        //uploading the star rating from a comment. 
         function filterFeedback() {
             const filterValue = document.getElementById("filterFactor").value;
             const filteredFeedbacks = filterValue === "All"
@@ -578,6 +587,7 @@
             displayFeedbacks(filteredFeedbacks);
         }
 
+        // handals the submision of a feedback. 
         function toggleFilter() {
             const filterSection = document.getElementById("filterSection");
             if (filterSection.style.display === "none" || filterSection.style.display === "") {
@@ -633,11 +643,13 @@
             }
         });
 
+        // function for uploading the chossen rating. 
         function getSelectedRating() {
             const selectedStar = document.querySelector('input[name="rating"]:checked');
             return selectedStar ? selectedStar.value : null;
         }
 
+        //cheking if there was a rating submited. If not, the system will dispaly an error. 
         document.addEventListener("DOMContentLoaded", function () {
             const ratingElement = document.querySelector('input[name="rating"]:checked');
             if (ratingElement) {
@@ -647,6 +659,7 @@
             }
         });
 
+        //the html codes for the star ratings. 
         function generateStarRating(rating) {
             let starsHTML = "";
             for (let i = 1; i <= 5; i++) {
@@ -659,6 +672,7 @@
             return starsHTML;
         }
 
+        //deleting a feedback based on user id. This is done so only the owner of a feedback can delet it. 
         async function deleteFeedback(feedbackId) {
             const token = localStorage.getItem('token');
 
@@ -672,9 +686,10 @@
             }
 
             try {
+                //sends the delete request to the server. 
                 const response = await fetch(`http://localhost:5000/my_diss/feedback/${feedbackId}`, {
                     method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: { 'Authorization': `Bearer ${token}` } //includes the token in the header. 
                 });
 
                 if (response.ok) {
@@ -688,6 +703,7 @@
             }
         }
 
+        //function for opening a komment form, setting the feedback id and and removes existing comments. 
         function openCommentModal(feedbackId) {
             const feedbackInput = document.getElementById("feedbackId");
             const commentText = document.getElementById("commentText");
@@ -703,6 +719,7 @@
                 commentText.value = ""; 
             }
 
+            //removes the chossen stars from the koment form
             document.querySelectorAll("#commentModal input[name='commentRating']").forEach(star => {
                 star.checked = false;
             });
@@ -711,6 +728,7 @@
             commentModal.show();
         }
 
+        //handals the logout of a user by removing the token and other userdata from localStorage
         document.addEventListener("DOMContentLoaded", function () {
             const logoutBtn = document.getElementById("logoutBtn");
             if (logoutBtn) {
@@ -733,6 +751,7 @@
             }
         });
 
+        // function to check if the user is loged in based on the token. 
         function checkLoginStatus() {
             const token = localStorage.getItem("token");
             if (token) {

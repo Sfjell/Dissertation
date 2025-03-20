@@ -388,9 +388,11 @@
         </div>
 
         <script>
+            //when the page loads, this function starts
             document.addEventListener("DOMContentLoaded", function () {
                 console.log("Page loaded");
 
+                //gets elements from the DOM. this will be used in the codes
                 const profileEmail = document.getElementById("profileEmail");
                 const profileIcon = document.getElementById("profileIcon");
                 const settingsCard = document.getElementById("settingsCard");
@@ -401,6 +403,7 @@
                 const cancelDelete = document.getElementById("cancelDelete");
                 const confirmDelete = document.getElementById("confirmDelete");
 
+                //gets the tocen from localStorage for autherisation
                 let token = localStorage.getItem("token");
 
                 if (!token || token === "null" || token === "undefined") {
@@ -411,6 +414,7 @@
                     fetchUserData(token);
                 }
 
+                //uploading the userdata based on the token
                 function fetchUserData(token) {
                     fetch("http://localhost:5000/my_diss/check-token", {
                         method: "GET",
@@ -420,6 +424,7 @@
                         .then(data => {
                             console.log("check-token response:", data);
 
+                            //if the token is valied, get the users id
                             if (data.message === "Token is valid" && data.userId) {
                                 console.log("Token is valid, userId:", data.userId);
 
@@ -431,7 +436,7 @@
                                 }
                             } else {
                                 console.warn("Invalid token or missing userId. Redirecting to login...");
-                                logoutUser();
+                                logoutUser(); //if the user id or token is work, log the user out. 
                             }
                         })
                         .catch(err => {
@@ -440,6 +445,7 @@
                         });
                 }
 
+                //function for handelign the user profile
                 function fetchUserProfile(userId, token) {
                     if (!userId || typeof userId !== "string") {
                         console.error("userId is invalid! Cannot fetch user profile.");
@@ -473,16 +479,18 @@
                         })
                         .catch(err => {
                             console.error("Error fetching user data:", err);
-                            logoutUser();
+                            logoutUser(); //if somethings goes wrong, log the user out. 
                         });
                 }
 
+                //function to get the users email from the backend 
                 function fetchUserEmailFromBackend(userId, token) {
                     fetch(`http://localhost:5000/my_diss/get-user-id/${userId}`, {
                         headers: { "Authorization": `Bearer ${token}` }
                     })
                         .then(res => res.json())
                         .then(data => {
+                            //if the email exist, save it in localStorage and upload userprofiel
                             if (data.email) {
                                 console.log("Fetched email from backend:", data.email);
                                 localStorage.setItem("userEmail", data.email);
@@ -498,6 +506,7 @@
                         });
                 }
 
+                //function for updating the users UI on the profile page
                 function updateProfileUI(user) {
                     profileName.innerText = user.name || "Not logged in";
 
@@ -509,6 +518,7 @@
                     fetchUserPosts(user._id);
                 }
 
+                //function for uploading the users posts
                 function fetchUserPosts(userId) {
                     if (!userId) {
                         console.error("No userId provided for fetching data.");
@@ -536,6 +546,7 @@
                                 return;
                             }
 
+                            //only show content if the user has posted something. 
                             posts.forEach(post => {
                                 const postItem = document.createElement("div");
                                 postItem.classList.add("post-item");
@@ -628,22 +639,26 @@
                         .catch(err => console.error("Error fetching user answers:", err));
                 }
 
+                //eventlistner for klikking settings button. Hide or display the form.
                 settingsBtn.addEventListener("click", function () {
                     settingsCard.style.display = settingsCard.style.display === "none" ? "block" : "none";
                     settingsBtn.classList.add("active-btn");
                     setTimeout(() => settingsBtn.classList.remove("active-btn"), 200);
                 });
 
+                //eventlistner for klikking on the delete content
                 deleteBtn.addEventListener("click", function () {
                     modalConfirm.style.display = "block";
                     modalOverlay.style.display = "block";
                 });
 
+                //eventlistner for klikking if the user cancels delete account. 
                 cancelDelete.addEventListener("click", function () {
                     modalConfirm.style.display = "none";
                     modalOverlay.style.display = "none";
                 });
 
+                //confirms anddelete the account when the button is klikked 
                 confirmDelete.addEventListener("click", async function () {
                     console.log(" Deleting account...");
                     let email = localStorage.getItem("userEmail");
@@ -675,282 +690,288 @@
                     }
                 });
 
+                //function to log users out
                 function logoutUser() {
-                    console.warn("Logging out user...");
-                    console.log("LocalStorage before logout:", localStorage);
+                        console.warn("Logging out user...");
+                        console.log("LocalStorage before logout:", localStorage);
 
-                    localStorage.removeItem("authToken");
-                    localStorage.removeItem("userId");
-                    localStorage.removeItem("userEmail");
+                        //removes the authToken, userId og userEmail from localStorage
+                        localStorage.removeItem("authToken");
+                        localStorage.removeItem("userId");
+                        localStorage.removeItem("userEmail");
 
-                    console.log("LocalStorage after logout:", localStorage);
+                        console.log("LocalStorage after logout:", localStorage);
 
-                    if (!window.location.href.includes("loginpage.html")) {
-                        alert("You have been logged out.");
-                        window.location.href = "loginpage.html";
+                        if (!window.location.href.includes("loginpage.html")) {
+                            alert("You have been logged out.");
+                            window.location.href = "loginpage.html";
+                        }
                     }
-                }
-            });
-
-            async function fetchTopSystems() {
-                try {
-                    const response = await fetch("http://localhost:5000/my_diss");
-                    if (!response.ok) throw new Error("Feil ved henting av systemer");
-
-                    const feedbacks = await response.json();
-                    feedbacks.sort((a, b) => b.rating - a.rating);
-                    const top3 = feedbacks.slice(0, 3);
-
-                    document.getElementById("topSystems").innerHTML = top3.map(system => `
-                        <div class="col-md-4 mb-3">
-                            <div class="system-card">
-                                <img src="http://localhost:5000${system.logoPath}" alt="Logo" class="img-fluid" style="max-width: 80px;">
-                                <h5 class="mt-2">${system.companyName}</h5>
-                                <p>${system.experienceDescription}</p>
-                                <p>Rating: ${'★'.repeat(system.rating)}${'☆'.repeat(5 - system.rating)}</p>
-                            </div>
-                        </div>
-                    `).join("");
-                } catch (error) {
-                    console.error("An error accured during uploading of IT-systemer:", error);
-                    document.getElementById("topSystems").innerHTML = "<p>Could not upload the systems.</p>";
-                }
-            }
-
-            async function fetchQuestions() {
-                try {
-                    const response = await fetch("http://localhost:5000/my_diss/questions");
-                    if (!response.ok) throw new Error("An error occured when uploading the questions");
-
-                    const questions = await response.json();
-                    if (!Array.isArray(questions) || questions.length === 0) {
-                        document.getElementById("questions").innerHTML = "<p>No questions found.</p>";
-                        return;
-                    }
-
-                    document.getElementById("questions").innerHTML = questions.map(q => `
-                    <div class="green-box" data-bs-toggle="collapse" data-bs-target="#answer${q._id}">
-                        <div>${q.questionText || "Not a known question"}</div>
-                        <span>▼</span>
-                    </div>
-                    <div id="answer${q._id}" class="collapse px-3">
-                        ${q.answers && q.answers.length ? q.answers.map(ans => `<p>${ans}</p>`).join(" ") : "<p>No replays avelabol.</p>"}
-                    </div>
-                `).join("");
-                } catch (error) {
-                    console.error("An error occured when uploading the questions:", error);
-                    document.getElementById("questions").innerHTML = "<p>Could not download the questions.</p>";
-                }
-            }
-
-
-            document.addEventListener("DOMContentLoaded", function () {
-                console.log("Profile settings script loaded!");
-
-                const nameInput = document.getElementById("name");
-                const ageInput = document.getElementById("age");
-                const genderInput = document.getElementById("gender");
-                const occupationInput = document.getElementById("occupation");
-                const emailInput = document.getElementById("email");
-                const passwordInput = document.getElementById("password");
-                const updateButton = document.querySelector(".btn-primary");
-
-                let token = localStorage.getItem("token");
-
-                if (!token) {
-                    console.warn("No token found, redirecting to login.");
-                    alert("You need to log in first.");
-                    window.location.href = "loginpage.html";
-                    return;
-                }
-
-                console.log("Token found:", token);
-
-                function fetchUserProfile() {
-                    fetch("http://localhost:5000/my_diss/user-profile", {
-                        method: "GET",
-                        headers: { "Authorization": `Bearer ${token}` }
-                    })
-                        .then(response => {
-                            if (!response.ok) throw new Error("Failed to fetch user profile.");
-                            return response.json();
-                        })
-                        .then(user => {
-                            console.log("Fetched user data:", user);
-
-                            if (user.error) {
-                                console.error("Error fetching user:", user.error);
-                                alert("Session expired. Please log in again.");
-                                logoutUser();
-                                return;
-                            }
-
-                            nameInput.value = user.name || "";
-                            ageInput.value = user.age || "";
-                            genderInput.value = user.gender || "";
-                            occupationInput.value = user.occupation || "";
-                            emailInput.value = user.email || "";
-                            passwordInput.value = "";
-
-                            localStorage.setItem("userEmail", user.email);
-                        })
-                        .catch(error => {
-                            console.error("Error fetching profile:", error);
-                            alert("Error loading profile. Please try again.");
-                        });
-                }
-
-                fetchUserProfile();
-
-                updateButton.addEventListener("click", function (event) {
-                    event.preventDefault();
-
-                    const updatedProfile = {
-                        name: nameInput.value,
-                        age: ageInput.value,
-                        gender: genderInput.value,
-                        occupation: occupationInput.value,
-                        email: emailInput.value,
-                        password: passwordInput.value ? passwordInput.value : null
-                    };
-
-                    console.log("Sending updated profile:", updatedProfile);
-
-                    fetch("http://localhost:5000/my_diss/update-profile", {
-                        method: "PUT",
-                        headers: {
-                            "Authorization": `Bearer ${token}`,
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(updatedProfile)
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.error) {
-                                console.error("Error updating profile:", data.error);
-                                alert("Error updating profile: " + data.error);
-                            } else {
-                                alert("Profile updated successfully!");
-
-                                if (data.token) {
-                                    console.log("Storing new token in localStorage.");
-                                    localStorage.setItem("token", data.token);
-                                }
-
-                                if (data.email) {
-                                    localStorage.setItem("userEmail", data.email);
-                                }
-
-                                fetchUserProfile();
-                            }
-                        })
-                        .catch(error => {
-                            console.error("Error updating profile:", error);
-                            alert("An error occurred while updating the profile. Please try again.");
-                        });
                 });
 
-                function logoutUser() {
-                    console.warn("Logging out user...");
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("userEmail");
-                    alert("Session expired. Please log in again.");
-                    window.location.href = "loginpage.html";
+                //gets the systems the user has submited. 
+                async function fetchTopSystems() {
+                    try {
+                        const response = await fetch("http://localhost:5000/my_diss");
+                        if (!response.ok) throw new Error("Feil ved henting av systemer");
+
+                        const feedbacks = await response.json();
+                        feedbacks.sort((a, b) => b.rating - a.rating);
+                        const top3 = feedbacks.slice(0, 3);
+
+                        document.getElementById("topSystems").innerHTML = top3.map(system => `
+                            <div class="col-md-4 mb-3">
+                                <div class="system-card">
+                                    <img src="http://localhost:5000${system.logoPath}" alt="Logo" class="img-fluid" style="max-width: 80px;">
+                                    <h5 class="mt-2">${system.companyName}</h5>
+                                    <p>${system.experienceDescription}</p>
+                                    <p>Rating: ${'★'.repeat(system.rating)}${'☆'.repeat(5 - system.rating)}</p>
+                                </div>
+                            </div>
+                        `).join("");
+                    } catch (error) {
+                        console.error("An error accured during uploading of IT-systemer:", error);
+                        document.getElementById("topSystems").innerHTML = "<p>Could not upload the systems.</p>";
+                    }
                 }
-            });
 
-            document.addEventListener("DOMContentLoaded", function () {
-                const emailInput = document.getElementById("email");
-                const passwordInput = document.getElementById("password");
-                const form = document.getElementById("accountSettingsForm");
+                // Displays the questions and replys from the API
+                async function fetchQuestions() {
+                    try {
+                        const response = await fetch("http://localhost:5000/my_diss/questions");
+                        if (!response.ok) throw new Error("An error occured when uploading the questions");
 
-                function fetchUserData() {
-                    fetch("http://localhost:5000/get-user-data", { method: "GET" })
-                        .then(response => response.json())
-                        .then(data => {
-                            emailInput.value = data.email;
-                            passwordInput.value = "";
-                        })
-                        .catch(error => console.error("Error fetching user data:", error));
+                        const questions = await response.json();
+                        if (!Array.isArray(questions) || questions.length === 0) {
+                            document.getElementById("questions").innerHTML = "<p>No questions found.</p>";
+                            return;
+                        }
+
+                        //displays the questions and replys in html if they exist 
+                        document.getElementById("questions").innerHTML = questions.map(q => `
+                        <div class="green-box" data-bs-toggle="collapse" data-bs-target="#answer${q._id}">
+                            <div>${q.questionText || "Not a known question"}</div>
+                            <span>▼</span>
+                        </div>
+                        <div id="answer${q._id}" class="collapse px-3">
+                            ${q.answers && q.answers.length ? q.answers.map(ans => `<p>${ans}</p>`).join(" ") : "<p>No replays avelabol.</p>"}
+                        </div>
+                    `).join("");
+                    } catch (error) {
+                        console.error("An error occured when uploading the questions:", error);
+                        document.getElementById("questions").innerHTML = "<p>Could not download the questions.</p>";
+                    }
                 }
 
-                fetchUserData();
 
+                //runs when the document is loded
                 document.addEventListener("DOMContentLoaded", function () {
+                    console.log("Profile settings script loaded!");
+
+                    //uploads html elements for profile setings
+                    const nameInput = document.getElementById("name");
+                    const ageInput = document.getElementById("age");
+                    const genderInput = document.getElementById("gender");
+                    const occupationInput = document.getElementById("occupation");
                     const emailInput = document.getElementById("email");
                     const passwordInput = document.getElementById("password");
-                    const updateCredentialsForm = document.getElementById("updateCredentialsForm");
+                    const updateButton = document.querySelector(".btn-primary");
 
-                    const token = localStorage.getItem("token");
+                    let token = localStorage.getItem("token");
+
                     if (!token) {
+                        console.warn("No token found, redirecting to login.");
                         alert("You need to log in first.");
                         window.location.href = "loginpage.html";
                         return;
                     }
 
-                    fetch("http://localhost:5000/my_diss/get-user-profile", {
-                        method: "GET",
-                        headers: { "Authorization": `Bearer ${token}` }
-                    })
-                        .then(response => response.json())
-                        .then(user => {
-                            if (user.error) {
-                                console.error("Error fetching user:", user.error);
-                                return;
-                            }
-                            emailInput.value = user.email || "";
-                        })
-                        .catch(error => console.error("Error fetching profile:", error));
+                    console.log("Token found:", token);
 
-                    updateCredentialsForm.addEventListener("submit", function (event) {
+                    //functionf or reciving the user profile
+                    function fetchUserProfile() {
+                        fetch("http://localhost:5000/my_diss/user-profile", {
+                            method: "GET",
+                            headers: { "Authorization": `Bearer ${token}` }
+                        })
+                            .then(response => {
+                                if (!response.ok) throw new Error("Failed to fetch user profile.");
+                                return response.json();
+                            })
+                            .then(user => {
+                                console.log("Fetched user data:", user);
+
+                                if (user.error) {
+                                    console.error("Error fetching user:", user.error);
+                                    alert("Session expired. Please log in again.");
+                                    logoutUser();
+                                    return;
+                                }
+
+                                //sets the users data in the sections where they alredy exist. 
+                                nameInput.value = user.name || "";
+                                ageInput.value = user.age || "";
+                                genderInput.value = user.gender || "";
+                                occupationInput.value = user.occupation || "";
+                                emailInput.value = user.email || "";
+                                passwordInput.value = "";
+
+                                localStorage.setItem("userEmail", user.email);
+                            })
+                            .catch(error => {
+                                console.error("Error fetching profile:", error);
+                                alert("Error loading profile. Please try again.");
+                            });
+                    }
+
+                    fetchUserProfile();
+
+                    //updates the user information
+                    updateButton.addEventListener("click", function (event) {
                         event.preventDefault();
 
-                        const updatedEmail = emailInput.value;
-                        const updatedPassword = passwordInput.value;
+                        const updatedProfile = {
+                            name: nameInput.value,
+                            age: ageInput.value,
+                            gender: genderInput.value,
+                            occupation: occupationInput.value,
+                            email: emailInput.value,
+                            password: passwordInput.value ? passwordInput.value : null
+                        };
 
-                        fetch("http://localhost:5000/my_diss/update-credentials", {
+                        console.log("Sending updated profile:", updatedProfile);
+
+                        fetch("http://localhost:5000/my_diss/update-profile", {
                             method: "PUT",
                             headers: {
                                 "Authorization": `Bearer ${token}`,
                                 "Content-Type": "application/json"
                             },
-                            body: JSON.stringify({ email: updatedEmail, password: updatedPassword })
+                            body: JSON.stringify(updatedProfile)
                         })
                             .then(response => response.json())
                             .then(data => {
                                 if (data.error) {
-                                    alert("Error updating credentials: " + data.error);
+                                    console.error("Error updating profile:", data.error);
+                                    alert("Error updating profile: " + data.error);
                                 } else {
-                                    alert("Email and password updated successfully! Please refresh the page.");
-                                    localStorage.removeItem("token"); 
-                                    window.location.href = "loginpage.html";
+                                    alert("Profile updated successfully!");
+
+                                    if (data.token) {
+                                        console.log("Storing new token in localStorage.");
+                                        localStorage.setItem("token", data.token);
+                                    }
+
+                                    if (data.email) {
+                                        localStorage.setItem("userEmail", data.email);
+                                    }
+
+                                    fetchUserProfile();
                                 }
                             })
-                            .catch(error => console.error("Error updating credentials:", error));
+                            .catch(error => {
+                                console.error("Error updating profile:", error);
+                                alert("An error occurred while updating the profile. Please try again.");
+                            });
                     });
+
+                    function logoutUser() {
+                        console.warn("Logging out user...");
+                        localStorage.removeItem("token");
+                        localStorage.removeItem("userEmail");
+                        alert("Session expired. Please log in again.");
+                        window.location.href = "loginpage.html";
+                    }
                 });
 
-                s
+                document.addEventListener("DOMContentLoaded", function () {
+                    const emailInput = document.getElementById("email");
+                    const passwordInput = document.getElementById("password");
+                    const form = document.getElementById("accountSettingsForm");
 
-                form.addEventListener("submit", function (event) {
-                    event.preventDefault();
+                    function fetchUserData() {
+                        fetch("http://localhost:5000/get-user-data", { method: "GET" })
+                            .then(response => response.json())
+                            .then(data => {
+                                emailInput.value = data.email;
+                                passwordInput.value = "";
+                            })
+                            .catch(error => console.error("Error fetching user data:", error));
+                    }
 
-                    const updatedEmail = emailInput.value;
-                    const updatedPassword = passwordInput.value;
+                    fetchUserData();
 
-                    fetch("http://localhost:5000/update-user-data", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ email: updatedEmail, password: updatedPassword })
-                    })
-                        .then(response => response.json())
-                        .then(data => alert("Profile updated successfully!"))
-                        .catch(error => console.error("Error updating profile:", error));
-                });
-            });
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const emailInput = document.getElementById("email");
+                        const passwordInput = document.getElementById("password");
+                        const updateCredentialsForm = document.getElementById("updateCredentialsForm");
+
+                        const token = localStorage.getItem("token");
+                        if (!token) {
+                            alert("You need to log in first.");
+                            window.location.href = "loginpage.html";
+                            return;
+                        }
+
+                        fetch("http://localhost:5000/my_diss/get-user-profile", {
+                            method: "GET",
+                            headers: { "Authorization": `Bearer ${token}` }
+                        })
+                            .then(response => response.json())
+                            .then(user => {
+                                if (user.error) {
+                                    console.error("Error fetching user:", user.error);
+                                    return;
+                                }
+                                emailInput.value = user.email || "";
+                            })
+                            .catch(error => console.error("Error fetching profile:", error));
+
+                        updateCredentialsForm.addEventListener("submit", function (event) {
+                            event.preventDefault();
+
+                            const updatedEmail = emailInput.value;
+                            const updatedPassword = passwordInput.value;
+
+                            fetch("http://localhost:5000/my_diss/update-credentials", {
+                                method: "PUT",
+                                headers: {
+                                    "Authorization": `Bearer ${token}`,
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({ email: updatedEmail, password: updatedPassword })
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.error) {
+                                        alert("Error updating credentials: " + data.error);
+                                    } else {
+                                        alert("Email and password updated successfully! Please refresh the page.");
+                                        localStorage.removeItem("token"); 
+                                        window.location.href = "loginpage.html";
+                                    }
+                                })
+                                .catch(error => console.error("Error updating credentials:", error));
+                        });
+                    });
+
+                    form.addEventListener("submit", function (event) {
+                        event.preventDefault();
+
+                        const updatedEmail = emailInput.value;
+                        const updatedPassword = passwordInput.value;
+
+                        fetch("http://localhost:5000/update-user-data", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ email: updatedEmail, password: updatedPassword })
+                        })
+                            .then(response => response.json())
+                            .then(data => alert("Profile updated successfully!"))
+                            .catch(error => console.error("Error updating profile:", error));
+                    });
+                 });
 
         </script>
-
 </body>
-
 </html>

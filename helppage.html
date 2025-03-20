@@ -284,6 +284,7 @@
             fetchQuestions();
         });
 
+        //checks if the user is loged in when loading the page
         async function checkLoginStatus() {
             const token = localStorage.getItem("token");
             if (token) {
@@ -297,6 +298,7 @@
             }
         }
 
+        //enables or disable the actions based on the users login status
         function enableUserActions(isLoggedIn) {
             const submitQuestionBtn = document.getElementById("submitQuestionBtn");
             const questionInput = document.getElementById("questionInput");
@@ -311,6 +313,7 @@
             }
         }
 
+        //submit a question when the user is loged in. 
         function submitQuestion() {
             const questionText = document.getElementById('questionInput').value.trim();
 
@@ -319,12 +322,13 @@
                 return;
             }
 
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("token"); //gets the token to verify if the user is logged in
             if (!token) {
                 alert("You must be logged in to submit a question.");
                 return;
             }
 
+            // makes a POST request to submit the question
             fetch("http://localhost:5000/my_diss/questions", {
                 method: "POST",
                 headers: {
@@ -347,10 +351,11 @@
                 });
         }
 
+        //fetch questions form the server
         async function fetchQuestions() {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("token"); //get token
             const currentUserId = localStorage.getItem("userId");
-            const isLoggedIn = !!token;
+            const isLoggedIn = !!token; //checks if the user is logged in. 
 
             try {
                 const response = await fetch("http://localhost:5000/my_diss/questions");
@@ -362,6 +367,7 @@
 
                 const questionsContainer = document.getElementById("questions");
 
+                //updates the question display
                 questionsContainer.innerHTML = questions.length > 0
                     ? questions.map(question => `
                     <div class="green-box d-flex justify-content-between align-items-center"
@@ -422,7 +428,7 @@
             }
         }
 
-
+        //delete a answer 
         async function deleteAnswer(questionId, answerId, event) {
             event.preventDefault();
 
@@ -450,6 +456,8 @@
                 alert("There was an issue deleting the answer. Please try again later.");
             }
         }
+
+        //toggle the icon for showing or hiding answers
         function toggleDropdownIcon(questionId) {
             const icon = document.getElementById(`icon-${questionId}`);
             if (icon) {
@@ -458,6 +466,7 @@
             }
         }
 
+        // like a answare
         async function likeAnswer(answerId) {
             const token = localStorage.getItem("token");
             if (!token) {
@@ -488,6 +497,7 @@
             }
         }
 
+        //delete a question
         async function deleteQuestion(questionId, event) {
             event.preventDefault();
 
@@ -515,6 +525,8 @@
                 alert("There was an issue deleting the question. Please try again later.");
             }
         }
+
+        // submit a answare to a question
         async function submitAnswer(questionId) {
             const answerText = document.getElementById(`answerInput${questionId}`).value.trim();
             if (!answerText) {
@@ -539,16 +551,16 @@
             }
         }
 
-        
-
+        //logout function to clear the session and redirect to login page
         function logoutUser() {
             localStorage.removeItem("token");
             localStorage.removeItem("userId");
             localStorage.removeItem("userEmail");
             checkLoginStatus();
-            window.location.href = "loginpage.html";
+            window.location.href = "loginpage.html"; //redirects the user
         }
 
+        //set up logout event listener 
         document.addEventListener("DOMContentLoaded", function () {
             const logoutBtn = document.getElementById("logoutBtn");
             if (logoutBtn) {
