@@ -307,33 +307,32 @@
                     <h5 class="modal-title">Comment and rate</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                    <div class="modal-body">
-                        <form id="commentForm">
-                            <input type="hidden" id="feedbackId">
-                            <div class="mb-3">
-                                <label for="commentText" class="form-label">Your comment</label>
-                                <textarea class="form-control" id="commentText" placeholder="Write your comment..."
-                                    required></textarea>
+                <div class="modal-body">
+                    <form id="commentForm">
+                        <input type="hidden" id="feedbackId">
+                        <div class="mb-3">
+                            <label for="commentText" class="form-label">Your comment</label>
+                            <textarea class="form-control" id="commentText" placeholder="Write your comment..."
+                                required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="commentRating" class="form-label">Your rating</label>
+                            <div class="star-rating">
+                                <input type="radio" id="star5" name="commentRating" value="5"><label for="star5"><i
+                                        class="fas fa-star"></i></label>
+                                <input type="radio" id="star4" name="commentRating" value="4"><label for="star4"><i
+                                        class="fas fa-star"></i></label>
+                                <input type="radio" id="star3" name="commentRating" value="3"><label for="star3"><i
+                                        class="fas fa-star"></i></label>
+                                <input type="radio" id="star2" name="commentRating" value="2"><label for="star2"><i
+                                        class="fas fa-star"></i></label>
+                                <input type="radio" id="star1" name="commentRating" value="1"><label for="star1"><i
+                                        class="fas fa-star"></i></label>
                             </div>
-                            <div class="mb-3">
-                                <label for="commentRating" class="form-label">Your rating</label> <label for="commentRating"
-                                    class="form-label">Your rating</label>
-                                <div class="star-rating">
-                                    <input type="radio" id="star5c" name="commentRating" value="5"><label for="star5c"><i
-                                            class="fas fa-star"></i></label>
-                                    <input type="radio" id="star4c" name="commentRating" value="4"><label for="star4c"><i
-                                            class="fas fa-star"></i></label>
-                                    <input type="radio" id="star3c" name="commentRating" value="3"><label for="star3c"><i
-                                            class="fas fa-star"></i></label>
-                                    <input type="radio" id="star2c" name="commentRating" value="2"><label for="star2c"><i
-                                            class="fas fa-star"></i></label>
-                                    <input type="radio" id="star1c" name="commentRating" value="1"><label for="star1c"><i
-                                            class="fas fa-star"></i></label>
-                                </div>
-                            </div>
-                    </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -450,7 +449,7 @@
                         <h6>Comments:</h6>
                         <div id="comments-${feedback._id}">
                             ${feedback.comments && feedback.comments.length > 0
-                                ? feedback.comments.map(comment => `
+                        ? feedback.comments.map(comment => `
                                     <div class="p-2 border rounded mb-2">
                                         <p><strong>Comment by:</strong>  ${comment.userId?.email || 'Anonymous'}</p>
                                         <p><strong>Rating:</strong> ${generateStarRating(comment.rating)}</p>
@@ -461,8 +460,8 @@
                                         ` : ''}
                                     </div>
                                 `).join("")
-                                : "<p class='text-muted'>No comments yet.</p>"
-                            }
+                        : "<p class='text-muted'>No comments yet.</p>"
+                    }
                         </div>
                     </div>
                 </div>
@@ -659,14 +658,14 @@
             }
         });
 
-        //the html codes for the star ratings. 
+        //the HTML codes for the star ratings. 
         function generateStarRating(rating) {
             let starsHTML = "";
             for (let i = 1; i <= 5; i++) {
                 if (i <= rating) {
-                    starsHTML += `<i class="fas fa-star text-warning"></i> `; 
+                    starsHTML += `<i class="fas fa-star text-warning"></i> `;
                 } else {
-                    starsHTML += `<i class="far fa-star text-warning"></i> `; 
+                    starsHTML += `<i class="far fa-star text-warning"></i> `;
                 }
             }
             return starsHTML;
@@ -713,10 +712,10 @@
                 return;
             }
 
-            feedbackInput.value = feedbackId; 
+            feedbackInput.value = feedbackId;
 
             if (commentText) {
-                commentText.value = ""; 
+                commentText.value = "";
             }
 
             //removes the chossen stars from the koment form
