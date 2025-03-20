@@ -511,7 +511,8 @@
                     profileName.innerText = user.name || "Change settings";
 
                     if (user.name) {
-                        const initials = user.name.charAt(0).toUpperCase() + user.name.charAt(user.name.length - 1).toUpperCase();
+                        const nameParts = user.name.trim().split(/\s+/);
+                        const initials = nameParts[0].charAt(0).toUpperCase() + (nameParts.length > 1 ? nameParts[1].charAt(0).toUpperCase() : "");
                         profileIcon.innerText = initials;
                     }
 
