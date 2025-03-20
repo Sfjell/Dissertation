@@ -508,7 +508,7 @@
 
                 //function for updating the users UI on the profile page
                 function updateProfileUI(user) {
-                    profileName.innerText = user.name || "Not logged in";
+                    profileName.innerText = user.name || "Change settings";
 
                     if (user.name) {
                         const initials = user.name.charAt(0).toUpperCase() + user.name.charAt(user.name.length - 1).toUpperCase();
@@ -542,7 +542,7 @@
                             postsContainer.innerHTML = "";
 
                             if (!posts || posts.length === 0) {
-                                postsContainer.innerHTML = "<p>No IT system reviews found.</p>";
+                                postsContainer.innerHTML = "<p>No data found.</p>";
                                 return;
                             }
 
@@ -571,7 +571,7 @@
                             commentsContainer.innerHTML = "";
 
                             if (!comments || comments.length === 0) {
-                                commentsContainer.innerHTML = "<p>No comments found.</p>";
+                                commentsContainer.innerHTML = "<p>No data found.</p>";
                                 return;
                             }
 
@@ -599,7 +599,7 @@
                             questionsContainer.innerHTML = "";
 
                             if (!questions || questions.length === 0) {
-                                questionsContainer.innerHTML = "<p>No questions found.</p>";
+                                questionsContainer.innerHTML = "<p>No data found.</p>";
                                 return;
                             }
 
@@ -623,7 +623,7 @@
                             answersContainer.innerHTML = "";
 
                             if (!answers || answers.length === 0) {
-                                answersContainer.innerHTML = "<p>No answers found.</p>";
+                                answersContainer.innerHTML = "<p>No data found.</p>";
                                 return;
                             }
 
