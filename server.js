@@ -237,17 +237,21 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+//connecting to the mongoDB using mongoose. The codes has a specified URL. 
 mongoose
   .connect('mongodb://localhost:27017/my_diss', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
+//endpoint for deleting a user account by email. 
 app.delete('/my_diss/delete-account/:email', authenticateToken, async (req, res) => {
   try {
     const { email } = req.params;a
     if (!email) {
       return res.status(400).json({ error: "Email is required" });
     }
+
+    //finds the user with the spesific email
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -271,6 +275,7 @@ app.delete('/my_diss/delete-account/:email', authenticateToken, async (req, res)
   }
 });
 
+//endpoint for users registration.
 app.post('/my_diss/register', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -281,6 +286,8 @@ app.post('/my_diss/register', async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ error: 'A user with this email already exists.' });
     }
+
+    //hash the password befor saing the user to the DB.
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ email, password: hashedPassword });
     await user.save();
@@ -291,6 +298,7 @@ app.post('/my_diss/register', async (req, res) => {
   }
 });
 
+//defines the form for the Question model in mongoDB.
 const questionSchema = new mongoose.Schema({
   questionText: { type: String, required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -313,6 +321,7 @@ const questionSchema = new mongoose.Schema({
 
 const Question = mongoose.model('Question', questionSchema);
 
+//endpoint for user login. 
 app.post('/my_diss/login', async (req, res) => {
   try {
       const { email, password } = req.body;
@@ -323,6 +332,7 @@ app.post('/my_diss/login', async (req, res) => {
           return res.status(400).json({ error: 'Email and password are required.' });
       }
 
+      //finds the user with the specific email.
       const user = await User.findOne({ email });
       if (!user) {
           console.warn("User not found:", email);
@@ -332,6 +342,7 @@ app.post('/my_diss/login', async (req, res) => {
       console.log("Found User:", user.email);
       console.log("Hashed password stored:", user.password);
 
+      //comapres the hash password with the one provided by the user when loging in. 
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
