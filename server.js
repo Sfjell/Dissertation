@@ -1,32 +1,45 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const multer = require('multer');
-const mongoose = require('mongoose');
-const path = require('path');
-const fs = require('fs');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+// Imports the moduels needed
+const express = require('express'); //web server framework for creating APIs
+const bodyParser = require('body-parser'); //for parsing incoming request bodies
+const cors = require('cors'); //handle Cross-Origin Resource Sharing (CORS)
+const multer = require('multer'); //for handling file uploads
+const mongoose = require('mongoose'); //MongoDB ODM for database access
+const path = require('path'); //for handling file paths
+const fs = require('fs'); //for file system operations
+const bcrypt = require('bcryptjs'); //for encrypting and comparing passwords
+const jwt = require('jsonwebtoken'); //for creating and verifying JWT tokens
+require('dotenv').config(); //loading environment variables from .env file
 
+//initialisae the express application.
 const app = express();
+
+//middleware to handle JSON bodies in request.
 app.use(bodyParser.json());
+
+//middleware to allow CROS.
 app.use(cors());
+
+//set up static file serving for uploaded files under the 'uploads' directory.
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+//set up a path to store uploaded files and checks if the uploads directory exists, if not, create it.
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
+//configure multer storage for file uploads.
 const storage = multer.diskStorage({
   destination: uploadDir,
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
+
+//initialise multer upload middleware.
 const upload = multer({ storage });
 
+//defines the Mongoose schema for user data.
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -35,8 +48,10 @@ const userSchema = new mongoose.Schema({
   gender: { type: String },
   occupation: { type: String }
 });
+
 const User = mongoose.model('User', userSchema);
 
+//defines the Mongoose schema for feedbacks regarding a company.
 const feedbackSchema = new mongoose.Schema({
   companyName: { type: String, required: true },
   experienceDescription: { type: String, required: true },
@@ -56,6 +71,7 @@ const feedbackSchema = new mongoose.Schema({
 
 const Feedback = mongoose.model('Feedback', feedbackSchema);
 
+//API endpoint to fetch user email by userId.
 app.get('/my_diss/get-user-id/:userId', async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
@@ -69,6 +85,7 @@ app.get('/my_diss/get-user-id/:userId', async (req, res) => {
   }
 });
 
+//API endpoint to fetch posts created by a user, using userId.
 app.get('/my_diss/user-posts/:userId', async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -86,6 +103,7 @@ app.get('/my_diss/user-posts/:userId', async (req, res) => {
   }
 });
 
+//API endpoint to fetch comments made by a user, using userId.
 app.get('/my_diss/user-comments/:userId', async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -117,6 +135,7 @@ app.get('/my_diss/user-comments/:userId', async (req, res) => {
   }
 });
 
+//API endpoint to fetch questions asked by a user, using userId.
 app.get('/my_diss/user-questions/:userId', async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -133,7 +152,7 @@ app.get('/my_diss/user-questions/:userId', async (req, res) => {
   }
 });
 
-
+//API endpoint to fetch answers given by a user to different questions, using userId.
 app.get('/my_diss/user-answers/:userId', async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -161,6 +180,7 @@ app.get('/my_diss/user-answers/:userId', async (req, res) => {
   }
 });
 
+//filter and map through the answers to gather details of answers by the user.
 app.get("/my_diss/feedback/:feedbackId", async (req, res) => {
   try {
     const { feedbackId } = req.params;
@@ -182,10 +202,12 @@ app.get("/my_diss/feedback/:feedbackId", async (req, res) => {
   }
 });
 
+//middleware to authenticate user's token in the Authorisation header.
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   console.log("Received Authorization header:", authHeader);
 
+  //checks if the Authorisation header is missing or incorrectly formatted
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     console.log("No token or incorrect format.");
     return res.status(403).json({ error: 'Access denied. No token.' });
@@ -194,6 +216,7 @@ const authenticateToken = (req, res, next) => {
   const token = authHeader.split(' ')[1];
   console.log("Extracted token:", token);
 
+   //verifys the token using the JWT key 
   jwt.verify(token, process.env.JWT_SECRET || "fallbackSecretKey", (err, decoded) => {
     if (err) {
       console.error("Invalid token:", err);
