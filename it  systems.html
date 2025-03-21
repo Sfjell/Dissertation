@@ -156,6 +156,10 @@
             color: #e16539;
         }
 
+        .star-rating label:hover,
+        .star-rating label:hover~label {
+            color: #e16539;
+        }
 
         .container {
             flex: 1;
@@ -506,10 +510,8 @@
 
             const feedbackId = document.getElementById("feedbackId").value;
             const commentText = document.getElementById("commentText").value.trim();
-            const commentRating = getSelectedRating();
+            const commentRating = getSelectedRating(); 
             const token = localStorage.getItem("token");
-
-            console.log("Submitting comment with data:", { text: commentText, rating: commentRating });
 
             if (!token) {
                 alert("You must log in to comment.");
@@ -545,6 +547,17 @@
                 console.error("Error submitting comment:", error);
             }
         });
+
+        function getSelectedRating() {
+            let selectedRating = null;
+            document.querySelectorAll('input[type="radio"][name="commentRating"]').forEach(star => {
+                if (star.checked) {
+                    selectedRating = star.value;
+                    console.log("Selected rating:", selectedRating); 
+                }
+            });
+            return selectedRating;
+        }
 
         //uploads and updates the comment for a feedback. 
         async function updateComments(feedbackId) {
@@ -594,10 +607,6 @@
             } else {
                 filterSection.style.display = "none";
             }
-        }
-        function getSelectedRating() {
-            const selectedStar = document.querySelector(' input[name="commentRating"]:checked');
-            return selectedStar ? selectedStar.value : null;
         }
 
         // handals the submision form of a feedback. 
