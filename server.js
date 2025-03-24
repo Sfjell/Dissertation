@@ -246,7 +246,7 @@ mongoose
 //endpoint for deleting a user account by email. 
 app.delete('/my_diss/delete-account/:email', authenticateToken, async (req, res) => {
   try {
-    const { email } = req.params;a
+    const { email } = req.params;
     if (!email) {
       return res.status(400).json({ error: "Email is required" });
     }
